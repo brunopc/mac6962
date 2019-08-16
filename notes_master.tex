@@ -1,0 +1,318 @@
+% Time-stamp: <Sunday 08 Apr 2018 07:10:14pm -03 by yoshi on pokopon>
+\documentclass[reqno, a4paper, 11pt]{amsart}
+\pdfoutput=1
+
+\usepackage[brazil]{babel}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{textcomp}
+
+\usepackage{ae}
+\usepackage{aecompl}
+\usepackage{lmodern}
+
+\makeatletter
+\let\origsection=\section \def\section{\@ifstar{\origsection*}{\mysection}}
+\def\mysection{\@startsection{section}{1}\z@{.7\linespacing\@plus\linespacing}{.5\linespacing}{\normalfont\scshape\centering\S}}
+\makeatother
+
+\allowdisplaybreaks
+
+\usepackage{fullpage}
+\usepackage{setspace}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+
+\lhead{}
+\chead{}
+\rhead{}
+%\lfoot{}
+\cfoot{}
+%\rfoot{\today, \currenttime}
+\fancyfoot[RO,LE]{\thepage}
+\fancyfoot[LO,RE]{{\footnotesize\today, \currenttime}}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathabx}\changenotsign
+\usepackage{mathrsfs}
+\usepackage{bbm}
+\usepackage{dsfont}
+\usepackage[babel]{microtype}
+\usepackage{xcolor}
+\usepackage[backref]{hyperref}
+\hypersetup{
+  colorlinks,
+  linkcolor={red!60!black},
+  citecolor={green!60!black},
+  urlcolor={blue!60!black},
+}
+\usepackage{algpseudocode}
+
+\usepackage{bookmark}
+
+%%%% Let's use amsrefs http://www.ams.org/publications/authors/tex/amsrefs
+\usepackage[abbrev,msc-links,backrefs]{amsrefs} 
+\usepackage{doi}
+\renewcommand{\doitext}{DOI\,}
+\renewcommand{\PrintDOI}[1]{\doi{#1}}
+\renewcommand{\eprint}[1]{\href{http://arxiv.org/abs/#1}{arXiv:#1}}
+%%%%
+
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathreplacing,calc}
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfsetlayers{background,main,foreground}
+
+\newcommand\inj\hookrightarrow % Injective functions
+\DeclareMathOperator\Var{Var} % Variance
+\DeclareMathOperator\Cov{Cov} % Covariance
+
+\usepackage[abbrev,msc-links,backrefs]{amsrefs}
+\usepackage{doi}
+\renewcommand{\doitext}{DOI\,}
+\renewcommand{\PrintDOI}[1]{\doi{#1}}
+\renewcommand{\eprint}[1]{\href{http://arxiv.org/abs/#1}{arXiv:#1}}
+
+%\usepackage[english]{babel}
+%\numberwithin{equation}{section}
+
+\makeatletter
+\def\@setdate{\datename\ \@date}
+%\def\@setthanks{\def\thanks##1{\par##1}\thankses}
+\def\@setaddresses{\par
+  \nobreak \begingroup
+\footnotesize
+  \def\author##1{\nobreak\addvspace\bigskipamount}%
+  \def\\{\unskip, \ignorespaces}%
+  \interlinepenalty\@M
+  \def\address##1##2{\begingroup
+    \par\addvspace\bigskipamount\indent
+    \@ifnotempty{##1}{(\ignorespaces##1\unskip) }%
+    {\scshape\ignorespaces##2}\par\endgroup}%
+  \def\curraddr##1##2{\begingroup
+    \@ifnotempty{##2}{\nobreak\indent{\itshape Current address}%
+      \@ifnotempty{##1}{, \ignorespaces##1\unskip}\/:\space
+      ##2\par}\endgroup}%
+  \def\email##1##2{\begingroup
+    \@ifnotempty{##2}{\nobreak\indent{\itshape Endereço eletrônico}%
+      \@ifnotempty{##1}{, \ignorespaces##1\unskip}\/:\space
+      \ttfamily##2\par}\endgroup}%
+  \def\urladdr##1##2{\begingroup
+    \@ifnotempty{##2}{\nobreak\indent{\itshape URL}%
+      \@ifnotempty{##1}{, \ignorespaces##1\unskip}\/:\space
+      \ttfamily##2\par}\endgroup}%
+  \addresses
+  \endgroup
+}
+\def\datename{\textit{Data}:}
+\makeatother
+
+\usepackage{enumitem}
+\def\rmlabel{\upshape({\itshape \roman*\,})}
+\def\RMlabel{\upshape(\Roman*)}
+\def\alabel{\upshape({\itshape \alph*\,})}
+\def\Alabel{\upshape({\itshape \Alph*\,})}
+\def\nlabel{\upshape({\itshape \arabic*\,})}
+\def\AAlabel{\upshape({A\arabic*})}
+\def\nplain{\upshape{\arabic*.}}
+\def\aplabel{\upshape({\itshape \alph*\,$'$})}
+
+\let\polishlcross=\l
+\def\l{\ifmmode\ell\else\polishlcross\fi}
+
+\def\tand{\ \text{and}\ }
+\def\qand{\quad\text{and}\quad}
+\def\qqand{\qquad\text{and}\qquad}
+
+\let\emptyset=\varnothing
+\let\setminus=\smallsetminus
+\let\backslash=\smallsetminus
+\let\subset\subseteq
+\let\lg = \log
+\let\log=\ln
+
+\makeatletter
+\def\moverlay{\mathpalette\mov@rlay}
+\def\mov@rlay#1#2{\leavevmode\vtop{   \baselineskip\z@skip \lineskiplimit-\maxdimen
+   \ialign{\hfil$\m@th#1##$\hfil\cr#2\crcr}}}
+\newcommand{\charfusion}[3][\mathord]{
+    #1{\ifx#1\mathop\vphantom{#2}\fi
+        \mathpalette\mov@rlay{#2\cr#3}
+      }
+    \ifx#1\mathop\expandafter\displaylimits\fi}
+\makeatother
+
+\DeclareMathOperator{\dom}{{\rm dom}}
+
+\newcommand{\dcup}{\charfusion[\mathbin]{\cup}{\cdot}}
+\newcommand{\bigdcup}{\charfusion[\mathop]{\bigcup}{\cdot}}
+
+\DeclareFontFamily{U}  {MnSymbolC}{}
+\DeclareSymbolFont{MnSyC}         {U}  {MnSymbolC}{m}{n}
+\DeclareFontShape{U}{MnSymbolC}{m}{n}{
+    <-6>  MnSymbolC5
+   <6-7>  MnSymbolC6
+   <7-8>  MnSymbolC7
+   <8-9>  MnSymbolC8
+   <9-10> MnSymbolC9
+  <10-12> MnSymbolC10
+  <12->   MnSymbolC12}{}
+\DeclareMathSymbol{\powerset}{\mathord}{MnSyC}{180}
+
+\makeatletter
+\def\namedlabel#1#2{\begingroup
+    #2%
+    \def\@currentlabel{#2}%
+    \phantomsection\label{#1}\endgroup
+}
+\makeatother
+
+\newtheorem{teorema}             {Teorema}
+\newtheorem{lema}     	[teorema] {Lema}
+\newtheorem{conjectura}	[teorema] {Conjectura}
+\newtheorem{propriedade}[teorema] {Propriedade}
+\newtheorem{definicao}	[teorema] {Definição}
+\newtheorem{proposicao} [teorema] {Proposição}
+\newtheorem{corolario}	[teorema] {Corolário}
+\newtheorem{fato}	[teorema] {Fato}
+\newtheorem{afirmacao}	[teorema] {Afirmação}
+
+\newtheoremstyle{remark}  {2pt}  {4pt}  {\rm}  {}  {\bfseries}  {.}  {.3em}          {}
+\theoremstyle{remark}
+\newtheorem{observacao}	[teorema] {Observação}
+\newtheorem{exemplo}	[teorema] {Exemplo}
+\newtheorem{exercicio}	[teorema] {Exercicio}
+
+%\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\let\eps=\varepsilon
+%\let\theta=\vartheta
+\let\rho=\varrho
+\let\phi=\varphi
+
+\def\CC{\mathds C}
+\def\NN{\mathds N}
+\def\ZZ{\mathds Z}
+\def\QQ{\mathds Q}
+\def\RR{\mathds R}
+\def\PP{\mathds P}
+\def\EE{\mathds E}
+
+\def\cB{\mathcal B}
+\def\cF{\mathcal F}
+\def\cL{\mathcal L} % para o arquivo 2018.03.19
+\def\cR{\mathcal R}
+
+\def\ra{\longrightarrow}
+\def\red{\text{\rm red}}
+\def\blue{\text{\rm blue}}
+\def\R{\text{\rm red}}
+\def\B{\text{\rm blue}}
+\def\lf{\left\lfloor}
+\def\rf{\right\rfloor}
+
+\usepackage{datetime}
+
+\usepackage{lineno}
+\newcommand*\patchAmsMathEnvironmentForLineno[1]{%
+\expandafter\let\csname old#1\expandafter\endcsname\csname #1\endcsname
+\expandafter\let\csname oldend#1\expandafter\endcsname\csname end#1\endcsname
+\renewenvironment{#1}%
+{\linenomath\csname old#1\endcsname}%
+{\csname oldend#1\endcsname\endlinenomath}}%
+\newcommand*\patchBothAmsMathEnvironmentsForLineno[1]{%
+\patchAmsMathEnvironmentForLineno{#1}%
+\patchAmsMathEnvironmentForLineno{#1*}}%
+\AtBeginDocument{%
+\patchBothAmsMathEnvironmentsForLineno{equation}%
+\patchBothAmsMathEnvironmentsForLineno{align}%
+\patchBothAmsMathEnvironmentsForLineno{flalign}%
+\patchBothAmsMathEnvironmentsForLineno{alignat}%
+\patchBothAmsMathEnvironmentsForLineno{gather}%
+\patchBothAmsMathEnvironmentsForLineno{multline}%
+}
+
+\mathcode`l="8000
+\begingroup
+\makeatletter
+\lccode`\~=`\l
+\DeclareMathSymbol{\lsb@l}{\mathalpha}{letters}{`l}
+\lowercase{\gdef~{\ifnum\the\mathgroup=\m@ne \ell \else \lsb@l \fi}}%
+\endgroup
+
+\begin{document}
+\linenumbers
+
+\title[MAC6962 Tópicos Matemáticos para Computação Contemporânea]{%
+{\small\sl Sinopse das aulas}\\\bigskip
+MAC6962 Tópicos Matemáticos para Computação Contemporânea\\\bigskip
+{\it Segundo Semestre de 2019}
+}
+
+\address{Instituto de Matemática e Estatística, Universidade de São
+  Paulo, Rua do Matão 1010, 05508--090~São Paulo, SP}
+
+% \email{}
+%\thanks{}
+%\begin{abstract}
+%\end{abstract}
+
+\yyyymmdddate
+\shortdate
+\def\today{\number\year/\number\month/\number\day}
+\settimeformat{ampmtime}
+\date{\today, \currenttime}
+\footskip=28pt
+
+%\keywords{}
+%\subjclass[2010]{}
+
+\maketitle
+
+\section*{}
+\label{sec:prefacio}
+\doublespace
+Notas de aula produzidas por
+\begin{enumerate}[label=\nplain]
+\item \dots,
+\item \dots,
+\item \dots\ e
+\item \dots.
+\end{enumerate}
+
+\endgroup
+\newpage\onehalfspace
+\tableofcontents
+\pagestyle{fancy}
+
+\endgroup
+\doublespace
+%\onehalfspace
+
+\newpage
+\part{CONCENTRAÇÃO DE MEDIDA}
+
+\section{...}
+\label{...}
+
+\input{aulas/08_05/note.tex}
+
+\newpage
+\part{BIBLIOGRAFIA}
+
+%\bibliographystyle{amsplain}
+\bibliography{bibliography}
+
+\endgroup
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% eval: (auto-fill-mode t)
+%%% eval: (LaTeX-math-mode t)
+%%% eval: (flyspell-mode t)
+%%% TeX-master: t
+%%% End:
