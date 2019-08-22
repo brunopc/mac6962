@@ -1,0 +1,191 @@
+\section{Aula 05 de Agosto de 2019}
+\label{2019_08_05}
+
+\subsection{Filtros de Bloom}
+
+Considere o seguinte problema: dado um $S \subseteq \mathcal{U}$ e $x
+\in \mathcal{U}$, decidir se $x \in S$. A solução para esse problema
+consiste em montar alguma Estrutura de Dados para representar $S$,
+como por exemplo uma tabela de hash ou uma árvore binária de busca
+(ABB), e fazer consultas nessa estrutura. Queremos que a nossa solução
+seja eficiente em tempo e espaço, sendo que o tempo consiste no tempo
+de montar a estrutura (pré-processamento) e no tempo de resposta para
+cada $x$ (consulta).
+
+Na Tabela \ref{tab:tempo_problema_pertinencia}, temos o tempo de
+pré-processamento e consulta utilizando hashing e ABB. Observe que nas
+duas soluções a quantidade de espaço utilizado é $O(n)$. Queremos
+gastar menos memória, para isso vamos permitir aleatorização e falsos
+positivos.
+
+\begin{table}[h]
+\begin{tabular}{l|c|c|}
+\cline{2-3}
+                                       & \multicolumn{2}{c|}{\textbf{Tempo}}                                                      \\ \cline{2-3} 
+                                       & \multicolumn{1}{l|}{\textbf{Pré-processamento}} & \multicolumn{1}{l|}{\textbf{Consulta}} \\ \hline
+\multicolumn{1}{|l|}{\textbf{Hashing}} & $O(n)$                                          & $O(1)$                                 \\ \hline
+\multicolumn{1}{|l|}{\textbf{ABB}}     & $O(n\lg n)$                                    & $O(\lg n)$                            \\ \hline
+\end{tabular}
+  \caption{Tempo utilizando Hashing e ABB}
+  \label{tab:tempo_problema_pertinencia}
+\end{table}
+
+Mais precisamente, teremos:
+
+\begin{enumerate}
+\item Se $x \in S$, $\mathbb{P}(A(x)=1)=1$
+\item Se $x \notin S$, $\mathbb{P}(A(x)=1) \leq \delta$.
+\end{enumerate}
+
+onde $A(x)$ é a solução desejada com $x$ como entrada.
+
+\subsubsection{Primeira Tentativa}
+  
+Suponha que temos uma função de hashing
+$h: \mathcal{U} \rightarrow T$, onde $|T|=m$. Vamos considerar que $h$
+tem a seguinte propriedade: $h(u)$, para todo $u \in \mathcal{U}$, são
+uniformemente distribuído em $T$ $\left(
+\mathbb{P}(h(u)=t)=\frac{1}{m}\right)$ e são mutuamente independentes (essa
+propriedade é usual em análises).
+
+Vamos representar o conjunto $S$ utilizando um vetor $v$ de $m$
+bits. Isto é:
+
+\begin{align*}
+v = (v_{t})_{t \in T} = (v(t))_{t\in T} \in \{0,1\}^{m}
+\end{align*}
+
+com
+
+\begin{align*}
+  v_{t}=\begin{cases}
+    1, \text{ se } \exists s \in S : h(s)=t \\
+    0, \text{ c/c. }
+ \end{cases}
+\end{align*}
+
+Neste caso, o algoritmo $A$ devolverá $1$ se $v(h(x))=1$ e $0$ caso
+contrário. Logo, $A(x)=v(h(x))$. Observe que se $x \in S$, então
+$A(x)=1$ com probabilidade $1$ e se $x \notin S$, então
+$\mathbb{P}(A(x)=1)\leq \frac{|S|}{|T|}$.
+
+Consequentemente, para termos a probabilidade de falsos positivos
+menor que $\delta$, basta tomarmos $|T| \geq
+\frac{|S|}{\delta}$. Portanto, gastamos $\frac{1}{\delta}$ bits por
+elemento de $S$. Queremos diminuir $\frac{1}{\delta}$ para
+$O(\lg \frac{1}{\delta})$.
+
+\subsubsection{Filtros de Bloom}
+
+Neste caso, usamos $k$ funções de hashing
+$h_{1},\dots,h_{k}:\mathcal{U} \rightarrow T$ e vamos assumir que
+$h_{i}(u) (1 \leq i \leq k, u \in \mathcal{U})$ são uniformemente
+distribuídas em $T$ e são mutuamente independentes. Como na tentativa
+anterior, ainda vamos representar $S$ utilizando um vetor $v$ de $m$
+bits, mas dessa vez:
+
+\begin{align*}
+  v_{t}=\begin{cases}
+    1, \text{ se } \exists i \text{ e } s \in S : h_{i}(s)=t \\
+    0, \text{ c/c. }
+  \end{cases}
+\end{align*}
+
+Ademais:
+
+\begin{align*}
+  A(x)=\begin{cases}
+    1, \text{ se } \forall i v(h_{i}(x))=1\\
+    0, \text{c/c.}
+  \end{cases}
+\end{align*}
+
+Claramente, se $x \in S$, então $A(x)=1$ com probabilidade 1. Queremos
+estimar $\mathbb{P}(A(x)=1)$ para $x \notin S$. Lembre que $n=|S|$ e
+$m=|T|$. Tomamos $m=n\frac{\lg_{2} 1/\eps}{\log 2}$ e $k=(\log 2)\frac{m}{n}$,
+onde vamos escolher $\eps$ mais a frente \footnote{quando não crucial,
+omitimos $\lfloor . \rfloor$ e $\lceil . \rceil$. Além disso,
+$\lg=\lg_{e}=\log$}.
+
+Como é $v=(v_{t})$? Temos:
+
+\begin{align}
+\mathbb{P}(v_{t}=0) &= \left(1-\frac{1}{m}\right)^{kn}\\
+                    &= \left(e^{-\frac{1}{m}+O\left(\frac{1}{m^2}\right)}\right)^{kn} \label{eq:pr_vt_0}, & \left(\text{usando que } 1+x=e^{x+O(\frac{1}{x^2})}\right) \\
+                    &= \frac{1}{2}e^{O\left(\frac{1}{m}\right)} \geq \frac{m}{2}\left(1-\frac{e}{2}\right), & (m \geq m_{0}(\eps))
+\end{align}
+
+Observe que em \eqref{eq:pr_vt_0}, assumimos que $O$ não tem
+sinal. Iremos assumir isso no restante das aulas. Agora, seja $M_{0}$
+uma variável aleatória tal que $M_{0}=\#0s$ em $v$. Então:
+
+$$
+\mathbb{E}(M_{0})=m\mathbb{P}(v_{t}=0) \geq \frac{m}{2}\left(1-\frac{\eps}{2}\right)
+$$
+
+\begin{fato}
+\label{fato:filtros_de_Bloom}
+$\mathbb{P}(M_{0} \leq \frac{m}{2}(1-\eps)) \leq e^{-c_{\eps}m}$, onde $c_{\eps} > 0$ depende apenas de $\eps$.
+\end{fato}
+
+Dado o fato acima, supomos que $M_{0} \geq \frac{m}{2}(1-\eps)$. Logo,
+$M_{1}=m-M_{0} \leq \frac{m}{2}(1+\eps)$. Assim, se $x \notin S$, então:
+
+\begin{align*}
+  \mathbb{P}(A(x)=1)&= \left(\frac{M_{1}}{m}\right)^k \\
+                    &\leq \left(\frac{1}{2}(1+\eps)\right)^k \\
+                    &= \eps(1+\eps)^{\lg_{2}1/\eps}, & \left(k=\lg_{2}1/\eps\right)\\
+                    &\leq \eps e^{\eps\lg_{2}1/\eps}, & \left(\text{usando que } (1+x) \leq e^{x}\right)\\
+                    &= \eps e^{\lg\eps^{-\eps}/\lg 2}\\
+                    &= \eps \eps^{-\eps/\lg 2}\\
+                    &\leq 2 \eps, & \left(\text{para algum } 0 \leq \eps_{0} \leq \eps\right)\\
+                    &= \delta
+\end{align*}
+
+tomando $\eps=\frac{\delta}{2}$. Portanto,
+$m=n\frac{\lg 2/\delta}{\lg 2}$, ou seja, gastamos
+$O(\lg \frac{1}{\delta})$ para cada elemento de $S$.
+
+Agora vamos provar o Fato \ref{fato:filtros_de_Bloom}. Para isso,
+vamos usar um resultado de concentração de variáveis aleatórias
+conhecida como a desigualdade de McDiamird ou o método das diferenças
+limitadas:
+
+\begin{lema}[McDiamird \cite{mcdiarmid_method_89}]
+\label{lema:McDiamird}
+Suponha que $X_{1},\dots,X_{n}$ são variáveis aleatórias
+independentes, com $X_{i}$ tomando valores em um conjunto $A_{i}(1
+\leq i \leq n)$. Suponha que $f: A_{1}\times \dots A_{n} \rightarrow
+\RR$ é tal que $|f(x)-f(x')|\leq c_{i}$ para quaisquer $x$ e $x' \in
+A_{1}\times \dots \times A_{n}$ que diferem apenas na $i$-ésima
+coordenada. Considere a variável aleatória
+$Y=f(X_{1},\dots,X_{n})$.Para todo $t > 0$:
+
+  \begin{enumerate}
+    \item $\mathbb{P}(Y \geq \mathbb{E}(Y_0)+t) \leq e^{\frac{-2t^{2}}{\sum c_{i}^{2}}}$
+    \item $\mathbb{P}(Y \geq \mathbb{E}(Y_0)-t) \leq e^{\frac{-2t^{2}}{\sum c_{i}^{2}}}$
+    \end{enumerate}
+\end{lema}
+
+Portanto:
+
+\begin{proof}[Demonstração do Fato \ref{fato:filtros_de_Bloom}]
+Tomando $t = \frac{\eps m}{4}$, temos:
+
+\begin{align*}
+  \mathbb{E}(M_{0}) - t &\geq \frac{m}{2}\left(1-\frac{\eps}{2}\right) - t\\
+                        &= \frac{m}{2}\left(1-\frac{\eps}{2}\right) - \frac{\eps m}{4}\\
+                        &= \frac{m}{2}\left(1-\eps\right)
+\end{align*}
+
+Logo, usando o Lema \ref{lema:McDiamird}:
+
+\begin{align*}
+  \mathbb{P}\left(M_{0}\leq \frac{m}{2}\left(1-\eps\right)\right) &\leq \mathbb{P}\left(M_{0}\leq \mathbb{E}(M_{0})-t\right)\\
+                                                                  &\leq e^{-2t^2/kn}\\
+                                                                  &\leq e^{-c_{\eps}m}
+\end{align*}
+
+onde $c_{\eps}$ é uma constante que depende somente de $\eps$.
+
+\end{proof}
