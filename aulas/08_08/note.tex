@@ -1,0 +1,165 @@
+\section{Aula 08 de Agosto de 2019}
+\label{2019_08_08}
+
+\subsection{Filtros de Bloom, cont.}
+Como visto anteriormente, dados conjunto $S\subset U$, com $|S|=n$. Dado um elemento $x\in U$, utilizando Filtros de Bloom conseguimos decidir a pertinência de $x$ em $S$, permitindo falsos positivos com probabilidade menor que $\delta$, i.e.:
+\begin{enumerate}
+    \item Se $x\in S$, então $\mathbb{P}(A(x)=1)=1$,
+    \item Se $x\in S$, então $\mathbb{P}(A(x)=1)< \delta$.
+\end{enumerate}
+
+Onde $A:U \to \{0,1\}$ \'e a fun\c{c}\~ao que queremos que emule a fun\c{c}\~ao caracter\'istica $\mathbbm{1}_S$ de $S$, esse processo gasta espa\c{c}o $O(n \lg{\frac{1}{d}})$ bits.
+
+\textit{Leve generaliza\c{c}\~ao:} suponha que $n$ \'e desconhecido, por\'em se sabe um valor $N$ tal que $n \le N$. Neste caso, tomamos
+
+\[\begin{cases}
+m = N \frac{\lg_2{1/\epsilon}}{\lg 2}
+\\k= (\lg 2)\frac{m}{N}= \lg_2{1/\epsilon},
+\end{cases}
+\]
+onde  $\epsilon = \frac{\delta}{2}$.
+
+Novamente tomamos fun\c{c}\~oes de hashing $h_1,\dots h_k: \mathcal{U} \to T$, onde $T = [m]$ e por suposi\c{c}\~ao as fun\c{c}\~oes s\~ao uniformemente distribu\'idas e mutualmente independentes. Seja o vetor $V=(v_1 v_2 \dots v_m)$ o vetor tal que 
+\[v_t = \begin{cases}
+1, \text{ se } \exists i, s\in S: h_i(s)=t
+\\0, \text{caso contr\'ario}
+\end{cases}\]
+
+Assim, para todo $t\in T$
+\begin{align*}
+  \mathbb{P}(v_t=0)&= \left(1-\frac{1}{m}\right)^{kn}\\
+                    &\ge e^{\frac{-kN}{m}+O(kN/m^2)}\\
+                    &=\frac{1}{2}e^{O(1/m)}\\
+                    &\ge \frac{1}{2}(1-\epsilon/2),
+\end{align*}
+se $m\ge m_0(\epsilon)$.
+
+Assim, sendo $M_0$ a quantidade de zeros no vetor $V$,
+\[\mathbb{E}(M_0)\ge \frac{m}{2} (1-\epsilon/2) \implies \mathbb{E}(M_0)-\frac{m\epsilon}{4}\ge \frac{m}{2} (1-\epsilon)\]
+e portanto, pela Desigualdade de McDiarmid, tomando $\tau = \frac{\epsilon m}{4}$:
+\[\mathbb{P}(M_0 \le \frac{m}{2} (1-\epsilon)) \le  \mathbb{P}\left(M_0 \le \mathbb{E}(M_0)-\frac{m\epsilon}{4}\right)\le \exp\{-2\tau^2/kn\} = e^{-c_\epsilon m}\]
+
+Supomos assim que $V$ \'e tal que $M_0\ge \frac{m}{2}(1-\epsilon)$ e assim $M_1 = m-M_0 \le \frac{m}{2}(1+\epsilon)$. 
+Portanto , se $x\notin S$, ent\~ao 
+\begin{align*}
+\mathbb{P}(A(x)=1) &\le \left( \frac{1}{2} (1+\epsilon)\right)^k\\
+					&=\epsilon(1+\epsilon)^{\lg_21/\epsilon}\\
+					&\le \epsilon e^{\lg_2 1/\epsilon}\\
+					&\le 2\epsilon = \delta,
+\end{align*}
+se $\epsilon \le \epsilon_0$.
+
+\textit{Pergunta:} Como estimar a cardinalidade de $S_1\cap S_2$ dados $V_1=V^{S_1}$ e $V_2=V^{S_2}$?
+
+Suponha que $V$ representa $S$. Podemos testimar $S$ a partir de $\rho_0 = M_0/m$.
+
+Temos
+\begin{align*}
+\mathbb{P}(v_t=0)&= \left(1-\frac{1}{m}\right)^{kn}\\
+                    &= \left(e^{-1/m+O(1/m^2)}\right)^{kn}\\
+                    &=e^{-kn/m}e^{O({1/m})}\\
+                    &=e^{-kn/m}(1+O(1/m))
+\end{align*} 
+Assim
+\[\mathbb{E}(M_0) = me^{-kn/m}(1+O(1/m))=me^{-kn/m} + O(1)\]
+
+Tome $\tau = \omega\sqrt{m}$, onde $w = w(m) \to \infty$. Temos
+\[\mathbb{E}(M_0) + \omega\sqrt{m} \le me^{-kn/m} + 2\omega\sqrt m\]
+Assim
+\begin{align*}
+\mathbb{P}(M_0 \ge me^{-kn/m} + 2\omega\sqrt m)&\le \mathbb{P}(M_0 \ge \mathbb{E}(M_0) + \omega\sqrt{m})\\
+											   &\le \exp \left\{-\frac{2\omega^2m}{kn}\right\}\\
+											   &\le \exp \left\{-\frac{2\omega^2m}{kN}\right\} \to 0
+\end{align*}
+Analogamente [ex.],
+\[\mathbb{P}(M_0 \le me^{-kn/m} - 2\omega\sqrt m)= o(1).\]
+Assim, supomos que vale:
+\[|M_0 - me^{-kn/m}|\le 2\omega\sqrt{m},\]
+em particular,
+\[M_0 \ge me^{-kn/m} - 2\omega\sqrt m \ge \frac{m}{2}-2\omega\sqrt m.\]
+Ademais,
+\[M_0 = me^{-kn/m} + O(\omega\sqrt m)\]
+implica que 
+\begin{align*}
+e^{-kn/m} &= M_0/m + O(\omega/\sqrt m)\\
+		  &=\rho_0\left( 1 + O\left(\frac{m}{M_0}\frac{w}{\sqrt m}\right)\right)\\
+		  &=\rho_0\left( 1 + O(\sqrt m \omega)\right). 
+\end{align*}
+Assim,
+\[-\frac{kn}{m} = \lg \rho_0 + O\left(\frac{\omega}{\sqrt m}\right).\]
+Portanto
+\[n = \frac{m}{k} \lg \frac{1}{\rho_0} + O\left(\frac{\omega \sqrt m }{k}\right).\]
+
+Observe que $V^{S_1\cap S_2} = V^{S_1} $ or bit a bit $V^{S_2}$, assim se $n_i=|S_i|$  $(i=1,2)$, e $n_U = |S_1\cup S_2|,$ temos:
+\begin{align*}
+&n_i = \frac{m}{k} \lg \frac{1}{\rho_0^i} + O\left(\frac{\omega \sqrt m}{k}\right) 	(i=1,2)\\
+&n_U = \frac{m}{k} \lg \frac{1}{\rho_0^{(s_1 \cup S_2)}} + O\left(\frac{\omega \sqrt m}{k}\right)
+\end{align*}
+
+Finalmente,
+\[|S_1 \cap S_2| = |S_1| + |S_2| - |S_1\cup S_2| = \frac{m}{k}\left( \lg \frac{1}{\rho_0^1} + \lg \frac{1}{\rho_0^i} - \lg \frac{1}{\rho_0^{(S_1\cup S_2)}} \right)+ O\left(\frac{\omega \sqrt m}{k}\right) \]
+\qed
+
+Surveys:
+
+-Luo,Guo,Ma,Rottensteich,Luo: arXiv: 1804.04777
+
+-Broder $\&$ Mitzenmacher: Internet Mathematics (2003)
+
+\subsection{Streaming and Sketching} Vamos abordar o seguinte problema. Considere $U=[n]$, e um input $\sigma = (s_1,s_2,\dots)$ uma sequ\^encia de elementos $s_i \in U$, e o vetor $x=(x_1,\dots x_n)$ tal que
+\[x_i=|\{k:s_k=i\}.\]
+Defina ainda 
+\[\Delta = |\text{supp} X| = |\{i \in U: \sigma \}|\] 
+
+Queremos calcular $\Delta$ usando $O(\lg n)$ bits, aproximadamente e com alta probabilidade.
+
+\subsubsection{Esbo\c{c}o de um algoritmo}
+Considere o problema mais simples:
+
+Dados $\sigma$ e $T$, queremos distinguir os casos:
+
+\begin{enumerate}
+\item $\Delta \ge (1+\epsilon)T,$
+\item $\Delta \le (1-\epsilon)T.$
+\end{enumerate}
+
+Fazemos ent\~ao uma busca bin\'aria utilizando 
+\[T \in \{1, 1+\epsilon, (1+\epsilon)^2, \dots, (1+\epsilon)^k\}\]
+Onde $k$ \'e o menor inteiro tal que $(1+\epsilon)^k>n$, $k=O(\lg n)$
+
+\textit{Algoritmo para distinguir (1) e (2):} Escolhemos $S\subset [n]$ com $\mathbb{P}(i \in S) = 1/T$ independente para todo $i$. Calculamos:
+\[S(\sigma) = \sum_{i \in S} x_i\]
+E o algoritmo retornara 
+\[A(\sigma) = \begin{cases}
+1, \text{ se } S(x)>0\\
+0, \text{ se } S(x)=0.
+\end{cases}\]
+
+Supomos agora que $T$ \'e suficientemente grande. Ent\~ao
+\begin{align*}
+\mathbb{P}(S(\sigma)=0) &= \left(1 - \frac{1}{T} \right) ^\Delta\\
+						&= \left(e^{ - 1/T +O(1/T^2)}\right) ^\Delta\\
+						&= e^{-\Delta/T} e^{O(\Delta/T^2)}.
+\end{align*}
+
+Se $\Delta \ge (1+\epsilon)T$, ent\~ao
+\begin{align*}
+\mathbb{P}(S(\sigma) = 0) &\le e^{-(1+\epsilon)}e^{O(\Delta/T^2)}\\
+						  &=\frac{1}{e} e^{-\epsilon + o(1)}\\
+						  &\le \frac{1}{e} -\epsilon/5,
+\end{align*}
+e se $\Delta \le (1-\epsilon)T$, ent\~ao
+\begin{align*}
+\mathbb{P}(S(\sigma) = 0) &\ge e^{-1+\epsilon}e^{O(\Delta/T^2)}\\
+						  &=\frac{1}{e} e^{\epsilon + o(1)}\\
+						  &\ge \frac{1}{e} +\epsilon/5,
+\end{align*}
+
+Tome $k=C\frac{\lg 1/\epsilon}{\epsilon^2}$. Repetimos o experimento $k$ vezes, obtendo
+\[A_1(\sigma), A_2(\sigma),\dots,A_k(\sigma)\]
+
+Temos:
+\begin{enumerate}
+\item se $\Delta \ge (1 + \epsilon)T$, ent\~ao com probabilidade $1-O(\epsilon)$, temos $A_i(\sigma) = 1$ para mais de $k/e$ valores,
+\item se $\Delta \le (1 - \epsilon)T$, ent\~ao com probabilidade $1-O(\epsilon)$, temos $A_i(\sigma) = 0$ para mais de $k/e$ valores
+\end{enumerate}
