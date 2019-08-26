@@ -35,6 +35,8 @@
 
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{mathabx}\changenotsign
+\usepackage{mathtools}                          % mathclap
+\usepackage{nicefrac}                           % nicefrac horizontal fraction
 \usepackage{mathrsfs}
 \usepackage{bbm}
 \usepackage{dsfont}
@@ -130,8 +132,8 @@
 \let\setminus=\smallsetminus
 \let\backslash=\smallsetminus
 \let\subset\subseteq
-\let\lg = \log
-\let\log=\ln
+% \let\lg = \log
+% \let\log=\ln
 
 \makeatletter
 \def\moverlay{\mathpalette\mov@rlay}
@@ -183,7 +185,8 @@
 \theoremstyle{remark}
 \newtheorem{observacao}	[teorema] {Observação}
 \newtheorem{exemplo}	[teorema] {Exemplo}
-\newtheorem{exercicio}	[teorema] {Exercicio}
+\newtheorem{exercicio}	[teorema] {Exercício}
+\newtheorem{resolucao}	[teorema] {Resolução}
 
 %\renewcommand{\thefootnote}{\fnsymbol{footnote}}
 
