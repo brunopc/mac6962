@@ -1,0 +1,137 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage[brazilian]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+\begin{document}
+
+\section{Aula 22 de Agosto de 2019}
+\label{2019_08_22}
+
+\subsection{SVD - Singular Value Decomposition}
+
+\[ \forall A \in {\rm I\!R^{nxd}} , A = UDV^T, UU^T = U^TU = I, U \in \rm I\!R^{nxm},VV^T = V^TV = I, V \in \rm I\!R^{dxd} \]
+\[U_i = [ u_i | ... | u_n ], V = [v_1 | ... | v_d]\]
+\[D = diag(\sigma_1,\sigma_2,...,\sigma_p), \sigma_1 \geq \sigma_2 \geq ... \geq \sigma_r > 0 = \sigma_{r+1} = ... = \sigma_p \]
+\[sendo\ r = posto(A), p = min(n,d)\]
+Isso também pode ser escrito como: 
+\[A = \sum_{1 \leq i \leq p} \sigma_i u_i v_i^t =  \sum_{1 \leq i \leq r} \sigma_i u_i v_i^t \]
+
+\subsection{Teorema de Eckard, Young e Minsky}
+
+\[k\leq posto(A) \ e \ A_k = \sum_{1\leq i \leq k} \sigma_i u_u v_i^t\]
+Então:\\
+
+(i) $ ||A-A_k||_f = min_{posto(B) \leq k} ||A-B||_f $\\
+
+(ii) $ ||A-A_k||_2 = min_{posto(B) \leq k} ||A-B||_2 $
+
+\subsection{Normas para matrizes}
+
+\[M = \rm{(m_{ij})_{nxd}}\]
+\[||M||_f = ( \sum_{i,j} m_{ij}^2)^{1/2} \]
+\[M:  {\rm I\!R^{d}} \rightarrow  {\rm I\!R^{n}} \]
+\[||M||_2 = max_{||x||=1} ||M_x|| = \sigma_1\]
+
+\subsection{Traços}
+
+\[A\in {\rm I\!R^{nxn}}, Tr(A) = \sum_{i=1}^n a_{ii}\]
+\[A \in   {\rm I\!R^{nxd}}, B \in   {\rm I\!R^{dxn}} \]
+\[Tr(AB) =  \sum_{1 \leq i \leq n} \sum_{1\leq j \leq d} a_{ij}b_{ji} = \sum_{i,j} b_{ji} a_{ij} = Tr(BA)\]\\
+
+\[A \in  {\rm I\!R^{nxd}}\]
+\[ Tr(AA^T) = Tr((\sum_{1\leq k \leq d} a_{ik} a_{jk} )) = \sum_{1 \leq i \leq n} \sum_{1\leq k \leq d} a_{ik}^2 = ||A||_f^2 \]
+\[A = UDV^T   \]
+\[A^T = VD^T U^T   \]
+\[AA^T = UDV^T VD^T U^T = UDD^T U^T  \]
+\[Tr(AA^T) = Tr(UDD^T U^T) = Tr(U^T UDD^T) = Tr(diag(\sigma_1^2, \sigma_2^2 , ...))\]
+\[= \sum_{1\leq i \leq p} \sigma_i^2 = \sum_{1\leq i \leq r} \sigma_i^2, \ sendo \ r = posto(A) \]\\
+
+\[1\leq k \leq r = posto(A)  \]
+\[V_k = \ <v_1,...,v_k> \ \leq {\rm I\!R^d} \]\\
+$V_k$ é o subespaço de dimensão k que melhor aproxima os vetores linha $a_1, ... , a_n$ que constituem a matriz A:\\
+\[\sum_{1\leq i \leq n} dist^2(a_i,v_k) = min_{dim(z)=k} \sum_{1\leq i \leq n} dist^2(a_i,z) = min_{dim(z)\leq k} \sum_{1\leq i \leq n} dist^2(a_i,z)  \]\\
+
+Seja $z \leq {\rm I\!R^d}, a\in  {\rm I\!R^d}: $ 
+\[dist(a,z) = dist(a, P_z(a)) = ||a-P_k(a)|| \]
+\[A = \sum_{i=0}^p \sigma_i u_i v_i^T, V_k = \ <v_1,...,v_k>\]
+
+\[ a \in {\rm I\!R^d} (vetor \ linha), a = a_1,...,a_n  \]
+\[ P_{V_k}(a_i) = \sum_{1\leq j \leq k}(a_i v_j)v_j^T  \]\\
+
+Fato: \[A_k =^{def} \sum_{1\leq i\leq k}\sigma_i u_i v_i^T\]
+\begin{center}
+$A_k = $ 
+\begin{bmatrix}
+a_1^{(k)}\\ ...\\a_n^{(k)}
+\end{bmatrix} = 
+\begin{bmatrix}
+P_{V_k}(a_1)\\ ...\\P_{V_k}(a_n)
+\end{bmatrix}
+\end{center}
+
+Usando o fato acima, temos:\\
+
+\[\sum_{1\leq i\leq n} dist^2(a_i,V_k) = \sum_{1\leq i\leq n} ||a_i = P_{V_k}(a_i)||^2 = ||A-A_k||_f^2\]
+
+\subsection{Prova do teorema de Eckard, Young e Minsky (i)}
+
+Seja $B \leq {\rm I\!R^{d}}$ com posto(B) $\leq $ k. Seja W o subespaço de ${\rm I\!R^{d}}$ gerado pelas linhas de B. Então dim(W) = posto(B) $\leq$ k.\\
+
+Considere:
+\begin{center}
+$A_w = $ 
+\begin{bmatrix}
+P_w(a_1)\\ ...\\P_w(a_n)
+\end{bmatrix}
+\end{center}\\
+
+\[ \forall i,||a_i-b_i||^2\geq ||a_i-p_w(a_i)||^2\]
+
+Assim:
+\[||A-B||^2_f\geq ||A-A_w||_f^2 = \sum_{1\leq i\leq n} dist^2(a_i,v_k) = ||A-A_k||^2_f \]
+
+\[A-A_k = \sum_{k<i\leq p}\sigma_iu_iv_i^T \]
+
+Seja $x \in {\rm I\!R^d}, x=(d/2)\alpha_iv_i$ com:
+\[||x||=(\sum_{i=1}^d\alpha_i^2)^{1/2}=1\]
+ 
+Então:
+
+\[(A-A_k)x = (\sum_{k<i\leq p}\sigma_iu_iv_i^T)(\sum_{1\leq j\leq d}\alpha_jv_j)=\sum_{k<i\leq p}\sigma_i\alpha_i u_i\]
+
+Assim: 
+
+\[||(A-A_k)x||= \sum_{k<i\leq p}\sigma_i \alpha_i^2 \leq \sigma_{k+1}^2(\sum_{k<i\leq p} \alpha_i^2) \]
+
+Ademais, temos que $(A-A_k)_{V_{k+1}}=\sigma_{k+1}$
+
+\begin{flushright}
+$\square$
+\end{flushright}
+
+\subsection{Prova do teorema de Eckard, Young e Minsky (ii)}
+
+Se $k \geq p$, nada a fazer. Suponha $k<p$. Pelo fato, $||a-A_k||_2^2=\sigma_{k+1}^2$.\\
+
+Seja agora $B \in {\rm I\!R^{nxd}}$ com $posto(B)\leq k$. Segue que $dim(ker B)\geq d-k$. Portanto, $\exists z \in (ker B) \cap <v_1,...,v_{k+1}>$ com $||z||=1$.\\
+
+Suponha: \[z=\sum_{1\leq j\leq k+1}\alpha_j v_j\]
+
+\[\therefore \sum_{j=1}^{k+1}\alpha_j^2 = 1.\]
+
+Pela definição de $||$ $||_2$, temos:
+
+\[||A-B||_2 \geq^{def} ||(A-B)z|| =^{Bz=0} ||Az||=||(\sum_{1\leq i\leq p}\sigma_iu_iv_i^T)(\sum_{1\leq j\leq k+1}\alpha_j v_j)||\]
+
+\[=||\sum_{1\leq i\leq k+1}\sigma_i\alpha_iu_i||=(\sum_{1\leq i\leq k+1}\sigma_i^2\alpha_i^2)^{1/2}\geq \sigma_{k+1}(\sum\alpha_i^2)^{1/2}=\sigma_{k+1}=||A-A_k||_2  \]
+
+\begin{flushright}
+$\square$
+\end{flushright}
+
+
+\end{document}
