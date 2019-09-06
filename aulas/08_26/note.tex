@@ -1,15 +1,5 @@
-\documentclass[a4paper,12pt]{article}
-
-\usepackage[brazilian]{babel}
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{amsmath}
-\usepackage{amssymb}
-
-\begin{document}
-
-\section{Aula 22 de Agosto de 2019}
-\label{2019_08_22}
+\section{Aula 26 de Agosto de 2019}
+\label{2019_08_26}
 
 \subsection{SVD - Singular Value Decomposition}
 
@@ -63,15 +53,15 @@ Seja $z \leq {\rm I\!R^d}, a\in  {\rm I\!R^d}: $
 \[ P_{V_k}(a_i) = \sum_{1\leq j \leq k}(a_i v_j)v_j^T  \]\\
 
 Fato: \[A_k =^{def} \sum_{1\leq i\leq k}\sigma_i u_i v_i^T\]
-\begin{center}
-$A_k = $ 
+\begin{equation*}
+A_k =  
 \begin{bmatrix}
 a_1^{(k)}\\ ...\\a_n^{(k)}
 \end{bmatrix} = 
 \begin{bmatrix}
 P_{V_k}(a_1)\\ ...\\P_{V_k}(a_n)
 \end{bmatrix}
-\end{center}
+\end{equation*}
 
 Usando o fato acima, temos:\\
 
@@ -82,12 +72,12 @@ Usando o fato acima, temos:\\
 Seja $B \leq {\rm I\!R^{d}}$ com posto(B) $\leq $ k. Seja W o subespaço de ${\rm I\!R^{d}}$ gerado pelas linhas de B. Então dim(W) = posto(B) $\leq$ k.\\
 
 Considere:
-\begin{center}
-$A_w = $ 
+\begin{equation*}
+A_w =  
 \begin{bmatrix}
 P_w(a_1)\\ ...\\P_w(a_n)
 \end{bmatrix}
-\end{center}\\
+\end{equation*}\\
 
 \[ \forall i,||a_i-b_i||^2\geq ||a_i-p_w(a_i)||^2\]
 
@@ -134,4 +124,3 @@ $\square$
 \end{flushright}
 
 
-\end{document}
