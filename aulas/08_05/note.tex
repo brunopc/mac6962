@@ -112,15 +112,22 @@ Como é $v=(v_{t})$? Temos:
 \begin{align}
 \mathbb{P}(v_{t}=0) &= \left(1-\frac{1}{m}\right)^{kn}\\
                     &= \left(e^{-\frac{1}{m}+O\left(\frac{1}{m^2}\right)}\right)^{kn} \label{eq:pr_vt_0}, & \left(\text{usando que } 1+x=e^{x+O(\frac{1}{x^2})}\right) \\
-                    &= \frac{1}{2}e^{O\left(\frac{1}{m}\right)} \geq \frac{m}{2}\left(1-\frac{e}{2}\right), & (m \geq m_{0}(\eps))
+                    &= \frac{1}{2}e^{O\left(\frac{1}{m}\right)} \geq
+                    \frac{1}{2}\left(1-\frac{\eps}{2}\right) & (m \geq
+                    m_{0}(\eps)).
 \end{align}
 
-Observe que em \eqref{eq:pr_vt_0}, assumimos que $O$ não tem
-sinal. Iremos assumir isso no restante das aulas. Agora, seja $M_{0}$
+\begin{observacao}
+Observe que, em \eqref{eq:pr_vt_0}, assumimos que $O$ não tem
+sinal. Iremos assumir isso no restante das aulas.     
+\end{observacao}
+
+Agora, seja $M_{0}$
 uma variável aleatória tal que $M_{0}=\#0s$ em $v$. Então:
 
 $$
-\mathbb{E}(M_{0})=m\mathbb{P}(v_{t}=0) \geq \frac{m}{2}\left(1-\frac{\eps}{2}\right)
+\mathbb{E}(M_{0})=m\mathbb{P}(v_{t}=0) \geq
+\frac{m}{2}\left(1-\frac{\eps}{2}\right).
 $$
 
 \begin{fato}
