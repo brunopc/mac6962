@@ -2,13 +2,20 @@
 \label{2019_08_08}
 
 \subsection{Filtros de Bloom, cont.}
-Como visto anteriormente, dados conjunto $S\subset U$, com $|S|=n$. Dado um elemento $x\in U$, utilizando Filtros de Bloom conseguimos decidir a pertinência de $x$ em $S$, permitindo falsos positivos com probabilidade menor que $\delta$, i.e.:
+Considere o cenário visto anteriormente, onde, dados conjuntos $S\subset
+U$, com $|S|=n$, queremos decidir se um elemento $x\in U$ pertence a $S$.
+Utilizando Filtros de Bloom conseguimos decidir a pertinência de $x$ em
+$S$, permitindo falsos positivos com probabilidade menor que $\delta$,
+i.e.:
 \begin{enumerate}
     \item Se $x\in S$, então $\mathbb{P}(A(x)=1)=1$,
-    \item Se $x\in S$, então $\mathbb{P}(A(x)=1)< \delta$.
+    \item Se $x\in S$, então $\mathbb{P}(A(x)=1)< \delta$,
 \end{enumerate}
 
-Onde $A:U \to \{0,1\}$ \'e a fun\c{c}\~ao que queremos que emule a fun\c{c}\~ao caracter\'istica $\mathbbm{1}_S$ de $S$, esse processo gasta espa\c{c}o $O(n \lg{\frac{1}{d}})$ bits.
+onde $A:U \to \{0,1\}$ \'e a fun\c{c}\~ao que queremos que emule a
+fun\c{c}\~ao caracter\'istica $\mathbbm{1}_S$ de $S$. 
+Esse processo gasta
+espa\c{c}o $O(n \lg{\frac{1}{d}})$ bits.
 
 \textit{Leve generaliza\c{c}\~ao:} suponha que $n$ \'e desconhecido, por\'em se sabe um valor $N$ tal que $n \le N$. Neste caso, tomamos
 
@@ -19,7 +26,11 @@ m = N \frac{\lg_2{1/\epsilon}}{\lg 2}
 \]
 onde  $\epsilon = \frac{\delta}{2}$.
 
-Novamente tomamos fun\c{c}\~oes de hashing $h_1,\dots h_k: \mathcal{U} \to T$, onde $T = [m]$ e por suposi\c{c}\~ao as fun\c{c}\~oes s\~ao uniformemente distribu\'idas e mutualmente independentes. Seja o vetor $V=(v_1 v_2 \dots v_m)$ o vetor tal que 
+Novamente tomamos fun\c{c}\~oes de hashing $h_1,\dots h_k: \mathcal{U}
+\to T$, onde $T = [m]$ e por suposi\c{c}\~ao as fun\c{c}\~oes s\~ao
+uniformemente distribu\'idas e mutualmente independentes. 
+Seja 
+$V=(v_1 v_2 \dots v_m)$ o vetor tal que 
 \[v_t = \begin{cases}
 1, \text{ se } \exists i, s\in S: h_i(s)=t
 \\0, \text{caso contr\'ario}
@@ -35,6 +46,7 @@ Assim, para todo $t\in T$
 se $m\ge m_0(\epsilon)$.
 
 Assim, sendo $M_0$ a quantidade de zeros no vetor $V$,
+temos
 \[\mathbb{E}(M_0)\ge \frac{m}{2} (1-\epsilon/2) \implies \mathbb{E}(M_0)-\frac{m\epsilon}{4}\ge \frac{m}{2} (1-\epsilon)\]
 e portanto, pela Desigualdade de McDiarmid, tomando $\tau = \frac{\epsilon m}{4}$:
 \[\mathbb{P}(M_0 \le \frac{m}{2} (1-\epsilon)) \le  \mathbb{P}\left(M_0 \le \mathbb{E}(M_0)-\frac{m\epsilon}{4}\right)\le \exp\{-2\tau^2/kn\} = e^{-c_\epsilon m}\]
@@ -51,7 +63,7 @@ se $\epsilon \le \epsilon_0$.
 
 \textit{Pergunta:} Como estimar a cardinalidade de $S_1\cap S_2$ dados $V_1=V^{S_1}$ e $V_2=V^{S_2}$?
 
-Suponha que $V$ representa $S$. Podemos testimar $S$ a partir de $\rho_0 = M_0/m$.
+Suponha que $V$ representa $S$. Podemos estimar $S$ a partir de $\rho_0 = M_0/m$.
 
 Temos
 \begin{align*}
