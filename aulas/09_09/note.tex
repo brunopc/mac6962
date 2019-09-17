@@ -1,0 +1,171 @@
+\section{Aula 09 de Setembro de 2019}
+\label{2019_09_09}
+\subsection{Distribuição Normal/Gaussiana}
+
+\[
+\phi(z) = \frac{1}{\sqrt{2\pi}}e^\frac{-z}{2}, z \in \mathbb{R}
+\]
+
+\[
+\Phi(z) = \int_{-\infty}^z \phi x dx = \frac{1}{\sqrt{2\pi}} \int e^\frac{-x^2}{2}dx
+\]
+
+Fato:
+$$\lim_{z\to\infty} \phi(z) = 1$$ 
+
+$Z$ variável aleatória tem distribuição normal padrão $Z\sim N(0,1)$ se a $P(Z\leq z) = \Phi(z), z \in \mathbb{R}$
+
+Fatos:
+
+Suponha que $Z\sim N(0,1)$
+
+Então
+
+(i) $\mathbb{E}(Z) = 0$
+
+(ii) $\mathbb{V}(Z) = \mathbb{E}((Z-\mathbb{E}(Z))^2) = \mathbb{E}(Z^2)-(\mathbb{E}(Z))^2 = 1$ 
+
+
+\begin{proof}
+
+(i)
+
+\[
+\mathbb{E}(Z) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^\infty xe^\frac{-x^2}{2}dx = 0
+\]
+
+(ii)
+
+Temos
+\[
+\mathbb{E}(Z^2) = \frac{1}{\sqrt{2\pi}} \int_{-\infty}^\infty x^2 e^\frac{-x^2}{2}dx 
+\]
+\[
+= (-xe^\frac{-x^2}{2}\Big|_{-\infty}^\infty - \int_{-\infty}^\infty e^\frac{-x^2}{2}dx)\frac{1}{\sqrt{2\pi}}
+\]
+\[=1\]
+\end{proof}
+
+Sejam $\mu,\sigma^2\in\mathbb{R}$. Pomos
+\[\phi_{\mu,\sigma^2}(X) = \frac{1}{\sigma\sqrt{2\pi}}e^\frac{-x^2}{2\sigma}\]
+
+e
+
+\[\Phi_{\mu,\sigma^2}(X) =\int_{-\infty}^x \phi_{\mu,\sigma^2}(t)dt = \frac{1}{\sigma\sqrt{2\pi}}\int_{-\infty}^x e^\frac{-(t-\mu)^2}{2\sigma}dt\]
+
+A variável aleatória X tem distribuição normal com parâmetros $\mu$ e $\sigma^2$ se
+\[\mathbn{P}(X>x) = \Phi_{\mu,\sigma^2}(X) = \frac{1}{\sigma\sqrt{2\pi}}\int_{-\infty}^x e^\frac{-(t-\mu)^2}{2\sigma}dt\]
+
+Temos $Z\sim N(0,1) \leftrightarrow X = \mu + Z\sigma \sim N(\mu,\sigma^2)$
+
+Temos que se $X\sim N(\mu,\sigma^2)$, então
+\[\mathbb{E}(X) = \mathbb{E}(\mu+Z\sigma) = \mathbb{E}(\mu) + \mathbb{E}(\sigma Z) = \mu + \sigma\mathbb{E}(Z) = \mu\]
+
+Ademais, $Var(X) = \mathbb{E}((\mu+\sigma z)^2) - \mu^2 = \mathbb{E}(\mu^2+2\mu\sigma z + \sigma^2 z^2) - \mu^2 = \sigma^2$
+
+\subsection{Função geradora dos momentos}
+X variável aleatória real
+
+\textbf{Definição:} A função geradora dos momentos de X é $\mathbb{E}(e^{tx})$, onde t é uma variável formal.
+
+\textbf{Obs.:} Temos $e^u = 1 + u + \frac{u^2}{2!} + \frac{u^3}{3!} + ...$ (expansão de Taylor)
+
+Fazendo $u=tx$, temos
+\[\mathbb{E}(e^{tx}) = M_{x}(t) = 1 + t\mathbb{E}(x) + \frac{1}{2!}t^2\mathbb{E}(x^2) + ...\]
+
+\textbf{Teorema 1:} Suponha que $M_{x}(t)$ está bem definida em uma vizinhança de $t=0$. Então
+\[\mathbb{E}(X^n) = \frac{d^n}{dt^n}M_{x}(t), \forall n \geq 1\]
+
+\begin{proof}
+\[
+\frac{d^n}{dt^n}M_{x}(t) = \frac{d^n}{dt^n}\mathbb{E}(e^{tx}) = \mathbb{E}(\frac{d^n}{dt^n}e^{tx}) = \mathbb{E}(x^n e^{tx})
+\]
+
+Tomando $t = 0$, temos o resultado.
+
+\end{proof}
+
+\textbf{Teorema 2:} Suponha que X e Y são variáveis aleatórias reais com $M_{x}(t) = M_{y}(t)$ $\forall t, -\delta < t < \delta$ para algum $\delta > 0$
+
+Então X e Y tem a mesma distribuição.
+
+Suponha que X e Y são variáveis aleatórias independentes. Então
+\[M_{x+y}(t) = M_{x}(t)M_{y}(t)\]
+
+\begin{proof}
+\[M_{x+y}(t) = \mathbb{E}(e^{t(x+y)}) = \mathbb{E}(e^{tx}e^{ty}) = M_{x}(t)M_{y}(t)\]
+\end{proof}
+
+Suponha $X\sim N(\mu,\sigma^2)$. Então
+
+\[M_{x}(t) = \mathbb{E}(e^{tx}) = \int_{-\infty}^\infty e^{tx}\phi_{\mu,\sigma^2}(x)dx = \frac{1}{\sigma\sqrt{2\pi}}\int_{-\infty}^\infty e^{tx}e^\frac{-(x-\mu)^2}{2\sigma^2}dx\]
+
+Aplicando uma mudança de variável para que Z tenha distribuição normal padrão, tomamos $x = \mu + \sigma z$ e $dx = \sigma dz$, e assim reescrevemos a integral acima como:
+
+\[\frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{t\mu+t\sigma z}e^\frac{-(z)^2}{2}dz = \frac{e^{t\mu}}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{t\sigma z - \frac{z^2}{2}}dz = \frac{e^{t\mu}}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{\frac{-(t\mu-z)^2}{2} + \frac{t^2 \sigma^2}{2}}dz\]
+\[= e^{t\mu+\frac{t^2 \sigma^2}{2}}\Big|\frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{\frac{-(z-t\sigma)^2}{z}}dz = \frac{1}{\sqrt{2\pi}}\int_{-\infty}^\infty e^{\frac{-u^2}{2}}du = 1\]
+
+\textbf{Teorema 3:} Sejam $X\sim N(\mu_{1},\sigma_{1}^2)$ e $Y\sim N(\mu_{2},\sigma_{2}^2)$, X e Y independentes. Então
+
+\[X+Y\sim N(\mu_{1}+\mu_{2}, \sigma_{1}^2+\sigma_{2}^2)\]
+
+\begin{proof}
+Pela independência de X e Y e a expansão da série $\mathbb{E}(e^{tx})$, temos
+\[M_{x+y}(t) = e^{\frac{t\mu_{1}+t^2\sigma_{1}^2}{2}}e^{\frac{t\mu_{2}+t^2\sigma_{2}^2}{2}} = e^{\frac{t(\mu_{1}+\mu_{2})+t^2(\sigma_{1}^2+\sigma_{2}^2)}{2}} = M_{z}(t)\]
+se $Z\sim N(\mu_{1}+\mu_{2},\sigma_{1}^2+\sigma_{2}^2)$.
+
+Basta agora aplicar o Teorema 2.
+\end{proof}
+
+\textbf{Teorema 4:} Seja $X\sim N(\mu,\sigma^2)$, $a\geq0$. Então
+
+(i) $P(X\geq\mu+a\sigma)\leq e^{\frac{-a^2}{2}}$
+
+(ii) $P(X\leq\mu-a\sigma)\leq e^{\frac{-a^2}{2}}$
+
+\begin{proof}
+Seja $z = \frac{(x - \mu)}{\sigma}$. Então $Z\sim N(0,1)$. Para todo $t\geq 0$, temos
+\[P(X\geq\mu+a\sigma) = P(Z\geq A) \leq P(e^{tz}\geq e^{ta})\leq e^{\frac{1}{ta}}\mathbb{E}(e^{tz}) = e^{\frac{t^2}{2}-ta}\]
+
+Tomando $t=a$, temos que
+
+\[P(X\geq\mu+at)\leq e^{\frac{-a^2}{2}}\]
+
+Para (ii), use a simetria de $N(\mu,\sigma^2)$ ou use que
+
+\[P(Z\geq -a)\leq P(e^{tz}\geq e^{ta}), \forall t \geq 0\]
+\end{proof}
+
+\subsection{Aproximação de uma binomial por uma normal}
+\textbf{Teorema de Moivre-Laplace}: Seja $X\sim Bin(n,p)$ de forma que $X = \sum_{i=1}^n Xi$ e $Xi\sim Be(\phi)$.
+
+Assim
+
+\[P(X=k)={n\choose k}p^k(1-p)^{n-k}, k = 0,1,...,n \]
+
+\textbf{Teorema 5:} Suponha que $0<p<1$ é uma constante. Seja $q = 1-p$ e suponha que $k = np + O(\sqrt{npq})$
+
+Então
+
+\[P(X=k) = (1+o(1))\frac{1}{\sqrt{2\pi npq}}e^{\frac{-(k-np)^2}{2npq}}\]
+
+onde $o(1)\to 0$ quando $n \to\infty$.
+
+Isto é
+
+\[\lim_{n\to\infty} \frac{P(X=k)}{\frac{1}{\sqrt{2\pi npq}}e^{\frac{-(k-np)^2}{2npq}}} = 1\]
+
+\begin{proof}
+Segue de:
+
+(i) Stirling: $n! = (1+o(1))(\frac{n}{e})^n\sqrt{2\pi n}$
+
+(ii) $log(1+x) = x - \frac{x^2}{2} + O(x^3)$
+\end{proof}
+
+Seja $X\sim Bin(n,p)$, p constante. Segue do Teorema 5 que
+
+\[
+\lim_{n\to\infty} P(a\leq \frac{X-np}{\sqrt{npq}}\leq b) = \Phi (b) - Phi (a) = \frac{1}{\sqrt{2\pi}}\int_{a}^b e^{\frac{-t^2}{2}}dt
+\]
+\end{document}
