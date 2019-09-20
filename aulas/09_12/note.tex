@@ -1,0 +1,186 @@
+\section{Aula 12 de Setembro de 2019}
+\label{2019_09_12}
+
+Começaremos retomando o teorema de De Moivre-Laplace. Tal resultado motiva o teorema do Limite Central, que será estudado logo em seguida. No fim da aula, vamos introduzir a noção de estimativas por máxima verossimilihança, que servirá de base para o(s) problema(s) de misturas de normais, que veremos nas próximas aulas.
+
+
+\subsection{De Moivre-Laplace}
+
+Vamos lembrar as definições de duas distribuições discretas muito importantes, sendo a última personagem principal do teorema que dá nome a essa seção.
+
+\begin{definicao}
+	Dado $0<p<1$, dizemos que uma variável aleatória $X$ segue uma \emph{distribuição Bernoulli de parâmetro $p$} ($X\sim \operatorname{Be}(p)$) se 
+	\[
+		\mathbb{P}(X=1) = p, \qquad \mathbb{P}(X=0) = 1-p\,.
+	\]
+\end{definicao}
+
+\begin{definicao}
+	Sejam $X_1, X_2, \dotsc, X_n$ variáveis aleatórias independentes com $X_i\sim \operatorname{Be}(p)$. Seja $X = \sum_{i=1}^{n}X_i$. Dizemos então que $X\sim \operatorname{Bi}(n,p)$ segue a \emph{distribuição binomial de parâmetros $n$ e $p$}.
+	Ademais,
+	\[
+		\mathbb{P}(X = k) = \binom{n}{k}p^k(1-p)^{n-k}\,.
+	\]
+\end{definicao}
+
+O seguinte teorema foi ponto de partida para a definição da distribuição normal e o seu estudo.
+
+\begin{teorema}[De Moivre-Laplace]
+	\label{dml}
+	Dados $0<p<1$, \ $q = 1 - p$ constantes e uma sequência de variáveis aleatórias $X_1, X_2, \dotsc$, com $X_n\sim \operatorname{Bi}(n,p)$, temos que 
+	
+	\begin{enumerate}[label = \rmlabel]
+		\item \label{dml1} Se $k = np + O(\sqrt{npq})$, então
+		\[
+			\mathbb{P}(X_n=k) = (1+o(1))\frac{1}{\sqrt{2\pi npq}}e^{-(k-np)/2npq}\,,
+		\]
+		onde $o(1)\rightarrow0$ conforme $n\rightarrow\infty$.
+		
+		\item \label{dml2} Sejam $a,b\in\mathbb{R}$ constantes. Seja
+		\[
+			X_n^{*} = \frac{X_n-np}{\sqrt{npq}}\,.  
+		\] 
+		Então
+		\begin{equation}
+			\label{eqn:conv_dml}
+			\lim_{n\rightarrow\infty}\mathbb{P}(a\leq X_n^{*}\leq b) = \Phi(b) - \Phi(a) = \frac{1}{\sqrt{2\pi}}\int_{a}^{b}e^{-t^2/2}\,dt\,.
+		\end{equation}
+	\end{enumerate}
+\end{teorema}
+
+Intuição para \ref{dml2}:
+
+%\begin{equation*}
+\begin{multline*}
+	\mathbb{P}(a\leq X_n^{*}\leq b) = 
+	\mathbb{P}(a\leq \frac{X_n-np}{\sqrt{npq}}\leq b) = \sum_{k=np+a\sqrt{npq}}^{np+b\sqrt{npq}}\mathbb{P}(X_n = k)  = 
+	\sum_{k}(1+o(1))\frac{1}{\sqrt{2\pi npq}}e^{-(k-np)^2/2npq}\\ = (1+o(1))\sum_{l=a\sqrt{npq}}^{b\sqrt{npq}}\frac{1}{\sqrt{2\pi npq}}e^{-l^2/2npq} = (1+o(1))\sum_{a\sqrt{npq}\leq l < b\sqrt{npq}}\frac{1}{\sqrt{npq}}\phi\left(\frac{l}{\sqrt{npq}}\right)
+\end{multline*}
+%\end{equation*}
+
+Tomando o limite quando $n\rightarrow\infty$, temos
+\[
+	\lim_{n\rightarrow\infty}\mathbb{P}(a\leq X^{*}\leq b) = \int_{a}^{b}\phi(t)\,dt = \frac{1}{\sqrt{2\pi}}\int_{a}^{b}e^{-t^2/2}\,dt\,.
+\]
+
+
+\begin{observacao}
+	No argumento acima, precisamos de uma versão uniforme de \ref{dml1}:
+	
+	$\forall\varepsilon>0:\exists n_0 = n_0(\varepsilon)$ tal que para todo $k$ com $np+a\sqrt{npq}\leq k\leq np+b\sqrt{npq}$ temos
+	\[
+	\mathbb{P}(X_n = k) = (1\pm\varepsilon)\frac{1}{\sqrt{2\pi npq}}\,.
+	\] 
+	
+	
+	
+\end{observacao}
+	
+Podemos considerar $p = p(n)\rightarrow \infty$ e ainda assim resultados como o Teo 5 são válidos.
+	
+Por exemplo, suponha que $p = p(n)$ é tal que $pqn\rightarrow\infty$ quando $n\rightarrow\infty$.
+Suponha que $a = a(n) < b = b(n)$ são tais que $(b-a)npq\rightarrow\infty$ quando $n\rightarrow\infty$ e $a,b = o((npq)^{1/6})$.
+	
+Então
+\[
+	\mathbb{P}(a\leq X_n^{*}\leq b) = (1+o(1))(\Phi(b) - \Phi(a))\,.
+\]
+Ademais, se $0<b = b(n) = o((npq)^{\frac{1}{6}})$, então
+\[
+	\mathbb{P}(X_n\geq pn + b\sqrt{npq}) = (1+o(1))(1-\Phi(b))\,.
+\]
+Em particular, se $b\rightarrow\infty$, então
+\[
+	\mathbb{P}(X_n\geq np+b\sqrt{npq}) = (1+o(1))\frac{1}{b\sqrt{2\pi}}e^{-b^2/2}\,.
+\]
+
+\begin{exemplo}
+	Fixe $n$. Seja $S \subset [n] = \{1,2,\dotsc,n\}$ um subconjunto de $[n]$ escolhido uniformemente ao acaso. Quanto é $|S|$?
+	
+	Temos $|S|\sim \operatorname{Bi}(n,1/2)$. De fato, $\mathbb{P}(\operatorname{Bi}(n,1/2) = k) = \binom{n}{k}(\frac{1}{2})^k(1-\frac{1}{2})^{n-k} = \binom{n}{k}2^{-n}$. Também temos que $\mathbb{P}(|S| = k) = \binom{n}{k}\frac{1}{2^n}$.
+	
+	Assim, $\mathbb{E}(|S|) = n/2$ e valem \ref{dml1} e \ref{dml2} do Teorema \ref{dml}. Em particular, 99.9\% dos $S\subset[n]$ são tais que
+	\[
+		|S| = (1\pm10^{-6})n/2\,,
+	\]
+	desde que $n\geq n_0$.
+\end{exemplo}	
+
+\subsection{Teorema do Limite Central}
+
+Suponha que $X_1, X_2, \dotsc$ são variáveis aleatórias independentes. Sejam $\mu_i = \mathbb{E}(X_i)$ e $\sigma_i^2 = \Var(X_i)$, para cada $i\geq1$. Seja 
+\[
+	X_n^{*} = \frac{1}{s_n}\sum_{1\leq i\leq n}(X_i - \mu_i)\,,
+\]
+onde $s_n^2 = \sum_{1\leq i\leq n}\sigma_i^2$. Sob condições fracas, temos que $X_n^{*}$ converge para a distribuição normal $N(0,1)$, no sentido que \eqref{eqn:conv_dml} vale.
+
+\begin{teorema}
+	Sejam $X_1, X_2, \dotsc$, $\mu_i$, $\sigma_i^2$, $X_n^{*}$ e $s_n^2$ como acima.
+	Se 
+	\begin{enumerate}[label = \rmlabel]
+		\item \label{tlc1} existe $M$ tal que para todo $i$, $\mathbb{P}(|X_i|\leq M) = 1$ e 
+		\item \label{tlc2} $\lim_{n\rightarrow\infty}s_n = \infty$,
+	\end{enumerate}
+	então, para todo $a$, $b$ constantes, temos
+	\[
+	\lim_{n\rightarrow\infty}\mathbb{P}(a\leq X_n^{*}\leq b) = \Phi(b) - \Phi(a)\,.
+	\]
+\end{teorema}
+
+As condições  \ref{tlc1} e \ref{tlc2} podem ser enfraquecidas para a seguinte condição:
+\newline
+(Lindeberg '22) Para todo $t>0$
+\[
+	\lim_{n\rightarrow\infty}\frac{1}{s_n^2}\sum_{i=1}^{n}\mathbb{E}(X_i^2\cdot\mathbbm{1}_{|X_i|\geq ts_n}) = 0\,.
+\]
+\begin{exemplo}[Colecionador de figurinhas]
+	Armandinho quer colecionar um álbum de $n$ figurinhas. Ele começa com o álbum vazio e compra uma figurinha por vez, sorteada independente e uniformemente ao acaso dentre as $n$ figurinhas. O que podemos dizer sobre a variável aleatória $X\coloneqq\text{número de figurinhas compradas até Armandinho completar a coleção}$?
+	
+	Temos $\mathbb{E}(X) \sim n\log n$. Com efeito, sejam
+	\begin{align*}
+	X_1 &= \# \text{ compras para Armandinho ter 1 figurinha} = 1\,,\\
+	X_2 &= \# \text{ compras para Armandinho ter 2 figurinhas distintas}\,,\\
+	\vdots\\
+	X_n &= \# \text{ compras para Armandinho ter $n$ figurinhas distintas}\,,
+	\end{align*}
+	onde $X_k$ conta as compras a partir do momento em que Armandinho tem $k-1$ figurinhas distintas. Então $\mathbb{E}(X_k) = \frac{n}{n-k+1}$. Mas $X = X_1 + X_2 + \dotsb + X_n$, donde
+	\[
+	\mathbb{E}(X) = \mathbb{E}(X_1) + \dotsb + \mathbb{E}(X_n) = n\left(\frac{1}{n} + \frac{1}{n-1} + \dotsb + \frac{1}{1}\right) = nH_n\sim n\log n\,.
+	\]
+	
+\end{exemplo}
+
+\subsection{Estimativas por máxima verossimilhança}
+
+Suponha que uma moeda tem, a cada lançamento, probabilidade $p$ de dar cara e $1-p$ de dar coroa, para um $p$ fixado mas desconhecido. A moeda é lançada 100 vezes e 70 desses lançamentos dão cara. É natural estimar $p$ por $\hat{p} = 0.70$. Se alguém perguntar por que a estimativa $\hat{p} = 0.01$ é ruim, responderíamos que ela é muito ruim porque, \emph{se $p$ fosse 0.01}, seria muito improvável que saíssem 70 caras em 100 lançamentos dessa moeda. Esse é o princípio da estimativa por máxima verossimilhança.
+
+De forma geral, se $0<p<1$ e $X\sim \operatorname{Bi}(N,p)$ corresponde ao número de caras em $N$ lançamentos da moeda, então se temos apenas uma realização de $X$, $x_1 = k$, estimamos $\hat{p} = k/N$.
+
+Mais ainda, se tivermos $n$ realizações $x_1, x_2, \dotsc, x_n$ independentes de $X\sim \operatorname{Bi}(N,p)$, é natural usarmos
+\begin{equation}
+	\label{est1}
+	\arg\max_p\prod_{1\leq i\leq n} \mathbb{P}(X = x_i)
+\end{equation}
+como a estimativa para $p$, pois é a que maximiza a chance de que obtêssemos tais dados $x_1, \dotsc, x_n$.
+
+Suponha agora que $X\sim N(\mu, \sigma^2)$ segue uma distribuição normal de parâmetros $\mu$ e $\sigma^2$ desconhecidos, e sejam $x_1, \dotsc, x_n$ realizações independentes de $X$. Se queremos estimar $\mu$ e $\sigma^2$, é natural usarmos
+\begin{equation}
+	\label{est2}
+	\arg\max_{\mu, \sigma^2}\prod_{1\leq i\leq n} \phi(x_i)
+\end{equation}
+como estimativa para $\mu$ e $\sigma^2$, pois são os que maximizam a função densidade de probabilidade da distribuição da upla $(x_1,\dotsc,x_n)$.
+
+As estimativas em \eqref{est1} e \eqref{est2} são, por definição, as estimativas dadas por \emph{máxima verossimilhança}.
+
+
+
+
+
+
+
+
+
+
+
+
+
