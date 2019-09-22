@@ -1,0 +1,104 @@
+\section{Aula 19 de Setembro de 2019}
+\label{2019_09_19}
+
+\subsection{Introdução}
+
+Considere $\mathbb{R}^d$ com $d$ grande ($d \to \infty$). Longe de ser um conceito abstrato, espaços de dimensões altas têm diversas aplicações práticas, como por exemplo n-gramas de um texto ou interações entre genes. O assunto da aula \cite{blum2016foundations} será a esfera/bola unitária em $\mathbb{R}^d$ definida por $B^d = \{x \in \mathbb{R}^d: ||x|| \leqslant 1\}$ com casca definida similarmente por $S^{d-1} = \{x \in \mathbb{R}^d: ||x|| = 1\}$.
+
+\begin{fato}
+\label{fato:volume_esfera}
+Seja $\mathit{Vol}(B^d)$ o volume da hiperesfera $d$-dimensional e $o(1) \to 0$ quando $d \to \infty$. Então $\mathit{Vol}(B^d) = \mathit{Vol}_d(B^d) = (1 + o(1)) {1 \over \sqrt{d\pi}} ({2 \pi e \over d})^{d/2}$
+\end{fato}
+
+Do Fato \ref{fato:volume_esfera} conclui-se que $\lim_{d \to \infty} \mathit{Vol}(B^d) = 0$. Ademais, seja $Q^d = \{x \in \mathbb{R}^d: |x_i| \leqslant 1/2\}, x = (x_i)_i^d$ o hipercubo unitário; claramente $\mathit{Vol}(Q^d) = 1$.
+
+\subsection{Cálculo do volume da hiperesfera}
+
+Para calcular o volume da hiperesfera, podemos integrar em cada dimensão da mesma, mas em coordenadas polares essa expressão fica muito mais simples. Sendo a área da casca $S^{d-1}$ definida por $A(S^{d-1}) = \mathit{Vol}_{d-1}(S^{d-1})$, temos as duas formas do volume da hiperesfera a seguir:
+
+$$\mathit{Vol}(B^d) = \int_{x_1  = -1}^1 \int_{x_2 = -\sqrt{1-x_1^2}}^{\sqrt{1-x_1^2}} \cdots \int_{x_d = -\sqrt{1 - x_1^2 - \dots - x_{d-1}^2}}^{\sqrt{1 - x_1^2 - \dots - x_{d-1}^2}} dx_d \dots dx_2 dx_1$$
+
+$$\mathit{Vol}(B^d) = \int_{S^{d-1}} \int_{r = 0}^1 r^{d-1} d\Omega dr = \int_{S^{d-1}} d\Omega \int_{r = 0}^1 r^{d-1} dr = {1\over d} \int_{S^{d-1}} d\Omega = {1\over d} A(S^{d-1})$$
+
+Considere uma função “artificial” $I(d)$:
+
+\begin{align*}
+  I(d)&= \int_{-\infty}^{\infty} \cdots \int_{-\infty}^{\infty} e^{-(x_1^2 + \dots + x_d^2)} dx_d \dots dx_1 \\
+      &= (\int_{-\infty}^{\infty} e^{x^2}dx)^d \\
+      &= (\sqrt{\pi})^d \\
+      &= \pi^{d/2}
+\end{align*}
+
+Em coordenadas polares:
+
+\begin{align*}
+  I(d)&= \int_{S^{d-1}} d\Omega \int_0^\infty e^{r^2} r^{d-1} dr \\
+      &= A(S^{d-1}) \int_0^\infty e^{r^2} r^{d-1} dr \\
+      &= A(S^{d-1}) {1\over 2} \int_0^\infty e^{-t} t^{d/2 - 1} dt & (t = r^2)\\
+      &= A(S^{d-1}) {1\over 2} \Gamma (d/2)
+\end{align*}
+
+Onde $\Gamma(x)$ é tal que:
+
+\begin{enumerate}
+\item $\Gamma(x) = (x-1)!$ se $x$ é um inteiro $\geqslant 1$,
+\item $\Gamma(1/2) = \sqrt{\pi}$ e $\Gamma(x) = (x-1)\Gamma(x-1)$,
+\item $\Gamma(1) = \Gamma(2) = 1$
+\end{enumerate}
+
+Segue que $A(S^{d-1}) = {\pi^{d/2} \over {1\over 2} \Gamma (d/2)}$ e assim $\mathit{Vol}(B^d) = {\pi^{d/2} \over {d\over 2} \Gamma (d/2)}$. Por Stirling, segue que $\mathit{Vol}(B^d) = (1 + o(1)) {1 \over \sqrt{d\pi}} ({2 \pi e \over d})^{d/2}$. Concluímos que o volume da esfera vai para 0 superexponencialmente.
+
+\subsection{Concentração em torno do equador}
+
+Seja a seção em forma de “meia-laranja” da hiperesfera definida por $T = \{x \in B^d: x_1 \geqslant \epsilon\}, x = (x_i)_i^d$. Para simplificar a notação, determinamos que $V(d)\colon = \mathit{Vol}(B^d)$ e que $A(d-1)\colon = A(S^{d-1})$.
+
+\begin{align*}
+  \mathit{Vol}_d(T) &= \int_\epsilon^1 \mathit{Vol}_{d-1}(\sqrt{1-x^2}B^{d-1}) dx_1 \\
+      &= \int_\epsilon^1 (1-x_1^2)^{(d-1)/2} V(d-1) dx_1 \\
+      &\leqslant V(d-1) \int_\epsilon^1 e^{-(d-1)x_1^2/2} dx_1 \\
+      &\leqslant V(d-1) \int_\epsilon^1 {x_1 \over \epsilon} e^{-(d-1)x_1^2/2} dx_1 \\
+      &= V(d-1) {1\over \epsilon(d-1)} e^{-(d-1)\epsilon^2/2}
+\end{align*}
+
+Queremos obter cota superior para $\mathit{Vol}(T)/\mathit{Vol}(B^d)$. Vamos agora estimar $\mathit{Vol}(B^d)$ por baixo (ou seja, sem usar o fato \ref{fato:volume_esfera}): $\mathit{Vol}(B^d) \geqslant \mathit{Vol}(\mathrm{cilindro}) = {2\over \sqrt{d-1}} (1-{1 \over d-1})^{(d-1)/2} V(d-1)$. Usando que $(1-x)^a \geqslant 1-ax$, temos que a quantidade acima é $\geqslant {2\over \sqrt{d-1}} (1-{d-1 \over 2}{1 \over d-1})^{(d-1)/2} V(d-1) = {1 \over \sqrt{d-1}} V(d-1)$.
+
+\begin{lema}
+ Para todo $c > 0$, o volume de $T_c = \{x \in B^d: x_1 \geqslant c/\sqrt{d-1}\}$ é no máximo ${1\over c} e^{-c^2/2} \mathit{Vol}(B^d)$
+\end{lema}
+
+\begin{proof}
+Vimos que ${\mathit{Vol}(T_c) \over \mathit{Vol}(B^d)} \leqslant {{1\over c\sqrt{d-1}} e^{-c^2/2} V(d-1) \over {1\over \sqrt{d-1}} V(d-1)} = {1\over e^{-c^2/2}}$
+\end{proof}
+
+Desta forma, conclui-se que a grande maioria do volume da esfera fica concentrada em torno do equador (apesar de sua “grossura” ir diminuindo a cada nova dimensão adicionada).
+
+Suponha agora que $x \in B^d$ é escolhido uniformemente ao acaso. Quanto será $||x||$ em geral se $d$ é grande? Temos $P(||x||) \leqslant 1-\epsilon = {\mathit{Vol}((1-\epsilon)B^d) \over \mathit{Vol}(B^d)} = (1-\epsilon)^d \leqslant e^{-\epsilon d}$. Nota-se desta forma que a massa de $B^d$ está concentrada nas proximidades da fronteira $S^{d-1}$.
+
+\subsection{Áreas de calotas esféricas}
+
+Seja $S = \{x \in S^{d-1}: x_1 \geqslant \epsilon\}$. Queremos estimar $A(S_\epsilon) = \mathit{Vol}_{d-1}(S_\epsilon)$.
+
+\begin{align*}
+  A(S_\epsilon) &= \int_\epsilon^1 \mathit{Vol}_{d-2}(\sqrt{1-x_1^2}S^{d-2}) dx_1 \\
+      &= A(S^{d-2}) \int_\epsilon^1 (1-x_1^2)^{(d-2)/2} dx_1 \\
+      &\leqslant$${1\over \epsilon (d-2) } e^{-(d-2)\epsilon^2/2} A(S^{d-2})
+\end{align*}
+
+Usando o cilindro de altura $1/\sqrt{d-2}$ e raio $\sqrt{1- 1/(d-2)}$ em torno do eixo $x_1$, vemos que a $A(S^{d-1}) = A(d-1) \geqslant {1 \over \sqrt{d-2}} A(d-2)$.
+
+\begin{lema}
+Seja $c > 0$, temos $A(S_{c/\sqrt{d-2}}) \leqslant {1 \over c} e^{-c^2/2} A(S^{d-1})$.
+\end{lema}
+
+\begin{proof}
+Use $\epsilon = c/\sqrt{d-2}$
+\end{proof}
+
+\textit{Exercício}. Sejam $x_1, x_2, \dots, x_N$ vetores unitários em $\mathbb{R}^d$. Dizemos que esses $x_i$ formam um sistema normal se $\langle x_i, x_j \rangle = 0, \forall i \not = j$ (em notação matricial, $x_i^Tx_j = 0$). Eles formam um sistema negativo se $\langle x_i, x_j \rangle < 0, \forall i \not = j$. Finalmente, eles foram um sistema $\delta$-quase-normal se $| \langle x_i, x_j \rangle | \leqslant \delta, \forall i \not = j$. Prove:
+
+\begin{enumerate}
+\item Se $x_1, x_2, \dots, x_N$ é um sistema normal, então $N \leqslant d$. Ademais, existem sistemas normais com $N = d$.
+\item Se $x_1, x_2, \dots, x_N$ é um sistema negativo, então $N \leqslant d+1$. Ademais, existem sistemas negativos com $N = d+1$.
+\item Para todo $\delta > 0$, existe um $c = c(\delta) > 0$ tal que existe um sistema $\delta$-quase-normal com $N = e^{cd}$.
+\end{enumerate}
+
