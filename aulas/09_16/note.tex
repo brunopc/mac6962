@@ -1,0 +1,230 @@
+\section{Aula 16 de setembro de 2019}
+\label{2019_09_16}
+
+\subsection{Estimação de parâmetros por máxima verossimilhança}
+
+Seja~$X \sim \mathrm{Bi}(N,p)$, com~$N$ conhecido
+ e~$p$ desconhecido. Suponha que temos uma amostra de~$X$ em que o 
+ evento de sucesso (de probabilidade~$p$) ocorre~$x$ vezes.
+ A estimativa natural para~$p$ é~$\hat{p} = x / N$.
+ Tal valor~$\hat{p}$ maximiza
+ $$f(p)={N \choose x}p^x(1-p)^{N-x} = \mathbb{P}(X=x).$$
+ 
+ Esta escolha de estimador está baseada no
+ \emph{princípio de máxima verossimilhança}.
+ 
+ \subsubsection{Distribuição normal}
+  Seja~$X \sim \mathrm{N}(\mu, \sigma^2)$, com~$\mu$ e~$\sigma^2$
+  desconhecidos. Sejam~$x_1$,~$x_2$, \dots,~$x_n$ realizações
+  independentes de~$X$. Seja
+  $$f(\mu, \sigma^2)
+  = \prod_{i=1}^{n} \frac{1}{\sigma\sqrt{2\pi}}
+  \mathrm{exp}\left\{ -\frac{(x_i-\mu)^2}{2\sigma^2} \right\}.$$
+  Queremos maximizar~$f(\mu, \sigma^2)$. Mais precisamente, queremos
+  $$\argmax_{\mu, \sigma^2}{f(\mu, \sigma^2)}.$$
+  
+  É mais fácil calcular
+  $$\argmax_{\mu, \sigma^2}{\log{f(\mu, \sigma^2)}}
+  =\argmax_{\mu, \sigma^2}\left\{ -\frac{n}{2}\log(2\pi\sigma^2)
+  -\frac{1}{2\sigma^2}\sum_{i=1}^{n}(x_i-\mu)^2 \right\}.$$
+  
+  Basta calcular~$\argmin_{\mu, \sigma^2}{g(\mu, \sigma^2)}$, onde
+  $$g(\mu, \sigma^2)
+  = \frac{n}{2}\log(2\pi\sigma^2)
+   + \frac{1}{2\sigma^2}\sum_{i=1}^{n}(x_i-\mu)^2.$$
+   
+  Seja~$m=n^{-1}\sum_{i=1}^{n}{x_i}$. Temos que
+  $$\begin{aligned} \sum_{i=1}^{n}(x_i-\mu)^2
+  &=\sum_{i=1}^{n}((x_i-m)+(m-\mu))^2 \\
+  &=\sum_{i=1}^{n}(x_i-m)^2 + n(m-\mu)^2
+    + 2(m-\mu)\sum_{i=1}^{n}(x_i-m) \\
+  &= \sum_{i=1}^{n}(x_i-m)^2 + n(m-\mu)^2 \\
+  &= ns^2 + n(m-\mu)^2,
+  \end{aligned}$$
+  onde $s^2=n^{-1}\sum_{i=1}^{n}(x_i-m)^2$.
+  Assim, vemos claramente que, para minimizar~$g(\mu, \sigma^2)$,
+  devemos tomar~$\mu=m$. Queremos agora minimizar
+  $$h(\sigma)=g(m,\sigma^2)=\frac{n}{2}\log(2\pi\sigma^2)
+   + \frac{ns^2}{\sigma^2}.$$
+   
+  Temos que
+  $$h'(\sigma)
+     = \frac{n}{\sigma} \left(1-\frac{s^2}{\sigma^2}\right) \\
+     =0,$$
+  se, e somente se,~$\sigma^2 = s^2$.
+  E, de fato,~$\sigma^2 = s^2$ corresponde ao mínimo global de~$h$.
+  
+  Portanto, o princípio de máxima verossimilhança fornece os
+  estimadores~$m$ e~$s^2$ para~$\mu$ e~$\sigma^2$.
+  \emph{Seria} natural que
+  \begin{enumerate}
+   \item $\mathbb{E}(m) = \mathbb{E}(X) = \mu$; e
+   \label{20190916_item_1}
+   \item $\mathbb{E}(s^2) = \mathrm{Var}(X) = \sigma^2$.
+   \label{20190916_item_2}
+  \end{enumerate}
+  
+  Pela linearidade da esperança, \ref{20190916_item_1} vale:
+  $\mathbb{E}(m)=n^{-1}\sum_{i=1}^{n}\mathbb{E}(x_i)=\mu$.
+  Temos que
+  $$\begin{aligned}
+     \sum_{i=1}^{n}(x_i^2 -2mx_i + m^2)
+     &= \sum_{i=1}^{n}x_i^2
+     -\frac{2}{n}\left(\sum_{i=1}^{n}x_i\right)^2
+     +\frac{1}{n}\left(\sum_{i=1}^{n}x_i\right)^2 \\
+     &= \left(1-\frac{1}{n}\right)\sum_{i=1}^{n}x_i^2
+     -\frac{1}{n}\sum_{i=1}^{n}
+     \sum_{\substack{j=1 \\ j\neq i}}^{n}x_ix_j.
+    \end{aligned}$$
+  Lembrando que~$\mathbb{E}(x_i^2)=\mathbb{E}(X^2)$ e que,
+  por independência,~$\mathbb{E}(x_ix_j)
+  =\mathbb{E}(x_i)\mathbb{E}(x_j)=\mathbb{E}(X)^2$, concluímos que
+  $$\begin{aligned}
+     \mathbb{E}(s^2) &= \frac{1}{n}\mathbb{E}\left(
+     \left(1-\frac{1}{n}\right)\sum_{i=1}^{n}x_i^2
+     -\frac{1}{n}\sum_{i=1}^{n}
+     \sum_{\substack{j=1 \\ j\neq i}}^{n}x_ix_j
+     \right) \\
+     &= \frac{1}{n}\left(
+     \left(1-\frac{1}{n}\right)\sum_{i=1}^{n}\mathbb{E}(x_i^2)
+     -\frac{1}{n}\sum_{i=1}^{n}
+     \sum_{\substack{j=1 \\ j\neq i}}^{n}\mathbb{E}(x_ix_j)
+     \right) \\
+     &= \frac{n-1}{n}\left(\mathbb{E}(X^2)-\mathbb{E}(X)^2\right) \\
+     &= \frac{n-1}{n}\mathrm{Var}(X).
+    \end{aligned}$$
+    
+  Assim,~\ref{20190916_item_2} precisa ser levemente corrigido
+  para~$\mathrm{E}(s^2)=(1-1/n)\mathrm{Var}(X)$.
+  
+  A propriedade~\ref{20190916_item_1} equivale a dizer que~$m$ é um \emph{estimador não enviesado} para~$\mu$.
+  Ademais, porque~$\lim_{n \to \infty}{\mathrm{E}(s^2)}
+  =\mathrm{Var}(X)$, dizemos que~$s^2$ é um
+  \emph{estimador assintoticamente não enviesado} para~$\sigma^2$.
+  
+  \begin{observacao}
+   $\hat{\sigma}^2
+   =\sum_{i=1}^{n}(x_i - m)^2/(n-1)$ é um estimador não enviesado
+   para~$\sigma^2$.
+  \end{observacao}
+  
+\subsection{Estimação de misturas de gaussianas
+(\emph{Gaussian mixture models -- GMM})}
+
+ Vamos considerar o caso em que temos 2 gaussianas unidimensionais.
+ 
+ Seja~$\theta = (\gamma, \mu_1, \mu_2, \sigma^2_1, \sigma^2_2) \in \RR^5$
+ o \emph{vetor de parâmetros}.
+ Seja~$X$ a v.a.\ com função de densidade de probabilidade
+ $$\phi(t) = \gamma \phi_1(t) + (1-\gamma) \phi_2(t),$$
+ onde~$t \in \RR$,
+ $$\phi_1(t) = \frac{1}{\sigma_1\sqrt{2\pi}}
+ \exp\left\{ -\frac{(t-\mu_1)^2}{2\sigma_1^2} \right\},$$
+ $$\phi_2(t) = \frac{1}{\sigma_2\sqrt{2\pi}}
+ \exp\left\{ -\frac{(t-\mu_2)^2}{2\sigma_2^2} \right\}.$$
+ 
+ Assim,
+ $$\PP(X \le x) = \int_{-\infty}^{x}\phi(t) dt.$$
+ 
+ Como antes, supomos que temos amostras~$x_1,\dots,x_n$
+ independentes de~$X$.
+ 
+ K.\ Peason (1894) foi um pioneiro no estudo de mistura de duas gaussianas
+ unidimensionais. Ele usou o \emph{método dos momentos} para estimar~$\theta$.
+ Os parâmetros foram escolhidos de modo que os cinco primeiros momentos de~$X$
+ coincidissem com os cincos primeiros momentos amostrais, produzindo, assim,
+ um sistema de cinco equações polinomiais. A solução de tal sistema escolhida
+ foi aquela que dava o sexto momento mais perto do sexto momento amostral.
+ 
+ Veremos a seguir o Algoritmo EM (\emph{expectation maximization}),
+ o qual produz um estimador para~$\theta$.
+ 
+ O princípio da máxima verossimilhança
+ nos dá como estimador
+ $$\argmax_{\theta}{L(\theta)},$$
+ onde
+ $$L(\theta) = \prod_{i=1}^{n}{\phi(x_i)}.$$
+ O Algoritmo EM é uma heurística para computar tal estimador.
+ Ele produz iterativamente estimadores~$\theta_0$,~$\theta_1$, \dots,
+ e para quando~$L(\theta_{t+1})$ não é muito diferente de~$L(\theta_{t})$
+ (ou seja, quando há convergência).
+ 
+ Para~$t \ge 0$, seja~$\theta_t=(\gamma_t,\mu_{1,t},\mu_{2,t},
+ \sigma_{1,t}^2, \sigma_{2,t}^2)$.
+ Pomos (a escolha de $\theta_0$ é arbitrária):
+ $$\begin{aligned}
+ \gamma_0       &= \frac{1}{2}, \\
+ \mu_{1,0}      &= \text{elemento aleatório dentre os } x_i,\\
+ \mu_{2,0}      &= \text{elemento aleatório dentre os } x_i,\\
+ \sigma_{1,0}^2 &= n^{-1}\sum_{i=1}^{n}(x_i - \mu_{1,0})^2,\\
+ \sigma_{2,0}^2 &= n^{-1}\sum_{i=1}^{n}(x_i - \mu_{2,0})^2.
+ \end{aligned}$$
+ 
+ Para~$i=1,2,\dots,n$, seja
+ $$p_1(x_i) = \frac{\gamma_t \phi_1(x_i)}
+ {\gamma_t \phi_1(x_i) + (1-\gamma_t) \phi_2(x_i)},$$
+ e
+ $$p_2(x_i)=1-p_1(x_i).$$
+ 
+ Para~$j=1,2$, seja
+ $$\mu_{j,t+1}=\left(\sum_{i=1}^{n}p_j(x_i)x_i\right)
+ \left(\sum_{i=1}^{n}p_j(x_i)\right)^{-1},$$
+ e
+ $$\sigma_{j,t+1}^2=\left(\sum_{i=1}^{n}p_j(x_i)(x_i-\mu_{j,t+1})^2\right)
+ \left(\sum_{i=1}^{n}p_j(x_i)\right)^{-1}.$$
+ 
+ Finalmente, seja
+ $$\gamma_{t+1}=n^{-1}\sum_{i=1}^{n}p_1(x_i).$$
+ 
+ \begin{teorema}
+  $L(\theta_{t+1}) \ge L(\theta_t)$.
+ \end{teorema}
+
+ \begin{proof}[Tentativa de prova (baseada em Mitzenmacher-Upfal)]
+  Lembremos que
+  $$L(\theta) = \prod_{i=1}^{n} \gamma \phi_1(x_i) + (1-\gamma) \phi_2(x_i).$$
+  
+  Logo,
+  $$\frac{\partial L}{\partial \gamma} = \sum_{i=1}^{n}
+  \frac{L(\theta)(\phi_1(x_i)-\phi_2(x_i))}
+  {\gamma \phi_1(x_i) + (1-\gamma) \phi_2(x_i)}.$$
+  
+  Igualando a derivada a $0$, temos
+  $$\sum_{i=1}^{n} \frac{\phi_1(x_i)}
+  {\gamma \phi_1(x_i) + (1-\gamma) \phi_2(x_i)}
+  =\sum_{i=1}^{n} \frac{\phi_2(x_i)}
+  {\gamma \phi_1(x_i) + (1-\gamma) \phi_2(x_i)}.$$
+  
+  Denotemos por~$\lambda$ o valor das duas expressões anteriores. Então,
+  $$\begin{aligned}
+     \lambda &= \gamma \lambda + (1-\gamma) \lambda \\
+     &= \gamma \text{L.E.} + (1-\gamma) \text{L.D.} \\
+     &= n.
+    \end{aligned}
+  $$
+  Logo,
+  $$n = \sum_{i=1}^{n} \frac{\phi_1(x_i)}
+  {\gamma \phi_1(x_i) + (1-\gamma) \phi_2(x_i)},$$
+  e portanto
+  $$\begin{aligned} \gamma
+  &= \frac{1}{n} \sum_{i=1}^{n} \frac{\gamma \phi_1(x_i)}
+  {\gamma \phi_1(x_i) + (1-\gamma) \phi_2(x_i)} \\
+  &= \frac{1}{n} \sum_{i=1}^{n} p_1(x_i) \\
+  &= \gamma_{t+1}.
+  \end{aligned}$$
+  
+  Assim, a escolha de~$\gamma_{t+1}$ é plausível.
+  Fixe tal~$\gamma_{t+1}$. Considere agora~$\mu_1$.
+  Fazendo
+  $$\frac{\partial}{\partial \mu_1} L(\gamma_{t+1},\mu_1,\mu_2,
+  \sigma_1^2, \sigma_2^2) = 0,$$
+  observamos que a escolha do Algoritmo EM para~$\mu_1$
+  satisfaz a última equação.
+ \end{proof}
+
+ Recentemente, Kalai, Moitra e Valiant (STOC 2010)
+ e Moitra e Valiant (FOCS 2010)
+ obtiveram algoritmos polinomiais (no inverso da acurácia desejada,
+ dentre outros aspectos da entrada dos algoritmos)
+ para estimar os parâmetros de misturas de gaussianas $d$-dimensionais.
+ 
