@@ -14,7 +14,7 @@ $\phi(x) = \frac{1}{\sqrt{2\pi}}e^{-x^2/2}$, então a f.d.p. de $X$ será
 
 De forma mais geral, podemos considerar distribuições em $\RR^d$ que são
 imagens afins da gaussiana esférica. Por simplicidade vamos apenas considerar
-gaussianas com centro $\mu = (\mu_1, \dots, \mu_d)$ 
+gaussianas com centro~${\mu = (\mu_1, \dots, \mu_d)}$ 
 e~$\sigma = (\sigma_1, \dots, \sigma_d)$ com $\sigma_1 = \dots = \sigma_d$.
 
 \begin{pergunta}
@@ -24,35 +24,32 @@ Por exemplo, para $d = 1$, a massa de $\phi(X)$ está concentrada no intervalo
 de comprimento $O(1)$ en torno da média. E se $d$ é grande?
 
 Apesar da média de $X$ ser na origem, devemos lembrar que o volume da esfera
-está concentrado em um intervalo constante ao redor da casca esférica:
-
+está concentrado em um intervalo constante ao redor de uma casca esférica:
 \begin{equation*}\label{key}
-V := V(d) = \vol(B^d) = \frac{\pi^{d/2}}{\frac{d}{d}\Gamma(\frac{d}{2})} 
+V := V(d) = \Vol(B^d) = \frac{\pi^{d/2}}{\frac{d}{2}\Gamma(\frac{d}{2})} 
    = (1 + o(1))(\frac{2\pi e}{2})^{d/2}\frac{1}{\sqrt{d\pi}}
 \end{equation*}
 com  $o(1)\ra 0$  quando $d\ra \infty$, assim
 
 \begin{equation*}\label{key}
-\vol (rB^d) = r^d V 
+\Vol (rB^d) = r^d V 
 = (1 + o(1))\left(\frac{2\pi e r^2}{d}\right)^{d/2}\frac{1}{\sqrt{d\pi}}.
 \end{equation*}
 
 Note que esse volume torna-se substancial quando $r = c\sqrt{d}$, para algum 
-$c>0$ constante. Se $X\sim N_d(0,1)$, então $X$ não está concentrado na
+$c>0$ constante. Se~$X\sim N_d(0,1)$, então $X$ não está concentrado na
 origem; veremos que $X$ fica concentrado no ``anel'' 
 $\bigcup_{|t|\leq c}S^{d-1}(\sqrt{d-1} + t)$.
 
 \subsection{Intuição}
 Suponha $X\sim N_d(0,1)$. Então $\|X\|^2 = \sum_{i = 1}^{d}X_i^2$, e assim
 $\|X\|^2$ é uma soma de variáveis aleatórias de mesma distribuição. Temos
-
 \begin{equation*}\label{key}
 \EE(\|X\|^2) = \sum_{i = 1}^d\EE(X_i^2) = d.
 \end{equation*}
 Ademais,
-
 \begin{equation*}\label{key}
-\var(\|X\|^2) = \sum_{i = 1}^d\var(X_i^2) 
+\Var(\|X\|^2) = \sum_{i = 1}^d\Var(X_i^2) 
 = \sum_{i = 1}^d(\EE(X_i^4) - \EE(X_i^2)^2) = O(d).
 \end{equation*}
 É natural esperar que valha algo como
@@ -60,24 +57,24 @@ Ademais,
 \PP(|\|X\|^2 - d| > t) \leq e^{-c_1 t^2/d}.
 \end{equation*}
 
-Da expressão acima segue que $\|X\|^2$ está concentrada no intervalo
-${ [d - c_2\sqrt{d}, d + c_2\sqrt{d}]}$.
+Da expressão acima, que pode ser demonstrada, segue que~$\|X\|^2$ 
+está concentrada no intervalo~${[d - c_2\sqrt{d}, d + c_2\sqrt{d}]}$.
 
 \subsection{Demonstração da concentração de $X$}
 
-Vamos demonstrar a concentração de $X\sim N_d(0,1)$ no anel de raio
+Vamos demonstrar a concentração de ${X\sim N_d(0,1)}$ no anel de raio
 $\sqrt{d-1}$ e espessura $O(1)$ com contas explícitas. Queremos estudar
 
-\begin{flalign*}
+\begin{align*}
 m_{a,b} & = \int_a^b\phi(r)\d(r^dV)& \\
 		& = \int_a^b\frac{1}{(2\pi)^{d/2}}e^{-r^2/2}dr^{d-1}V\d r&\\
 		& = \frac{dV}{(2\pi)^{d/2}}\int_a^b r^{d-1}e^{-r^2/2}\d r.&
-\end{flalign*}
+\end{align*}
 Sejam $g(r) := r^{d-1}e^{-r^2/2}$ e $f(r) := \log g(r) 
 = (d-1) \log r - \frac{r^2}{2}$. Temos
 \begin{align*}
-f'(r) = \frac{d-1}{r} - r,//
-f''(r) = -\frac{d-1}{r^2} - 1 < -1,
+f'(r)& = \frac{d-1}{r} - r,&\\
+f''(r)& = -\frac{d-1}{r^2} - 1 < -1,&
 \end{align*}
 o que implica em $f'(\sqrt{d-1}) = 0$.
 Assim, se $ r = \sqrt{d-1} + t$, temos que (por Taylor)
@@ -102,23 +99,23 @@ g(r) \leq e^{f(\sqrt{d-1}) - \frac{1}{2}t^2}
 Fixe agora $c>0$, e seja $I = [\sqrt{d-1} - c, \sqrt{d-1} + c]$. 
 Vamos mostrar que~${\int_{r \notin I}g(r)\d r << \int_0^{\infty}g(r)}$. Temos
 
-\begin{flalign*}
+\begin{align*}
 \int_{r \notin I}g(r) \d r &\leq 
 \int_{r \notin I}g(\sqrt{d-1})e^{-t^2/2} \d r&\\
 & = g(\sqrt{d-1})\left( \int_{0}^{\sqrt{d-1} - c}e^{-t^2/2} \d r 
 + \int_{\sqrt{d- 1}+c}^{\infty}e^{-t^2/2} \d r \right),&\\
-\end{flalign*}
-e aumentando os intervalos de integração ficamos com
-\begin{flalign*}
+\end{align*}
+e modificando os intervalos de integração ficamos com
+\begin{align*}
 \int_{r \notin I}g(r) \d r &
 \leq g(\sqrt{d-1})\left( \int_{-\sqrt{d-1}}^{- c}e^{-t^2/2} \d r 
 + \int_{c}^{\infty}e^{-t^2/2} \d r \right),&\\
 &\leq 2g(\sqrt{d-1})\int_c^{\infty}e^{-t^2/2}\d r&\\
-\end{flalign*}
+\end{align*}
 e terminamos usando o truque de multiplicar por $t/c > 1$ no 
 intervalo de integração.
 \begin{equation*}
-\leq 2g(\sqrt{d-1})\int_c^{\infty}e^{-t^2/2}\d r = 
+2g(\sqrt{d-1})\int_c^{\infty}e^{-t^2/2}\d r \leq 
 \frac{2}{c}g(\sqrt{d-1})\int_0^{\infty}te^{-t^2/2}
 = \frac{2}{c}g(\sqrt{d-1})e^{-c^2/2}.
 \end{equation*}
@@ -129,7 +126,7 @@ $${f''(\rho) = -\frac{d-1}{\rho^2}-1} \geq f''(\sqrt{d-1}) = -2.$$
 Assim, temos $f(r)\geq f(\sqrt{d-1}) - t^2$ no intervalo 
 ${[\sqrt{d-1}, \sqrt{d-1} + c/2]}$, então
 \begin{equation*}
-g(r) = e^{f(r)} \geq g(\sqrt{d-1})e^{t^2} \geq g(\sqrt{d-1})e^{-c^2/4}
+g(r) = e^{f(r)} \geq g(\sqrt{d-1})e^{-t^2} \geq g(\sqrt{d-1})e^{-c^2/4}
 \end{equation*}
 neste intervalo, e
 \begin{equation*}
