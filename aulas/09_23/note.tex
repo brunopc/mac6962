@@ -1,0 +1,168 @@
+\section{Aula 23 de Setembro de 2019}
+\label{2019_09_23}
+
+\subsection{Gaussianas em Espaços de Dimensão Alta}
+
+Suponha que temos variáveis aleatórias ${ X_1, X_2, \dots, X_d \sim N(0,1)}$
+independentes, e considere $N_d(0,1) \sim X = (X_1, X_2, \dots, X_d) \in \RR^d$.
+Como cada $X_i$ possui função densidade de probabilidade (f.d.p.) 
+$\phi(x) = \frac{1}{\sqrt{2\pi}}e^{-x^2/2}$, então a f.d.p. de $X$ será
+\begin{equation*}\label{key}
+\phi(X) := \frac{1}{(2\pi)^{d/2}}e^{\frac{-\sum_{i = 1}^{d}{X_i^2}}{2}}
+= \frac{1}{(2\pi)^{d/2}}e^{\frac{-\|X\|^2}{2}}
+\end{equation*}
+
+De forma mais geral, podemos considerar distribuições em $\RR^d$ que são
+imagens afins da gaussiana esférica. Por simplicidade vamos apenas considerar
+gaussianas com centro $\mu = (\mu_1, \dots, \mu_d)$ 
+e~$\sigma = (\sigma_1, \dots, \sigma_d)$ com $\sigma_1 = \dots = \sigma_d$.
+
+\begin{pergunta}
+	Onde está concentrada maior parte da massa de $\phi(X)$?
+\end{pergunta}
+Por exemplo, para $d = 1$, a massa de $\phi(X)$ está concentrada no intervalo
+de comprimento $O(1)$ en torno da média. E se $d$ é grande?
+
+Apesar da média de $X$ ser na origem, devemos lembrar que o volume da esfera
+está concentrado em um intervalo constante ao redor da casca esférica:
+
+\begin{equation*}\label{key}
+V := V(d) = \vol(B^d) = \frac{\pi^{d/2}}{\frac{d}{d}\Gamma(\frac{d}{2})} 
+   = (1 + o(1))(\frac{2\pi e}{2})^{d/2}\frac{1}{\sqrt{d\pi}}
+\end{equation*}
+com  $o(1)\ra 0$  quando $d\ra \infty$, assim
+
+\begin{equation*}\label{key}
+\vol (rB^d) = r^d V 
+= (1 + o(1))\left(\frac{2\pi e r^2}{d}\right)^{d/2}\frac{1}{\sqrt{d\pi}}.
+\end{equation*}
+
+Note que esse volume torna-se substancial quando $r = c\sqrt{d}$, para algum 
+$c>0$ constante. Se $X\sim N_d(0,1)$, então $X$ não está concentrado na
+origem; veremos que $X$ fica concentrado no ``anel'' 
+$\bigcup_{|t|\leq c}S^{d-1}(\sqrt{d-1} + t)$.
+
+\subsection{Intuição}
+Suponha $X\sim N_d(0,1)$. Então $\|X\|^2 = \sum_{i = 1}^{d}X_i^2$, e assim
+$\|X\|^2$ é uma soma de variáveis aleatórias de mesma distribuição. Temos
+
+\begin{equation*}\label{key}
+\EE(\|X\|^2) = \sum_{i = 1}^d\EE(X_i^2) = d.
+\end{equation*}
+Ademais,
+
+\begin{equation*}\label{key}
+\var(\|X\|^2) = \sum_{i = 1}^d\var(X_i^2) 
+= \sum_{i = 1}^d(\EE(X_i^4) - \EE(X_i^2)^2) = O(d).
+\end{equation*}
+É natural esperar que valha algo como
+\begin{equation*}\label{key}
+\PP(|\|X\|^2 - d| > t) \leq e^{-c_1 t^2/d}.
+\end{equation*}
+
+Da expressão acima segue que $\|X\|^2$ está concentrada no intervalo
+${ [d - c_2\sqrt{d}, d + c_2\sqrt{d}]}$.
+
+\subsection{Demonstração da concentração de $X$}
+
+Vamos demonstrar a concentração de $X\sim N_d(0,1)$ no anel de raio
+$\sqrt{d-1}$ e espessura $O(1)$ com contas explícitas. Queremos estudar
+
+\begin{flalign*}
+m_{a,b} & = \int_a^b\phi(r)\d(r^dV)& \\
+		& = \int_a^b\frac{1}{(2\pi)^{d/2}}e^{-r^2/2}dr^{d-1}V\d r&\\
+		& = \frac{dV}{(2\pi)^{d/2}}\int_a^b r^{d-1}e^{-r^2/2}\d r.&
+\end{flalign*}
+Sejam $g(r) := r^{d-1}e^{-r^2/2}$ e $f(r) := \log g(r) 
+= (d-1) \log r - \frac{r^2}{2}$. Temos
+\begin{align*}
+f'(r) = \frac{d-1}{r} - r,//
+f''(r) = -\frac{d-1}{r^2} - 1 < -1,
+\end{align*}
+o que implica em $f'(\sqrt{d-1}) = 0$.
+Assim, se $ r = \sqrt{d-1} + t$, temos que (por Taylor)
+\begin{equation*}
+f(r) = f(\sqrt{d-1}) + f'(\sqrt{d-1})t + \frac{1}{2}f''(\sqrt{d-1})t^2 +\dots
+\end{equation*}
+e, de fato, por uma outra versão de Taylor,
+\begin{equation*}
+f(r) = f(\sqrt{d-1}) + \frac{1}{2}f''(\rho)t^2,
+\end{equation*}
+onde $\rho = \rho(r)$ está entre $\sqrt{d-1}$ e $r = \sqrt{d-1} + t$.
+Segue que 
+\begin{equation*}
+f(r) \leq f(\sqrt{d-1}) - \frac{1}{2}t^2,
+\end{equation*}
+e assim,
+\begin{equation*}
+g(r) \leq e^{f(\sqrt{d-1}) - \frac{1}{2}t^2} 
+= g(\sqrt{d-1})e^{-\frac{1}{2}t^2}.
+\end{equation*}
+
+Fixe agora $c>0$, e seja $I = [\sqrt{d-1} - c, \sqrt{d-1} + c]$. 
+Vamos mostrar que~${\int_{r \notin I}g(r)\d r << \int_0^{\infty}g(r)}$. Temos
+
+\begin{flalign*}
+\int_{r \notin I}g(r) \d r &\leq 
+\int_{r \notin I}g(\sqrt{d-1})e^{-t^2/2} \d r&\\
+& = g(\sqrt{d-1})\left( \int_{0}^{\sqrt{d-1} - c}e^{-t^2/2} \d r 
++ \int_{\sqrt{d- 1}+c}^{\infty}e^{-t^2/2} \d r \right),&\\
+\end{flalign*}
+e aumentando os intervalos de integração ficamos com
+\begin{flalign*}
+\int_{r \notin I}g(r) \d r &
+\leq g(\sqrt{d-1})\left( \int_{-\sqrt{d-1}}^{- c}e^{-t^2/2} \d r 
++ \int_{c}^{\infty}e^{-t^2/2} \d r \right),&\\
+&\leq 2g(\sqrt{d-1})\int_c^{\infty}e^{-t^2/2}\d r&\\
+\end{flalign*}
+e terminamos usando o truque de multiplicar por $t/c > 1$ no 
+intervalo de integração.
+\begin{equation*}
+\leq 2g(\sqrt{d-1})\int_c^{\infty}e^{-t^2/2}\d r = 
+\frac{2}{c}g(\sqrt{d-1})\int_0^{\infty}te^{-t^2/2}
+= \frac{2}{c}g(\sqrt{d-1})e^{-c^2/2}.
+\end{equation*}
+
+Vamos agora estimar $\int_0^{\infty}g(r)\d r$ por baixo. Note que 
+se ${\rho \in [\sqrt{d-1}, \sqrt{d-1} + c/2}$, então
+$${f''(\rho) = -\frac{d-1}{\rho^2}-1} \geq f''(\sqrt{d-1}) = -2.$$
+Assim, temos $f(r)\geq f(\sqrt{d-1}) - t^2$ no intervalo 
+${[\sqrt{d-1}, \sqrt{d-1} + c/2]}$, então
+\begin{equation*}
+g(r) = e^{f(r)} \geq g(\sqrt{d-1})e^{t^2} \geq g(\sqrt{d-1})e^{-c^2/4}
+\end{equation*}
+neste intervalo, e
+\begin{equation*}
+\int_0^{\infty}g(r)\d r \geq \int_{\sqrt{d-1}}^{\sqrt{d-1} + c/2}
+g(r)\d r \geq \frac{c}{2}g(\sqrt{d-1})e^{-c^2/4}.
+\end{equation*}
+
+Concluímos que 
+\begin{equation*}
+\frac{\int_{r \notin I}g(r) \d r}{\int_{0}^{\infty}g(r) \d r}
+\leq \frac{4}{c^2}e^{-c^2/4}.
+\end{equation*}
+
+Provamos então o seguinte resultado:
+
+\begin{teorema}
+Sejam $X\sim N_d(0,1)$ e $c>0$. Então
+$$\PP\left(\sqrt{d-1} - c \leq \|X\| \leq \sqrt{d-1} + c\right)\geq 1- \frac{4}{c^2}e^{-c^2/4}\qed$$
+\end{teorema}
+
+\subsection{Separação de Gaussianas em espaços de dimensão alta}
+
+Seja $\phi_{\mu}(X) = \frac{1}{(2\pi)^{d/2}}e^{-(X-\mu)^2/2}$ a
+gaussiana centrada em $\mu\in \RR^d$ e variância $1$. Suponha
+que $X$ tem f.d.p. 
+$$F(X) = \gamma\phi_{\mu_1}(X) + (1- \gamma)\phi_{\mu_2}(X),$$
+com $\mu_1, \mu_2 \in \RR^d$ e $\gamma\in (0,1)$.
+
+\begin{fato}[Dasgupta]
+É possível identificar os parâmetros de $F$ se $\mu_1$ e $\mu_2$
+estão suficientemente separados.
+\end{fato}
+Note que acabamos de ver que se a separação é de pelo menos $c\sqrt{d}$, 
+o problema é fácil, veremos na próxima aula que $cd^4$ é
+suficiente. Utilizando SVD, melhoramos essa cota para $c$.
+
