@@ -1,0 +1,138 @@
+\section{Aula 26 de setembro de 2019}
+\label{2019_09_26}
+
+\subsection{Separação de gaussianas em dimensão alta}
+
+O objetivo desta aula será estudar gaussianas em dimensão alta. Em
+particular, como separar pontos vindos de diferentes gaussianas em
+dimensão alta.
+
+\subsubsection{2 gaussianas}
+
+Considere que temos duas gaussianas~$N_{d}(\mu_{1},1)$
+e~$N_{d}(\mu_{2},1)$ com:
+\begin{align*}
+\Delta = \lVert \mu_{1} - \mu_{2} \rVert \geq cd^{1/4}
+\end{align*}
+
+\begin{fato}
+  Digamos que eu escolha~$X,Y \sim N_{d}(\mu, 1)$ independentes. Com
+  alta probabilidade~$$\lVert X - Y \rVert^2 = 2d + O(\sqrt{d}).$$
+\end{fato}
+
+\begin{proof}
+  Primeiramente, vamos rotacionar o sistema de coordenadas para deixar
+  o primeiro eixo alinhado com~$X$. Vimos nas últimas aulas que a
+  massa de~$N_{d}(\mu, 1)$ está concentrada no anel de raio~$\sqrt{d}$
+  e espessura~$O(1)$.
+  Consequentemente,~$X=(\sqrt{d} + O(1),0,\dots,0)$. Como~$Y$ está
+  quase no equador, rotacione o sistema de coordenadas para deixar o
+  componente de~$Y$ que é perpendicular ao eixo do polo norte na
+  segunda coordenada. Logo,~$Y=(O(1),\sqrt{d}+O(1),0,\dots,0)$ e,
+  portanto,
+  \begin{align*}
+    \lVert X-Y \rVert^2 &= (\sqrt{d}+O(1))^{2} + (\sqrt{d}+O(1))^{2}\\
+                        &= d + O(\sqrt{d}) + d + O(\sqrt{d}) = 2d + O(\sqrt{d}).
+  \end{align*}
+\end{proof}
+
+\begin{fato}
+  Se~$X \sim N_{d}(\mu_{1},1)$, $Z \sim N_{d}(\mu_{2},1)$. Com alta
+  probabilidade~$$\lVert X - Z \rVert^{2} = 2d + \Delta + O(\sqrt{d}) + O(\Delta).$$
+\end{fato}
+
+\begin{proof}
+
+  Primeiramente, rotacione o sistema de coordenadas para deixar $X$ no
+  polo norte. Considere o equador perpendicular a $Z-\mu_{2}$, pelo o
+  que foi visto nas últimas aulas, sabemos que a massa da gaussiana
+  $N_{d}(\mu_{2},1)$ está concentrada em um intervalo de $O(1)$ desse
+  equador. Além disso, a massa de cada uma das gaussianas está
+  concentrada em um intervalo de $O(1)$ no equador perpendicular a
+  $\mu_{2}-\mu_{1}$. Logo
+  \begin{align*}
+    \lVert X - Z \rVert^{2} \approx \Delta^{2}+2d+O(\sqrt{d}).
+  \end{align*}
+\end{proof}
+
+Com isso, podemos concluir que a distância entre $X$ e $Z$ é maior que
+$\lVert X - Y \rVert^{2}$. Consequentemente, concluímos que se
+$\Delta \geq cd^{1/4}$ e $c$ é grande o suficiente, então podemos
+distinguir quando dois pontos vêm da mesma normal de quando eles vêm
+de normais diferentes.
+
+\subsubsection{$k$ gaussianas}
+
+Agora digamos que eu tenha $k$ gaussianas $N_{k}(\mu_{i},1)$,
+$i=1,\dots,k$ em $\mathbb{R}^{k}$ e eu tenho os pontos
+$X_{1},\dots,X_{n} \in \mathbb{R}^{k}$. Queremos descobrir a partição
+$S_{1} \cup \dots \cup S_{k} = [n]$ tal que $i \in S_{j}$ se $x_{i}$
+foi gerado por $N_{k}(\mu_{k}, 1)$. Basta considerar os conjuntos
+\begin{align*}
+  D_{0} = \{ \lVert X - Y \rVert^{2} : X,Y \in S_{j}, j=1,\dots,k\}\\
+  D_{1} = \{ \lVert X - Z \rVert^{2} : X \in S_{j}, Z \in S_{j'}, j \neq j'\}.
+\end{align*}
+
+
+\begin{figure}
+  \begin{tikzpicture}
+    \draw[->] (-6,0) -- (7,0);
+
+    \draw[fill=black] (-3,0) circle (2pt) node[below] {$2d$};
+    \draw[fill=black] (3,0) circle (2pt) node[below] {$2d + \Delta^2$};
+
+    \draw[<->] (-3,1) -- node[above] {$\Delta^{2}$} ++(6,0);
+    \draw[<->] (-5,-1) -- node[below] {$O(\sqrt{d})$} ++(4,0);
+    \draw[<->] (0,-1) -- node[below] {$O(\sqrt{d})+O(\Delta)$} ++(6,0);
+
+    \foreach \n in {-5,...,-1,0,1,2,...,6}{      
+      \draw (\n,-3pt) -- (\n,3pt);
+    }
+
+  \end{tikzpicture}
+  \caption{Distância dos centros}
+  \label{fig:dist_centros}
+\end{figure}
+
+Se~$\Delta \geq cd^{1/4}$, então~$\Delta^{2} \geq c^{2}\sqrt{d}$. A
+Figura~\ref{fig:dist_centros}, indica o seguinte algoritmo para
+recuperar a partição.
+
+\textbf{Algoritmo:} Fixe um ponto~$X_{1}$ e calcule a distância
+de~$X_{1}$ para todos os outros pontos. Remova os pontos que tem
+distância menor ou igual a~$2d \pm \sqrt{d}$ e repita.
+
+Para reduzir o problema em dimensão~$d$ para dimensão~$k$, faremos
+algum processo de redução de dimensão. Observe que é intuitivo
+projetar as normais nos subespaços gerados pelos centros. Porém, como
+não conhecemos os centros, vamos utilizar o hiperplano de dimensão~$k$
+que minimiza a soma da distância ao quadrado (SVD).
+
+\begin{fato}
+  Se~$X \sim N_{d}(\mu, \sigma^{2})$ e~$H$ é um subespaço afim, então
+  a projeção ortogonal em~$H$ define uma variável aleatória~$Y$
+  com~$Y \sim N_{k}(\mu_{H}, \sigma^{2})$, onde~$\mu_{H}$ é a projeção
+  de~$\mu$ em $H$.
+\end{fato}
+
+\begin{proof}
+  Por translação, podemos supor
+  que~$H=\left<e_{1},e_{2},\dots,e_{k}\right>$,
+  onde~$e_{1},\dots,e_{k}$ é a base canônica de~$\mathbb{R}^{k}$ e
+  que~$X=(X_{1},\dots,X_{n})$ tem função densidade de probabilidade
+  \begin{align*}
+    \phi(X)=\frac{1}{\left(2\pi\sigma^{2}\right)^{d/2}}e^{-\lVert X \rVert^{2}/2\sigma^{2}}.
+  \end{align*}
+
+  Temos que~$Y=(X_{1},\dots,X_{k})$. A função densidade de
+  probabilidade de~$Y$ é
+  \begin{align*}
+    \phi(Y)&=\prod_{1 \leq i \leq k}\frac{1}{\sqrt{2\pi\sigma^{2}}}e^{X_{i}^{2}/2\sigma^{2}}\\
+           &=\frac{1}{\left(2\pi\sigma^{2}\right)^{k/2}}e^{\sum_{i=1}^{k}X_{i}/2\sigma^{2}}
+  \end{align*}
+
+\end{proof}
+
+Seja~$p$ uma distribuição de probabilidade em~$\mathbb{R}^{d}$. A reta
+que \emph{melhor aproxima~$p$} é
+$$\arg\,max_{\lVert v \rVert=1}\mathbb{E}_{X \sim p}(v^{T}X)^2.$$
