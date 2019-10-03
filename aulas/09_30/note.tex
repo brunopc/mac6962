@@ -1,0 +1,141 @@
+\section{Aula 30 de Setembro de 2019}
+\label{2019_09_30}
+
+\subsection{Separação de Gaussianas em Dimensão Alta}
+
+\paragraph{} Sejam $k\ge 2, d \ge 1, \mu_1,\dots,\mu_k\in \mathbb{R}^d,\sigma >0, \gamma_1,\dots,\gamma_k>0$ tais que $\sum \gamma_i = 1$, e sobre a hip\'otese de separa\c{c}\~ao:
+\[\Delta = \min_{i \neq j}\vert\vert\mu_i-\mu_j\vert\vert\gg \sigma k^{1/4}\]
+Seja a distribui\c{c}\~ao de probabilidade $p=\displaystyle \sum_{1\le i\le k}\gamma_i N_d(\mu_i,\sigma^2)$. Suponha que temos amostras independentes $x_i,\dots,x_n \in \mathbb{R}^d$ de $p$. Ademais, suponha que $n\ge Cd^2/(\min \gamma_i )^6$.
+
+Podemos estimar os $\mu_ie \sigma$ da seguinte forma:
+\begin{enumerate}
+\item Seja $y = \dfrac{1}{n}\displaystyle\sum_{1\le i\le n} x_i$, o centroide dos $x_i$.(Note que subtraindo $y$ de cada $x_i$ podemos supor que $y=0$)
+
+\item Encontramos o subespa\c{c}o $(k-1)$-dimensional $H$ que melhor encaixa nos pontos $x_i$ , usando a decomposi\c{c}\~ao em valores singulares (SVD) de 
+\[A = 
+\begin{bmatrix}
+    \text{---} & x_1 & \text{---} \\
+    \text{---} & x_2 & \text{---}\\
+     &\vdots &\\
+    \text{---} & x_2 & \text{---}\\
+\end{bmatrix} = \sum_{1\le i \le r} \sigma_iu_i^Tv_i,
+\]
+onde $r = \text{posto}(A), \sigma_1\ge\sigma_2\ge\dots\ge \sigma_r$.
+Ent\~ao $H=\langle v_1,\ldots,v_{k-1} \rangle$
+
+\item Seja $P_H: \mathbb{R}^d \to H=\mathbb{R}^{k-1}$ a proje\c{c}\~ao ortogonal sobre $H$. Consideramos \[x'_i = P_H(x_i), 1\le i \le n\]
+\item Determinamos $\mu_i$ a partir dos $x'_i$ calculando todas as dist\^ancias $\vert\vert x'_i-x'_j\vert\vert$ ($i\neq j$).
+
+A hip\'otese de separa\c{c}\~ao garante que os $x'_i$ s\~ao suficientemente separados para este algoritmo funcionar em $\mathbb{R}^{k-1}$
+\end{enumerate}
+\subsubsection{Subespa\c{c}os afins/ centraliza\c{c}\~ao de dados}
+\begin{definicao}
+Sejam $x_1,\dots x_n \in \mathbb{R}^d$, ent\~ao $V = \langle v1,\dots,v_k\rangle$ \'e um subespa\c{c}o de dimens\~ao $k$ que melhor se encaixa nos $x_i$, se $\displaystyle\sum _{1 \le i \le n} \text{dist}(x_i,V)^2$ \'e m\'inima.
+\end{definicao}
+
+\begin{definicao}
+Seja $W = V + a$, onde $a\in \mathbb{R}^d$ e $V$ \'e um subespa\c{c}o de $\mathbb{R}^d$ de dimens\~ao $k$, ent\~ao $W$ \'e chamado um subespa\c{c}o afim de dimens\~ao $k$.
+\end{definicao}
+
+\begin{definicao}
+Sejam $x_1,\dots x_n \in \mathbb{R}^d$, ent\~ao $W = V+a $ \'e um subespa\c{c}o afim de dimens\~ao $k$ que melhor se encaixa nos $x_i$, se $\displaystyle\sum _{1 \le i \le n} \text{dist}(x_i,W)^2$ \'e m\'inima.
+\end{definicao}
+
+\begin{proposicao} 
+Sejam $x_1,\dots x_n \in \mathbb{R}^d$. Seja $L$ uma reta afim que melhor se encaixa nos $x_i$. Ent\~ao $L$ cont\'em o centroide dos $x_i$, $y = \dfrac{1}{n} \displaystyle\sum_{1\le i\le n} x_i$.
+\end{proposicao}
+Prova: Subtraindo $y$ de cada $x_i$, podemos supor que $y=0\in \mathbb{R}^d$. Vamos provar que $L$ cont\'em $0$. Suponha que:
+\[L = \{ a + \lambda v: \lambda \in \mathbb{R}\},\]
+onde $v \in \mathbb{R}^d$ \'e tal que $\vert\vert v \vert \vert = 1$ e $\vert\vert a \vert \vert$ \'e m\'inimo.
+
+Temos que $v^Ta=0$. Por Pit\'agoras, $\vert\vert x_i - a \vert \vert ^2 = \text{dist} (x_i,L)^2 + (v^Tx_i)^2$.
+
+Assim
+\begin{align*}
+\sum _{1\le i \le n} \text{dist}(x_i,L)^2&=\sum _{1\le i \le n} \left(\vert\vert x_i - a \vert \vert ^2 - (v^Tx_i)^2\right)\\
+										 &=\sum_{1\le i \le n} \left(\vert\vert x_i\vert \vert ^2 + \vert\vert a\vert \vert^2 - 2a^Tx_i - (v^Tx_i)^2\right)\\ 
+										 &= \left(\sum _{1\le i \le n} \vert\vert x_i\vert \vert ^2 \right)+ n \vert\vert a \vert \vert ^2 - \left(\sum _{1\le i \le n}(v^Tx_i)^2)\right)
+\end{align*}
+
+Como $L$ minimiza 
+\[\sum _{1\le i \le n} \text{dist}(x_i,L)^2,\]
+temos $a=0$, e como $a\in L$, terminamos. \qed
+
+
+\begin{proposicao} 
+Sejam $x_1,\dots x_n \in \mathbb{R}^d, k \ge 1$. Seja $H$ um subespa\c{c}o afim de dimens\~ao $k$ que melhor se encaixa nos $x_i$. Ent\~ao $H$ cont\'em $y$, o centroide dos $x_i$.
+\end{proposicao}
+Prova: A prova \'e an\'aloga \'a prova da proposi\c{c}\~ao anterior. Subtraindo $y$ de cada $x_i$, podemos supor que $y=0\in \mathbb{R}^d$. Vamos provar que $H$ cont\'em $0$. Suponha que:
+\[H = a + V\]
+onde $V \subset \mathbb{R}^d$ \'e um subespa\c{c}o de dimens\~ao $k$, $\vert\vert a \vert \vert$ \'e m\'inimo.
+
+Seja $\{v_1,\dots,v_k\}$ base ortonormal de $V$
+
+Temos que $v^Ta=0,\forall v \in V$. Por Pit\'agoras, $\vert\vert x_i - a \vert \vert ^2 = \text{dist} (x_i,L)^2 + \displaystyle\sum_{1\le j \le k}(v_j^Tx_i)^2$.
+
+Assim
+\begin{align*}
+\sum _{1\le i \le n} \text{dist}(x_i,L)^2&=\sum _{1\le i \le n} \left(\vert\vert x_i - a \vert \vert ^2 - \sum_{1\le j \le k}(v_j^Tx_i)^2\right)\\
+										 &=\sum_{1\le i \le n} \left(\vert\vert x_i\vert \vert ^2 + \vert\vert a\vert \vert^2 - 2a^Tx_i - \sum_{1\le j \le k}(v_j^Tx_i)^2\right)\\ 
+										 &= \left(\sum _{1\le i \le n} \vert\vert x_i\vert \vert ^2 \right)+ n \vert\vert a \vert \vert ^2 - \left(\sum _{1\le i \le n}\sum_{1\le j \le k}(v_j^Tx_i)^2\right)
+\end{align*}
+
+Como $L$ minimiza 
+\[\sum _{1\le i \le n} \text{dist}(x_i,L)^2,\]
+temos $a=0$, e como $a\in L$, terminamos. \qed
+
+\subsubsection{SVD e subespa\c{c}os que melhor se encaixam em distribui\c{c}\~oes}
+Vamos tentar generalizar a no\c{c}ao de subespa\c{c}os que melhor se encaixam em conjuntos para subespa\c{c}os que melhor encaixam distribui\c{c}\~oes. Note que minimizar $\displaystyle\sum_{i} \text{dist}(x_i,H)^2$ \'e equivalente a maximizar $\displaystyle\sum_{i} \vert\vert P_H(x_i)\vert\vert^2$,o que motiva a sequinte defini\c{c}\~ao.
+
+\begin{definicao}
+Um subespa\c{c}o de dimens\~ao $1$ que melhor se encaixa em $p$ \'e um subespa\c{c}o da forma $L = \langle v \rangle$, $\vert\vert v \vert\vert = 1, v \in \mathbb{R}^d$ tal que 
+\[\displaystyle \mathop{\mathbb{E}}_{x \sim p} \left((v^Tx)^2\right)\]
+\'e m\'aximo.
+\end{definicao}
+
+\begin{exemplo}
+$p = N_d(0,\sigma^2),$ ent\~ao qualquer subespa\c{c}o de dimens\~ao $1$ melhor se encaixa em $p$. Note que para qualquer $v\in \mathbb{R}^d$ com $\vert\vert v \vert\vert=1,$ temos  $\displaystyle \mathop{\mathbb{E}}_{x \sim p} \left((v^Tx)^2\right) = \sigma^2$
+\end{exemplo}
+
+\begin{lema}
+Se $p = N_d(\mu,\sigma^2)$ e $\mu \neq 0$, ent\~ao $\langle v_1 \rangle$, com $v_1 = \mu/ \vert\vert \mu \vert \vert$, \'e o \'unico subespa\c{c}o que melhor se encaixa em $p$.
+\end{lema}
+Prova: Temos, para todo $v \in \mathbb{R}^d$, $\vert\vert v \vert \vert =1,$
+\begin{align*}
+\displaystyle \mathop{\mathbb{E}}_{x \sim p} \left((v^Tx)^2\right) &= \displaystyle \mathop{\mathbb{E}}_{x \sim p} \left((v^T(x-\mu) + v^T\mu)^2\right)\\
+																   &= \displaystyle \mathop{\mathbb{E}}_{x \sim p} \left((v^T(x- \mu))^2 + 2v^T(x-\mu)v^T\mu + (v^T\mu)^2\right)\\
+																   &= \sigma^2 + (v^T\mu)^2.			   
+\end{align*}
+Queremos maximizar esta quantidade. Claramente, o melhor \'e tomar $v = \mu/\vert\vert\mu\vert\vert$. \qed
+
+\begin{definicao}
+Um subespa\c{c}o $V$ de dimens\~ao $k$ melhor se encaixa na distribui\c{c}\~ao $p$ se $V$ maximiza a quantidade 
+\[\displaystyle \mathop{\mathbb{E}}_{x \sim p} \left( \vert\vert P_V (x)\vert\vert^2\right).\]
+\end{definicao}
+
+\begin{lema}
+Se $p = N_d(\mu, \sigma^2), k \ge 1, V$ subespa\c{c}o de dimens\~ao $k$. Ent\~ao $V$ melhor se encaxa em $p$ se e s\'o se $\mu \in V.$
+\end{lema}
+
+Prova: Seja $\{v_1,\dots,v_k\}$ base ortonormal de $V$, ent\~ao:
+\begin{align*}
+\displaystyle \mathop{\mathbb{E}}_{x \sim p} \left(\vert\vert P_V(x)\vert\vert^2\right) &= \displaystyle \mathop{\mathbb{E}}_{x \sim p} \left( \sum_{1\le i\le k} (v_i^Tx)^2\right)\\
+																   &=\displaystyle \sum_{1\le i\le k}\mathop{\mathbb{E}}_{x \sim p} \left((v_i^T(x-\mu) + v_i^T\mu)^2\right)\\
+																   &= \displaystyle \sum_{1\le i\le k}\mathop{\mathbb{E}}_{x \sim p} \left((v_i^T(x- \mu))^2 + 2v_i^T(x-\mu)v_i^T\mu + (v_i^T\mu)^2\right)\\
+																   &= k\sigma^2 + \sum_{1\le i\le k}(v^T\mu)^2\\
+																   &= k\sigma^2 + \vert\vert P_V(\mu)\vert\vert.			   
+\end{align*}
+Queremos maximizae essa quantidade, claramente isso ocorre se e somente se $\mu \in V$. \qed
+
+Sejam novamente $k \ge 2, \gamma_1,\dots,\gamma_k>0, \sum \gamma_i = 1, \mu_1,\dots, \mu_k, \sigma_1^2, \dots, \sigma_k^2$, e 
+\[p = \displaystyle\sum_{1\le i \le k} \gamma_iN_d(\mu_i, \sigma_i^2)\]
+
+\begin{teorema}
+Se $V$ \'e um subespa\c{c}o de dimens\~ao $k$ que melhor se encaixa em $p$, ent\~ao $V$ cont\'em $\mu_i, (1\le i \le k)$. Se os $\mu_i$ s\~ao linearmente independentes, ent\~ao $V= \langle \mu_1,\dots, \mu_k\rangle$ \'e o \'unico subespa\c{c}o de dimens\~ao $k$ que melhor se encaixa em $p$.
+\end{teorema}
+Prova: Seja $W$ um subespa\c{c}o de dimens\~ao $k$ que melhor se encaixa em $p$ ent\~ao:
+\begin{align*}
+\displaystyle \mathop{\mathbb{E}}_{x \sim p} \left( \vert\vert P_W (x)\vert\vert^2\right)&= \sum_{1\le i \le k} \gamma_i\displaystyle \mathop{\mathbb{E}}_{x \sim N_d(\mu_i,\sigma_i^2)} \left( \vert\vert P_W (x)\vert\vert^2\right)\\
+								&\le   \sum_{1\le i \le k} \gamma_i \max_{W}\displaystyle \mathop{\mathbb{E}}_{x \sim N_d(\mu_i,\sigma_i^2)} \left( \vert\vert P_W (x)\vert\vert^2\right).
+\end{align*}
+O resultado seque ent\~ao do Lema anterior. \qed
