@@ -1,0 +1,119 @@
+\section{Aula 03 de Outubro de 2019}
+\label{2019_10_03}
+
+\subsection{Redução de dimensão por projeções aleatórias}
+\paragraph{} Redução de dimensão : $P_1,...P_n \in \mathbb{R}^d$ . Seja $A_{n \times d}$ a matriz dos pontos temos que, usando decomposição SVD:
+
+\[
+A=
+  \begin{bmatrix}
+    P_1^T \\
+    \vdots \\
+    P_n^T
+  \end{bmatrix}
+\]
+
+\begin{equation*}
+    A = \sum\limits_{i = 1}^r \sigma_i u_i^T v_i
+\end{equation*}
+em que $posto(A) = r$. Seja 
+\begin{equation*}
+    A_k = \sum\limits_{i = 1}^k \sigma_i u_i^T v_i    
+\end{equation*}
+e suponha o centroide na origem. Temos que, $\forall D$ tal que $ posto(D)=k$ :
+\begin{equation*}
+    \left\Vert A - A_k \right\Vert_F \leq \left\Vert A - D \right\Vert_F
+\end{equation*}
+em que $\left\Vert \right\Vert_F$ é a norma de Frobenius.
+\paragraph{}Essa redução não preserva as distâncias, a mesma minimiza a soma total dos deslocamentos ao quadrado. Há aplicações em que é útil preservar as distância.
+\begin{exemplo}[Aplicação na qual as distâncias são relevantes]
+Dados: $P_1,..., P_n \in \mathbb{R}^d$
+
+Query: $Q \in \mathbb{R}^d$
+
+Pergunta: Qual $P_i$ está mais próximo de Q?
+
+Respostas aproximadas ok: Se respondo $P_i$ garantidamente não há $P_j$ tal que $\left\Vert P_j - Q \right\Vert <(1 - \epsilon) \left\Vert P_i - Q \right\Vert $
+\end{exemplo}
+
+\paragraph{}Considere a aplicação linear $R \colon \mathbb{R}^d \to \mathbb{R}^k$ aleatória, definida da seguinte forma: Escolha $u_1,...,u_k \sim N_d(0,1)$ independentes. Para $v \in \mathbb{R}^d$, pomos:
+\begin{equation*}
+    \begin{split}
+    R(v) &= (u_1^Tv,...,u_k^Tv) \in \mathbb{R}^k\\
+         &= \sum\limits_{i=1}^k (u_i^Tv)e_i
+    \end{split}
+\end{equation*}
+\paragraph{}Vamos provar que se definirmos $T = \frac{1}{\sqrt{k-1}}R$, então para $v \in \mathbb{R}^d fixo$:
+\begin{equation*}
+    \left\Vert T(v) \right\Vert \sim \left\Vert v \right\Vert
+\end{equation*}
+\paragraph{}com alta probabilidade. De fato, se $x_1,...,x_n$
+\begin{equation*}
+    \left\Vert T(x_i) - T(x_j) \right\Vert \sim \left\Vert x_i - x_j \right\Vert
+\end{equation*}
+\paragraph{}Para todo $i,j$ desde que $k$ seja grande o suficiente em relação a n.
+\begin{fato}
+$u_i^Tv \sim N(0,1)$
+\end{fato}
+\paragraph{}e como essas quantidades são independentes:
+\begin{equation*}
+    \begin{split}
+    u_i &\sim N_d(0,1)\\
+    u_{i1},...,u_{id} &\sim N(0,1)\\
+    V &= (v_1,...,v_d)\\
+    u^Tv &= u_{i1}v_1 +...+u_{id}v_d
+    \end{split}
+\end{equation*}
+\paragraph{}Segue do fato que se $\left\Vert V \right\Vert = 1$, então $R(v) \sim N_k(0,1)$. Pelo teorema do anel (annulus).
+\begin{equation*}
+    \mathbb{P}(\left\vert \left\Vert R(v) \right\Vert - \sqrt{k-1} \right\vert > c) \leq \frac{4}{c^2}e^{-\frac{c^2}{4}}
+\end{equation*}
+\paragraph{}e $v \in \mathbb{R}^d$ arbitrário. Tome $c = \epsilon\sqrt{k-1}$. Então
+\begin{equation*}
+    \mathbb{P}(\left\vert \left\Vert R(v) \right\Vert - \sqrt{k-1} \right\vert > \epsilon\sqrt{k-1}) \leq \frac{4}{\epsilon^2(k-1)}e^{-\frac{(k-1)\epsilon^2}{4}}
+\end{equation*}
+\paragraph{}Tome $T=\frac{1}{\sqrt{k-1}}R$. Então:
+\begin{equation*}
+    \mathbb{P}(\left\vert \left\Vert T(v) \right\Vert - \left\Vert v \right\Vert \right\vert > \epsilon\left\Vert v \right\Vert) \leq \frac{4}{\epsilon^2(k-1)}e^{-\frac{(k-1)\epsilon^2}{4}}
+\end{equation*}
+\paragraph{}Suponha agora que temos $x_1,..,x_n \in \mathbb{R}^d$ fixos. Tome $k \geq 12\epsilon^{-2}\log{n}$ e suponha $n>n_0$ para que:
+\begin{equation*}
+    \epsilon^2(k-1) \geq 4
+\end{equation*}
+\paragraph{}Note que $(k-1)\frac{\epsilon^2}{4} \geq 3\log(n)$. Assim, para $i \neq j$ fixos, temos:
+\begin{equation*}
+    \mathbb{P}(\left\vert \left\Vert T(x_i) - T(x_j) \right\Vert - \left\Vert x_i - x_j \right\Vert \right\vert > \epsilon\left\Vert x_i - x_j \right\Vert) \leq \frac{1}{n^3}
+\end{equation*}
+\paragraph{}Assim, seja $B_{ij} = \left\vert \left\Vert T(x_i) - T(x_j) \right\Vert - \left\Vert x_i - x_j \right\Vert \right\vert > \epsilon\left\Vert x_i - x_j \right\Vert$
+\begin{equation*}
+    \mathbb{P}(\exists\> i \neq j : B_{ij}) \leq \binom{n}{2}\frac{1}{n^3} \leq \frac{1}{2n}
+\end{equation*}
+\paragraph{}Provamos a seguinte versão do lema de Johnson e Lidenstrauss:
+\begin{teorema}[Johnson e Lidenstrauss]
+Seja $T \colon \mathbb{R}^d \to \mathbb{R}^k$ como definido acima com $k > 12\epsilon^{-2}\log{n}$. Sejam $x_1,...,x_n \in \mathbb{R}^d (n \geq n_0)$ dados. Com probabilidade maior que $1 - \frac{1}{2n}$, temos que, para todo $i,j$:
+\end{teorema}
+\begin{equation*}
+    \left\Vert T(x_i) - T(x_j) \right\Vert   = (1 \pm \epsilon)\left\Vert x_i - x_j \right\Vert
+\end{equation*}
+\paragraph{}Algumas observações:
+\begin{enumerate}
+    \item É possível provar com resultado análogo com $T$ a projeção ortogonal a um subespaço $k$-dimensional aleatório.
+    \item Podemos usar distribuições mais simples do que $N_d(0,1)$ para os $u_i(1 \leq i \leq k)$. Suponha $u_i = (u_{i1,...,id})$. Podemos usar as seguintes duas distribuições:
+    \begin{enumerate}
+        \item 
+        \[
+                 u_{ij}=   \begin{cases} 
+                        1,\ \mathbb{P}=\frac{1}{2}\\ 
+                        -1,\ \text{c.c}\end{cases}
+        \]
+        \item
+        \[
+                 u_{ij}=   \begin{cases} 
+                        \sqrt{3},\ \mathbb{P}=\frac{1}{6}\\ 
+                        0,\ \mathbb{P}=\frac{2}{3} \\
+                        -\sqrt{3},\ \text{c.c}\end{cases}
+        \]
+    \end{enumerate}
+\end{enumerate}
+\paragraph{} Ambas as distribuições são mais simples que usar binomiais e apresentam resultados de qualidade equivalente $k = \Omega(\epsilon^{-2}\log{n})$. A segunda distribuição pode gerar uma matriz esparsa. Uma análise mais profunda pode ser encontrada em \cite{achlioptas_2003}
+e \cite{bingham_2001}.
