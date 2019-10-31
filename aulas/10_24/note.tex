@@ -1,0 +1,164 @@
+\section{Aula 24 de Outubro de 2019}
+\label{2019_10_24}
+
+\subsection{Revisão de distribuição binomial}
+$X\sim Bi(n,p)$
+\\
+(1) 
+\[\mathbb{P}(X \geq k) \leq {n\choose k}p^{k} \leq {enp\choose k}^{k}\]
+\\
+(2)
+\[\mu = \mathbb{e}(X) = np \]
+(a)
+\[\mathbb{P}(X \geq \mu +t) \leq exp(\frac{t^{2}}{-2(\mu+\frac{t}{3})})\]
+(b)
+\[\mathbb{P}(X \leq \mu -t) \leq exp(\frac{-t^{2}}{2\mu}) \leq exp(\frac{-\epsilon^{2}(k-1)^{2}}{2((k-1)(1-\epsilon)+\epsilon\frac{k-1}{3})}) \]
+\[\leq exp(\frac{-\epsilon^{2}(k-1)^{2}}{2(k-1)}) \]
+\\
+(3)
+\\
+Se $ 0 \leq \epsilon \leq \frac{3}{2} $, então
+\\
+(a)
+\\
+\[\mathbb{P}(X \geq (1+\epsilon)\mu) \leq exp(\frac{-\epsilon^{2}\mu}{3}) \]
+(b)
+\[\mathbb{P}(X \leq (1-\epsilon)\mu) \leq exp(\frac{-1}{2}\epsilon^{2}\mu) \]
+\\
+\subsection{Grafos aleatórios (continuação)}
+\begin{teorema}
+$p = \frac{1 - \epsilon}{n} $, $\epsilon > 0$ constante.
+\\
+$L_{1}(G_{p}) \leq \frac{3}{\epsilon^{2}} log(n)$ quase certamente.
+\end{teorema}
+\\
+\textbf{Prova:}\\
+
+\[p = \frac{1-\epsilon}{n} < \frac{1-\epsilon}{n-1}\]
+\\
+Fixe $v\in V(G_{p})$\\
+
+\begin{fato}
+\[|V(C_{v})| \geq k \rightarrow \sum_{1\leq i \leq k} z_{i} \geq k-1\]
+\end{fato}
+\\
+Assim,
+
+\begin{align*}
+	\mathbb{P}(|V(C_{v})|\geq k) \leq \mathbb{P}( \sum_{1\leq i \leq k} z_{i} \geq k-1) \\
+	&\leq \mathbb{P}(\sum_{1\leq i \leq k} Bi(n-1,\frac{1-\epsilon}{n-1}) \geq k-1) \\
+	&\leq e^{\frac{-1}{2}\epsilon^{2}(k-1)}
+\end{align*}
+
+Se \[k > (\frac{3}{\epsilon^{2}}log(n) \geq 1 + \frac{5}{2\epsilon^{2}} log(n) \] 
+ 
+Então \[\mathbb{P}(|V(C_{v})| \geq k) \leq e^{\frac{-5}{4}log(n)} = \frac{1}{n^{\frac{5}{4}}}\]
+
+Portanto,
+
+\[\mathbb{P}(\exists v: |V(C_{v})|>k) \leq n \frac{1}{n^{\frac{5}{4}}} \rightarrow 0 \]
+
+\begin{flushright}
+$\square$
+\end{flushright}\\
+
+Para $v$ fixo, \[\mathbb{e}(|V(C_{v})|) \leq \frac{3}{\epsilon^{2}} \]
+
+\begin{teorema}
+Fixe $v\in V(G_{p})$ e suponha $\epsilon \leq \frac{1}{2}$ \\
+Então
+\[\mathbb{e}(|V(C_{v})|) \leq \frac{3}{\epsilon^{2}} \]
+\end{teorema}\\
+\textbf{Prova:} \\
+Vimos que $\mathbb{P}(|V(C_{v})|\geq k) \leq e^{\frac{-1}{2}\epsilon^{2}k}$
+\\
+Seja $X = |V(C_{v})|$
+\\
+Temos
+\begin{align*}
+	\mathbb{e}(X) = \sum_{k \geq 1} k\mathbb{P}(X=k) = \sum_{k \geq 1} \mathbb{P}(X \geq k) \\
+	&\leq \sum_{k \geq 1} e^{\frac{-1}{2}\epsilon^2(k-1)} \\
+	&\leq  1 + e^{\frac{-1}{2}\epsilon^2} + e^{\frac{-1}{2}\epsilon^2 2} + ... \\
+	&= \frac{1}{1-e^{\frac{-\epsilon^{2}}{2}}} \\
+	&\leq \frac{1}{1-(1-\frac{\epsilon^{2}}{3})} \\
+	& = \frac{3}{\epsilon^2}
+\end{align*}
+
+\begin{flushright}
+$\square$
+\end{flushright}\\
+
+\begin{teorema}
+\[p = \frac{1-\epsilon}{n}, \epsilon > 0.\] Então, quase certamente, toda componente de $G_{p}$ é ou uma árvore ou tem um único circuito.
+\end{teorema}
+
+\begin{lema}
+(Teorema de Cayley)\\
+O número de árvores rotuladas com $k$ vértices é $k^{k-2}$
+\end{lema}\\
+
+\textbf{Prova do teorema:}\\
+
+Seja $X_{k}$ o número de componentes de $G_{p}$ com $k$ vértices e $\geq k+1$ arestas.\\
+Queremos provar que \[\mathbb{P}(\sum_{k\geq 1} X_{k}>0) \rightarrow 0\].\\
+Pelo teorema \[L_{1}(G_{p}) \leq C_{\epsilon}log(n)\]\\
+Basta estimar \[\mathbb{P}(\sum_{1\leq k \leq(\frac{3}{\epsilon^2})log(n)} X_{k} > 0)\]\\
+Temos que, para \[k \leq(\frac{3}{\epsilon^2})log(n)\]
+\[\mathbb{e}(X_{k})\leq {n\choose k}k^{k-2}({{k\choose 2}\choose 2})p^{k-1} (1-p)^{k(n-k)}\]
+\begin{align*}
+	  \leq  (\frac{en}{k}kp(1-p)^{n-k})^{k}\frac{1}{k^{2}}\frac{k^{4}}{8}p \\
+	  &\leq (e(1-\epsilon e^{-p(n-k)}))^{k}\frac{k^2}{8}\frac{1-\epsilon}{n} \\
+	  &\leq ((1-\epsilon)e^{\epsilon})^{k}e^{pk^{2}}\frac{k^2}{8n} \\
+	  &\leq \frac{k^{2}}{4n}(e^{\epsilon+log(1-\epsilon)})^{k} \\
+	  &\leq \frac{k^{2}}{4n}(e^{\frac{-\epsilon^{2}}{2}})^{k}
+\end{align*}
+Concluímos que
+\begin{align*}
+	\mathbb{P}(\sum_{1\leq k \leq \frac{3}{\epsilon^{2}}log(n)}X_{k}\geq 1) \leq \mathbb{e}(\sum_{1\leq k \leq \frac{3}{\epsilon^{2}}log n}X_{k}) \\
+	&= \sum_{1\leq k \leq \frac{3}{\epsilon^{2}}log(n)} \mathbb{e}(X_{k}) \\
+	&\leq \sum_{1\leq k \leq \frac{3}{\epsilon^{2}}log(n)}\frac{k^{2}}{4n} e^{\frac{-\epsilon^{2}k}{2}} \\
+	&\leq (\frac{3}{\epsilon^{2}}log(n))^{2}\frac{1}{4n}\sum_{k \geq 1} e^{\frac{-\epsilon^2 k}{2}} \leq \frac{3}{\epsilon^{2}} \\
+	&\leq \frac{3^{3}}{4\epsilon^{6}}\frac{(log(n))^{2}}{n} \rightarrow 0
+\end{align*}
+
+\begin{flushright}
+$\square$
+\end{flushright}\\
+
+\subsection{Cuckoo Hashing}\\
+
+Colisões: maior lista ou cluster determina o pior caso. Qual o tamanho dela?
+\\
+Para n bolas e n urnas, qual o número de bolas nas urnas mais cheias?
+\\
+$X_{i}$ = número de bolas na urna i
+\[X_{i}\sim Bi(n,\frac{1}{n})\]
+\[\mathbb{P}(X_{i}\geq k) \leq {enp\choose k}^{k} = (\frac{e}{k})^{k}\]
+$\mathbb{P}(\exists$ urna com $\geq k$ bolas) $\leq n\mathbb{P}(X_{i}\geq k) = n(\frac{e}{k})^{k}$
+\\
+Suponha $k = \frac{4(log(n))}{log(log(n))}$
+\\
+Então temos
+\begin{align*}
+	log(n)+ k(1-log(k)) \\
+	&\leq log(n) + \frac{4log(n)}{log(log(n))}(1-(log(log(n)))+log(log(log(n)))) \\
+	&\leq log(n) + \frac{4log(n)}{log(log(n))}(\frac{-1}{2}log(log(n))) \\
+	&= -log(n)
+\end{align*}
+\\
+Assim, $n{e\choose k}^{k}\leq\frac{1}{n}\rightarrow 0$\\
+
+\begin{flushright}
+$\square$
+\end{flushright}\\
+
+Portanto a maior lista é O($\frac{log(n)}{log(log(n))}$)\\
+
+\textbf{Usando pares de urnas}\\
+Para cada bola, sorteiam-se duas urnas e ela vai para a menos cheia
+\\
+Neste esquema, as urnas tem todas com probabilidade $1-o(1)$, no máximo
+$\frac{1}{2}log(log(n)) + O(1)$ bolas
+\\
+\textbf{Cuckoo Hashing}\\
+Pior caso de busca/remoção é O(1), e de inserção é O(1) amortizado.
