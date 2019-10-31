@@ -8,7 +8,7 @@ $X\sim Bi(n,p)$
 \[\mathbb{P}(X \geq k) \leq {n\choose k}p^{k} \leq {enp\choose k}^{k}\]
 \\
 (2)
-\[\mu = \mathbb{e}(X) = np \]
+\[\mu = \mathbb{E}(X) = np \]
 (a)
 \[\mathbb{P}(X \geq \mu +t) \leq exp(\frac{t^{2}}{-2(\mu+\frac{t}{3})})\]
 (b)
@@ -62,12 +62,12 @@ Portanto,
 $\square$
 \end{flushright}\\
 
-Para $v$ fixo, \[\mathbb{e}(|V(C_{v})|) \leq \frac{3}{\epsilon^{2}} \]
+Para $v$ fixo, \[\mathbb{E}(|V(C_{v})|) \leq \frac{3}{\epsilon^{2}} \]
 
 \begin{teorema}
 Fixe $v\in V(G_{p})$ e suponha $\epsilon \leq \frac{1}{2}$ \\
 Então
-\[\mathbb{e}(|V(C_{v})|) \leq \frac{3}{\epsilon^{2}} \]
+\[\mathbb{E}(|V(C_{v})|) \leq \frac{3}{\epsilon^{2}} \]
 \end{teorema}\\
 \textbf{Prova:} \\
 Vimos que $\mathbb{P}(|V(C_{v})|\geq k) \leq e^{\frac{-1}{2}\epsilon^{2}k}$
@@ -76,7 +76,7 @@ Seja $X = |V(C_{v})|$
 \\
 Temos
 \begin{align*}
-	\mathbb{e}(X) = \sum_{k \geq 1} k\mathbb{P}(X=k) = \sum_{k \geq 1} \mathbb{P}(X \geq k) \\
+	\mathbb{E}(X) = \sum_{k \geq 1} k\mathbb{P}(X=k) = \sum_{k \geq 1} \mathbb{P}(X \geq k) \\
 	&\leq \sum_{k \geq 1} e^{\frac{-1}{2}\epsilon^2(k-1)} \\
 	&\leq  1 + e^{\frac{-1}{2}\epsilon^2} + e^{\frac{-1}{2}\epsilon^2 2} + ... \\
 	&= \frac{1}{1-e^{\frac{-\epsilon^{2}}{2}}} \\
@@ -104,7 +104,7 @@ Queremos provar que \[\mathbb{P}(\sum_{k\geq 1} X_{k}>0) \rightarrow 0\].\\
 Pelo teorema \[L_{1}(G_{p}) \leq C_{\epsilon}log(n)\]\\
 Basta estimar \[\mathbb{P}(\sum_{1\leq k \leq(\frac{3}{\epsilon^2})log(n)} X_{k} > 0)\]\\
 Temos que, para \[k \leq(\frac{3}{\epsilon^2})log(n)\]
-\[\mathbb{e}(X_{k})\leq {n\choose k}k^{k-2}({{k\choose 2}\choose 2})p^{k-1} (1-p)^{k(n-k)}\]
+\[\mathbb{E}(X_{k})\leq {n\choose k}k^{k-2}({{k\choose 2}\choose 2})p^{k-1} (1-p)^{k(n-k)}\]
 \begin{align*}
 	  \leq  (\frac{en}{k}kp(1-p)^{n-k})^{k}\frac{1}{k^{2}}\frac{k^{4}}{8}p \\
 	  &\leq (e(1-\epsilon e^{-p(n-k)}))^{k}\frac{k^2}{8}\frac{1-\epsilon}{n} \\
@@ -114,8 +114,8 @@ Temos que, para \[k \leq(\frac{3}{\epsilon^2})log(n)\]
 \end{align*}
 Concluímos que
 \begin{align*}
-	\mathbb{P}(\sum_{1\leq k \leq \frac{3}{\epsilon^{2}}log(n)}X_{k}\geq 1) \leq \mathbb{e}(\sum_{1\leq k \leq \frac{3}{\epsilon^{2}}log n}X_{k}) \\
-	&= \sum_{1\leq k \leq \frac{3}{\epsilon^{2}}log(n)} \mathbb{e}(X_{k}) \\
+	\mathbb{P}(\sum_{1\leq k \leq \frac{3}{\epsilon^{2}}log(n)}X_{k}\geq 1) \leq \mathbb{E}(\sum_{1\leq k \leq \frac{3}{\epsilon^{2}}log n}X_{k}) \\
+	&= \sum_{1\leq k \leq \frac{3}{\epsilon^{2}}log(n)} \mathbb{E}(X_{k}) \\
 	&\leq \sum_{1\leq k \leq \frac{3}{\epsilon^{2}}log(n)}\frac{k^{2}}{4n} e^{\frac{-\epsilon^{2}k}{2}} \\
 	&\leq (\frac{3}{\epsilon^{2}}log(n))^{2}\frac{1}{4n}\sum_{k \geq 1} e^{\frac{-\epsilon^2 k}{2}} \leq \frac{3}{\epsilon^{2}} \\
 	&\leq \frac{3^{3}}{4\epsilon^{6}}\frac{(log(n))^{2}}{n} \rightarrow 0
