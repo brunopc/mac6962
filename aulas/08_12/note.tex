@@ -1,72 +1,126 @@
-
-
 \section{Aula 12 de Agosto de 2019}
 \label{2019_08_12}
 \subsection{Elementos distintos em um stream}
-\paragraph{} Uma sequência $\sigma = (s_1, s_2, ..., s_n)$, $s_i \in U = [n] = {1, ..., n}$ que deve ser olhada uma única vez ou não pode ser guardada. Queremos saber quantos valores distintos ocorrem em $\sigma$. Seja $\Delta$ o número de valores distintos em $\sigma$ e $x_k$ o número de ocorrências de $k \in [n]$ em $\sigma$, queremos saber para quantos $k$ temos $x_k>0$.
-$$X = (x_1, ..., x_n)$$
-\paragraph{} Queremos resolver esse problema com memória polilogarítmica $\mathcal{O}((\log{}n)^{\mathcal{O}(1)})$. Usamos aleatorização e estimamos um $\Delta$ menor que um fator multiplicativo.
-\paragraph{}Primeiramente, um problema mais simples: Queremos um algoritmo $\mathcal{A}$ tal que dado T temos:
+Considere uma sequência $\sigma = (s_1, s_2, ..., s_m)$ com $s_i \in [n]$ e $m$ e $n$ muito grandes. Além disso, considere que devido ao tamanho essa sequência não pode ser armazenada em RAM. Nessa seção queremos responder quantos elementos diferentes ocorrem em $\sigma$, denotamos esse valor por $\Delta$. Seja $X = (x_i)_{i \in [n]}$ em que $x_i$ é o número de ocorrências de $i$ em $\sigma$, podemos interpretar a pergunta descrita acima como o número de elementos de X em que $x_i>0$.
+\paragraph{}Um exemplo de aplicação seria um servidor web com muitos acessos. O $\sigma$ seriam os IPs dos clientes que acessam o servidor e queremos saber quantos usuários o serviço tem.
+\paragraph{} Queremos resolver esse problema consumindo memória polilogarítmica $\mathcal{O}((\log{}n)^{\mathcal{O}(1)})$. Para isso, usaremos novamente a ideia de aleatorização e estimaremos um $\Delta$ aproximado. Denotaremos esse algoritmo por $\mathcal{B}$.
+\paragraph{}Primeiramente, vamos tentar resolver um problema mais simples. Queremos construir um algoritmo $\mathcal{A}$ tal que dado $T \in \mathbb{R}$ temos:
 \begin{enumerate}
     \centering
     \item Se $\Delta \geq (1+\epsilon)T$, então $\mathcal{P}(\mathcal{A}(\sigma) = 1) \geq 1 - \delta$
     \item Se $\Delta \leq (1-\epsilon)T$, então $\mathcal{P}(\mathcal{A}(\sigma) = 0) \geq 1 - \delta$
 \end{enumerate}
+\paragraph{} em que $\epsilon$ e $\delta$ são números reais e representam o erro na aproximação e a probabilidade de um resultado falso, $\mathcal{A}(\sigma)$ é o valor de retorno do algoritmo quando aplicado em $\sigma$ e $\mathcal{P}(B)$ é a probabilidade do eventro $B$ ocorrer.
+\paragraph{}Antes de descrever $\mathcal{A}$ vamos descrever um algoritmo $\mathcal{A}'$ que será usado como subrotina de $\mathcal{A}$.
 
-\subsection{Algoritmo $\mathcal{A}$'}
-\paragraph{} Escolhe $\mathcal{S} \subseteq [n]$ com $\mathcal{P}( i \in \mathcal{S}) = \frac{1}{T},\ \forall i \in [n]$ eventos independestes. Interpretando o elemento $s_j$ de $\sigma$ como:
-$$x_k \leftarrow x_k + 1$$
-\paragraph{}Em que $k=s_j$. Começamos com $X$ vazio. O algoritmo $\mathcal{A}$' mantém um "esboço" de $X$, a saber:
+\subsubsection{Algoritmo $\mathcal{A}$'}
+O algoritmo $\mathcal{A}'$ funciona da seguinte forma. Escolha um conjunto $\mathcal{S} \subseteq [n]$ com $\mathcal{P}( i \in \mathcal{S}) = \frac{1}{T}$ para todo $i \in [n]$, eventos independentes. Podemos interpretar a ocorrência de um elemento $s_j = k$ de $\sigma$ como $x_k \leftarrow x_k + 1$, isto é, crescemos o um contador que marca a frequência de cada elemento. Começamos com $X$ vazio. O algoritmo $\mathcal{A}$' mantém um "esboço" de $X$, a saber:
 $$\sigma(S) = \sum_{i \in \mathcal{S}}x_i$$
-\paragraph{} O algoritmo $\mathcal{A}$' devolve:
-\begin{enumerate}
-    \centering
-    \item $\mathcal{A}'(\sigma) = 1$, se $\sigma(\mathcal{S}) > 0$
-    \item $\mathcal{A}'(\sigma) = 0$, se $\sigma(\mathcal{S}) = 0$
-\end{enumerate}
-\paragraph{} Temos que:
-$$\mathcal{P}_0 = \mathcal{P}(\sigma(\mathcal{S})= 0) = (1-\frac{1}{T})^\Delta$$
-\paragraph{} Se $\Delta \geq (1+\epsilon)T$, então:
-$$\mathcal{P}_0 \leq e ^{-\frac{\Delta}{T}} \leq e ^{-(1+\epsilon)} \leq \frac{1}{e}(1-\frac{\epsilon}{2})$$
-\paragraph{} para $(\epsilon \leq \epsilon_0)$
-\paragraph{} Se $\Delta \leq (1-\epsilon)T$, então:
-$$\mathcal{P}_0 \geq exp(-\frac{1}{T}-\frac{1}{T^2})^\Delta \geq e ^{-(1+\epsilon)-T^{-1}} = \frac{1}{e}\frac{e^\epsilon}{e^{T^{-1}}}$$
-$$\frac{1}{e}\frac{e^\epsilon}{e^{T^{-1}}} \geq \frac{1}{e}\frac{e^\epsilon}{e^\frac{\epsilon}{2}}=\frac{1}{e}e^\frac{\epsilon}{2} \geq \frac{1}{e}(1+\frac{\epsilon}{2})$$
-\paragraph{} para $T \geq \frac{2}{\epsilon}$
+\paragraph{}$\mathcal{A}$' pode retornar os seguintes valores:
+\[
+   \mathcal{A}'(\sigma) = \begin{cases} 
+                    1,\ \text{se }\sigma(\mathcal{S}) > 0\\ 
+                    0,\ \text{c.c }\end{cases}
+\]
 
-\subsection{Algoritmo $\mathcal{A}$}
-\paragraph{} Tomando:
-$$k = \frac{2e^2}{\epsilon^2}\log{\frac{1}{\delta}}$$
-\paragraph{} Executamos $\mathcal{A}$' $k$ vezes. Seja $z$ o número de vezes que $\mathcal{A}'(\sigma)=0$:
-\begin{enumerate}
-    \centering
-    \item $\mathcal{A}(\sigma) = 1$, se $z \leq \frac{k}{e}$
-    \item $\mathcal{A}(\sigma) = 0$, se $z > \frac{k}{e}$
-\end{enumerate}
-\subsection{Análise de $\mathcal{A}$}
-\paragraph{} Suponha $\Delta \geq (1+\epsilon)T$, então:
-$$E(z) = \mathcal{P}_0 k \leq \frac{1}{e}(1-\frac{\epsilon}{2})k$$
-\paragraph{} Temos uma resposta errada se $z > \frac{k}{e}$
-$$\frac{k}{e} = \frac{k}{e}(1-\frac{\epsilon}{2}) + \frac{k\epsilon}{2e} \geq E(z) + \frac{k\epsilon}{2e}$$
-\paragraph{} Assim, utilizando McDiarmid:
-$$\mathcal{P}(z>\frac{k}{e}) \leq \mathcal{P}(z > E(Z)+\frac{k\epsilon}{2e}) \leq exp(-\frac{\epsilon^2k}{2e^2})\leq \delta$$
+\paragraph{}Seja $\mathcal{P}_0 = \mathcal{P}(\sigma(\mathcal{S})= 0)$ a probabilidade de $\mathcal{S}$ não conter nenhum elemento de $\sigma$, temos que:
+\begin{equation*}
+\mathcal{P}_0 = \left(1-\frac{1}{T} \right)^\Delta    
+\end{equation*}
+\paragraph{} Supondo $\Delta \geq (1+\epsilon)T$, temos:
+\begin{align*}
+    \mathcal{P}_0 \leq e ^{-\frac{\Delta}{T}} &\leq e ^{-(1+\epsilon)} \leq \frac{1}{e} \left(1-\frac{\epsilon}{2}\right)\\
+    \mathcal{P}_0 &\leq \frac{1}{e} \left(1-\frac{\epsilon}{2}\right)
+\end{align*}
+\paragraph{}Agora, supondo $\Delta \leq (1-\epsilon)T$, temos:
+\begin{align*}
+    \mathcal{P}_0 \geq exp(-\frac{1}{T}-\frac{1}{T^2})^\Delta &\geq e ^{-(1+\epsilon)-T^{-1}} = \frac{1}{e}\frac{e^\epsilon}{e^{T^{-1}}}\\
+    \frac{1}{e}\frac{e^\epsilon}{e^{T^{-1}}} \geq \frac{1}{e}\frac{e^\epsilon}{e^\frac{\epsilon}{2}} &=\frac{1}{e}e^\frac{\epsilon}{2} \geq \frac{1}{e}\left(1+\frac{\epsilon}{2}\right)
+\end{align*}
+\paragraph{}para $T \geq \frac{2}{\epsilon}$.
+\pagebreak
+\subsubsection{Algoritmo $\mathcal{A}$}
+Agora, estamos pontos para descrever o algoritmo $\mathcal{A}$. Seja $k =\frac{2e^2}{\epsilon^2}\log{\frac{1}{\delta}}$, o algoritmo $\mathcal{A}$ consiste em executar $\mathcal{A}$' $k$ vezes. 
+\paragraph{}Seja $z \in \mathbb{N}$ o número de vezes que $\mathcal{A}'(\sigma)=0$. Temos os seguintes valores para $\mathcal{A}$.
 
-\paragraph{} Suponha $\Delta \leq (1-\epsilon)T$, então:
-$$E(z) = \mathcal{P}_0 k \geq \frac{1}{e}(1+\frac{\epsilon}{2})k$$
-\paragraph{} Temos uma resposta errada se $z \leq \frac{k}{e}$
-$$\frac{k}{e} = \frac{k}{e}(1+\frac{\epsilon}{2}) - \frac{k\epsilon}{2e} \geq E(z) - \frac{k\epsilon}{2e}$$
-\paragraph{} Assim, utilizando McDiarmid:
-$$\mathcal{P}(z \leq \frac{k}{e}) \leq \mathcal{P}(z \leq E(Z) - \frac{k\epsilon}{2e}) \leq \delta$$
+\[
+   \mathcal{A}(\sigma) = \begin{cases} 
+                    1,\ \text{se }z \leq \frac{k}{e}\\ 
+                    0,\ \text{c.c}\end{cases}
+\]
 
-\paragraph{} Podemos rodar o algoritmo A para os seguintes casos, com
-$T_0=\frac{2}{\epsilon}$. Supunha $s \approx T=T_0(1+2\epsilon)^l$. Então:
-$$s \leq T_0(1+2\epsilon)^l=\frac{1}{1+2\epsilon}(1+2\epsilon)^{l+1}T_0\leq (1-\epsilon)(T_0 ...)=0$$
-\paragraph{}no caso $T:l+1$
+\subsubsection{Análise de $\mathcal{A}$}
+Vamos calcular a probabilidade com que $\mathcal{A}$ devolve uma resposta errada.
+\paragraph{} Suponha $\Delta \geq \left(1+\epsilon\right)T$, então:
+\begin{equation*}
+E(z) = \mathcal{P}_0 k \leq \frac{1}{e}\left(1-\frac{\epsilon}{2}\right)k    
+\end{equation*}
+\paragraph{}Para esse $\Delta$, obtemos uma resposta errada se $z > \frac{k}{e}$ e temos que:
+\begin{equation*}
+\frac{k}{e} = \frac{k}{e}\left(1-\frac{\epsilon}{2}\right) + \frac{k\epsilon}{2e} \geq E(z) + \frac{k\epsilon}{2e}    
+\end{equation*}
+\paragraph{}Com isso, obtemos o seguinte resultado:
+\begin{align*}
+    \mathcal{P}\left(z>\frac{k}{e}\right) &\leq \mathcal{P}\left(z > E(Z)+\frac{k\epsilon}{2e}\right),\text{ aplicando McDiarmid}\\
+    &\leq exp\left(-\frac{\epsilon^2k}{2e^2}\right), \text{ substituindo $k$}\\
+    &\leq \delta        
+\end{align*}    
+\paragraph{}Portanto, a probabilidade de erro para $\Delta \geq \left(1+\epsilon\right)T$ é inferior a $\delta$, como era desejado.
+\paragraph{}Agora, suponha que $\Delta \leq (1-\epsilon)T$. Podemos realizar um processo equivalente ao feito acima. Temos que:
+\begin{equation*}
+E(z) = \mathcal{P}_0 k \geq \frac{1}{e}\left(1+\frac{\epsilon}{2}\right)k    
+\end{equation*}
 
-\paragraph{} Temos que a saída é o primeiro $T$ tal que $\mathcal{A}(\sigma)=0$ $\Rightarrow$ $\Delta=(1 \pm 5\epsilon)T$. 
+\paragraph{} Temos uma resposta errada se $z \leq \frac{k}{e}$, e:
+\begin{equation*}
+\frac{k}{e} = \frac{k}{e}\left(1+\frac{\epsilon}{2}\right) - \frac{k\epsilon}{2e} \geq E(z) - \frac{k\epsilon}{2e}    
+\end{equation*}
 
-\subsection{Desigualdade de Chernoff}
-\paragraph{} Sejam $X_1,...,X_n$ variáveis aleatórias independentes com $\mathcal{P}(X_i = 1) = p$ e seja:
+\paragraph{}Com isso, obtemos o seguinte resultado:
+\begin{align*}
+    \mathcal{P}\left(z \leq \frac{k}{e}\right) &\leq \mathcal{P}\left( z \leq E(Z) - \frac{k\epsilon}{2e}\right),\text{ aplicando McDiarmid}\\
+    &\leq exp\left(-\frac{\epsilon^2k}{2e^2}\right), \text{ substituindo $k$}\\
+    &\leq \delta        
+\end{align*}
+
+\paragraph{}Portanto, a probabilidade de erro para $\Delta \leq (1-\epsilon)T$ é inferior a $\delta$. Com isso, vemos que $\mathcal{A}$ cumpre ambas as condições estabelecidas no inicio da seção.
+\paragraph{}$\mathcal{A}$ distingue entre $\Delta \geq (1+\epsilon)T$ e $\Delta \leq (1-\epsilon)T$. Suponha $T_0 =\frac{2}{\epsilon}$ e suponha $l$ tal que:
+\begin{equation*}
+    T_0(1 + 2\epsilon)^{l-1} \leq n \leq T_0(1 + 2\epsilon)^{l}
+\end{equation*}
+\paragraph{}temos que $l \leq \frac{\log(n)}{\log(T_0(1 + 2\epsilon))} \leq \frac{\log(n)}{2}$. Além disso, suponha o seguinte caso:
+\begin{align*}
+    \Delta &\leq T_0(1 + 2\epsilon)^l\\
+   &\leq \frac{1}{1+2\epsilon}T_0(1+2\epsilon)^{l+1}\\ 
+   &\leq (1-\epsilon)T_0(1+2\epsilon)^{l+1}
+\end{align*}
+\paragraph{}pois
+\begin{align*}
+    \frac{1}{1+2\epsilon} &\leq 1 - \epsilon, \quad (\epsilon \leq \frac{1}{2})\\
+\end{align*}
+\paragraph{}logo, a chamada de $\mathcal{A}$ para esses valores devolve:
+\begin{align*}
+    &T_0(1+2\epsilon)^{l - 2}, \quad \mathcal{A}(\sigma = 1)\\
+    &T_0(1+2\epsilon)^{l - 1}\\
+    &T_0(1+2\epsilon)^{l},\quad \text{Valor mais próximo de $\Delta$}\\
+    &T_0(1+2\epsilon)^{l + 1}, \quad \mathcal{A}(\sigma = 0)\\
+\end{align*}
+
+\paragraph{}Portanto, vemos que o erro máximo dista de $(1 + 2\epsilon)^2 \leq 1 + 5\epsilon$ de $\Delta$. Logo, a saída do algoritmo é o primeiro $T$ tal que $\Delta = T(1 \pm 5\epsilon)$ com $\mathcal{A}(\sigma)=0$.
+\subsubsection{Algoritmo $\mathcal{B}$}
+Esse é o algoritmo final. Primeiro, executamos $\mathcal{A}$ com vários valores $T=T_0,...$. Vimos que $\Delta=(1 \pm 5\epsilon)T$ com probabilidade $\mathcal{P} \leq L\delta=\eta$. Precisamos usar $\delta=\frac{\eta}{L}\geq\frac{\eta \epsilon}{\log{n}}$
+$$\log{\frac{1}{\delta}}=\log{\log{n}}+\log{\frac{2}{\epsilon}}+\log{\frac{1}{\eta}}$$
+
+\subsubsection{Comentários sobre implementação}
+Uma possibilidade na hora de implementar o algoritmo é não armazenar $S$. Podemos usar uma função de hashing $h:[n] \rightarrow [j]$ e definir:
+\begin{align*}
+    S = h^{-1}(1) = \{ i \in [n]: h(i) = 1\}
+\end{align*}
+\paragraph{}Mais informações podem ser encontrada no capítulo 6 do Foundations of Data Science.
+
+\paragraph{}Por fim, nessa aula também foi enunciada a desigualdade de Chernoff.
+\begin{lema}[Desigualdade de Chernoff]
+ Sejam $X_1,...,X_n$ variáveis aleatórias independentes com $\mathcal{P}(X_i = 1) = p$ e seja:
 $$Y = \sum_{i=1}^n X_i$$ 
 \paragraph{} Para todo $t\geq 0$, temos:
 \begin{enumerate}
@@ -74,14 +128,5 @@ $$Y = \sum_{i=1}^n X_i$$
     \item $\mathcal{P}(Y \leq E(Y)-t) \leq exp(-\frac{2t^t}{n})$
     \item $\mathcal{P}(Y \geq E(Y)+t) \leq exp(-\frac{2t^t}{n})$
 \end{enumerate}
-\paragraph{} McDiarmid generaliza o Chernoff acima.
-
-\subsection{Algoritmo $\mathcal{B}$}
-\paragraph{} Esse é o algoritmo final. Primeiro, executamos $\mathcal{A}$ com $T=T_0,...$.
-\paragraph{} vimos que $\Delta=(1 \pm 5\epsilon)T$ com probabilidade $\mathcal{P} \leq L\delta=\eta$. Precisamos usar $\delta=\frac{\eta}{L}\geq\frac{\eta \epsilon}{\log{n}}$
-$$\log{\frac{1}{\delta}}=\log{\log{n}}+\log{\frac{2}{\epsilon}}+\log{\frac{1}{\eta}}$$
-
-\subsection{Implementação}
-\paragraph{}Em vez de armazenar $S$, podemos usar uma função de hashing $h:[n] \rightarrow [j]$ e definir:
-$$S = h^{-1}(1) ={ i \in [n], h(i) = 1}$$
-
+\end{lema}
+\paragraph{} A desigualdade McDiarmid generaliza a desigualdade de Chernoff.
