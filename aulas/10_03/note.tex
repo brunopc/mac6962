@@ -2,29 +2,29 @@
 \label{2019_10_03}
 
 \subsection{Redução de dimensão por projeções aleatórias}
-Nessa seção iremos discutir o problema de reduzir a dimensão de um conjunto de pontos por meio de projeções com componentes aleatórias preservando alguma característica do conjunto de pontos.
-Sejam $p_1,...p_n \in \mathbb{R}^d$ pontos e seja $A_{n \times d}$ a matriz cuja as linhas são esses pontos, temos que, usando decomposição SVD:
+Nessa seção iremos discutir o problema de reduzir a dimensão de um conjunto de pontos por meio de projeções com componentes aleatórias preservando as distâncias no conjunto de pontos. Primeiramente, vamos recobrar uma redução dimensional vista anteriormente que não preserva as distâncias.
+Sejam $p_1,...,p_n \in \mathbb{R}^d$ pontos e seja $A_{n \times d}$ a matriz cuja as linhas são esses pontos, temos que, usando decomposição SVD:
 \begin{align*}
 A &=
   \begin{bmatrix}
-    P_1^T \\
+    p_1^T \\
     \vdots \\
-    P_n^T
+    p_n^T
   \end{bmatrix}\\
    A &= \sum\limits_{i = 1}^r \sigma_i u_i^T v_i    
 \end{align*}
 
-\paragraph{}com $posto(A) = r$. Seja $A_k$ em que: 
+\paragraph{}com $posto(A) = r$. Seja $A_k$ uma matriz de $posto$ $k$ em que: 
 \begin{equation*}
     A_k = \sum\limits_{i = 1}^k \sigma_i u_i^T v_i    
 \end{equation*}
-\paragraph{}e para facilitar suponha o centroide na origem. Temos que, para toda matriz $D$ tal que $ posto(D)=k$:
+\paragraph{}Temos que, para toda matriz $D$ tal que $ posto(D)=k$:
 \begin{equation*}
     \left\Vert A - A_k \right\Vert_F \leq \left\Vert A - D \right\Vert_F
 \end{equation*}
-em que $\left\Vert \right\Vert_F$ é a norma de Frobenius.
-\paragraph{}A redução por SDV não preserva as distâncias, a mesma minimiza a soma total dos deslocamentos ao quadrado. Vamos ver outra forma de reduzir a dimensão em que preservamos um alta probabilidade um característica do conjunto de pontos.
-\subsubsection{Projeções que preservam distância} Há aplicações em que é útil preservar as distâncias entre os pontos. Suponha o problema em que é dado um conjunto $P$ de $n$ pontos em $\mathbb{R}^d$, com $n$ e $d$ grandes, e são feitas várias queries. Em cada querie recebemos um ponto $q \in \mathbb{R}^d$ e o objetivo é descobrir o ponto de $P$ mais próximo de $q$. Para obter um algoritmo eficiente podemos usar aleatorização e permitir soluções aproximadas. Vamos considerar um algoritmo bom se caso a resposta para um querie seja $p_i \in P$ garantidamente não há $p_j \in P$ tal que $\left\Vert p_j - q \right\Vert <(1 - \epsilon) \left\Vert p_i - q \right\Vert$. 
+\paragraph{}em que $\left\Vert \right\Vert_F$ é a norma de Frobenius. Para facilitar, estamos supondo o centroide na origem.
+\paragraph{}A redução por SDV não preserva as distâncias, a mesma minimiza a soma total dos deslocamentos ao quadrado. Vamos ver outra forma de reduzir a dimensão em que preservamos um alta probabilidade as distâncias entre os pontos.
+\subsubsection{Projeções que preservam distância} Há aplicações em que é útil preservar as distâncias entre os pontos. Suponha o problema: Dado um conjunto $P$ de $n$ pontos em $\mathbb{R}^d$, com $n$ e $d$ grandes, e várias queries. Em cada querie recebemos um ponto $q \in \mathbb{R}^d$ e o objetivo é descobrir o ponto de $P$ mais próximo de $q$. Para obter um algoritmo eficiente podemos usar aleatorização e permitir soluções aproximadas. Vamos considerar um algoritmo bom se caso a resposta para um querie seja $p_i \in P$ garantidamente não há $p_j \in P$ tal que $\left\Vert p_j - q \right\Vert <(1 - \epsilon) \left\Vert p_i - q \right\Vert$. 
 
 \paragraph{}Considere a aplicação linear $R \colon \mathbb{R}^d \to \mathbb{R}^k$ aleatória, definida da seguinte forma: Escolha $k$ vetores gaussianos $u_1,...,u_k \sim N_d(0,1)$ independentes. Para $v \in \mathbb{R}^d$, pomos:
 \begin{equation*}
@@ -76,7 +76,7 @@ Sejam $u_1,...,u_k \sim N_d(0,1)$ independentes e seja $v \in \mathbb{R}^d$ com 
 \end{equation*}
 \paragraph{}Portanto, provamos a seguinte versão do lema de Johnson e Lidenstrauss:
 \begin{teorema}[Johnson e Lidenstrauss]
-Seja $T \colon \mathbb{R}^d \to \mathbb{R}^k$ como definido acima com $k > 12\epsilon^{-2}\log{n}$. Sejam $x_1,...,x_n \in \mathbb{R}^d (n \geq n_0)$ dados. Com probabilidade maior que $1 - \frac{1}{2n}$, temos que, para todo $i,j$:
+Considere a aplicação linear $R \colon \mathbb{R}^d \to \mathbb{R}^k$ aleatória, definida da seguinte forma: Escolha $k$ vetores gaussianos $u_1,...,u_k$ independentes, para $v \in \mathbb{R}^d$, pomos $R(v) = (u_1^Tv,...,u_k^Tv)$. Seja $T \colon \mathbb{R}^d \to \mathbb{R}^k$ com $T=\frac{1}{\sqrt{k-1}}R$ e $k > 12\epsilon^{-2}\log{n}$. Sejam $x_1,...,x_n \in \mathbb{R}^d (n \geq n_0)$ dados. Com probabilidade maior que $1 - \frac{1}{2n}$, temos que, para todo $i,j$:
 \begin{equation*}
     \left\Vert T(x_i) - T(x_j) \right\Vert   = (1 \pm \epsilon)\left\Vert x_i - x_j \right\Vert
 \end{equation*}
