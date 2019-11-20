@@ -72,7 +72,7 @@ Vimos que ${\mathit{Vol}(T_c) \over \mathit{Vol}(B^d)} \leqslant {{1\over c\sqrt
 
 Desta forma, conclui-se que a grande maioria do volume da esfera fica concentrada em torno do equador (apesar de sua “grossura” ir diminuindo a cada nova dimensão adicionada).
 
-Suponha agora que $x \in B^d$ é escolhido uniformemente ao acaso. Quanto será $||x||$ em geral se $d$ é grande? Temos $P(||x||) \leqslant 1-\epsilon = {\mathit{Vol}((1-\epsilon)B^d) \over \mathit{Vol}(B^d)} = (1-\epsilon)^d \leqslant e^{-\epsilon d}$. Nota-se desta forma que a massa de $B^d$ está concentrada nas proximidades da fronteira $S^{d-1}$.
+Suponha agora que $x \in B^d$ é escolhido uniformemente ao acaso. Quanto será $||x||$ em geral se $d$ é grande? Temos $\PP(||x||) \leqslant 1-\epsilon = {\mathit{Vol}((1-\epsilon)B^d) \over \mathit{Vol}(B^d)} = (1-\epsilon)^d \leqslant e^{-\epsilon d}$. Nota-se desta forma que a massa de $B^d$ está concentrada nas proximidades da fronteira $S^{d-1}$.
 
 \subsection{Áreas de calotas esféricas}
 
@@ -81,7 +81,7 @@ Seja $S = \{x \in S^{d-1}: x_1 \geqslant \epsilon\}$. Queremos estimar $A(S_\eps
 \begin{align*}
   A(S_\epsilon) &= \int_\epsilon^1 \mathit{Vol}_{d-2}(\sqrt{1-x_1^2}S^{d-2}) dx_1 \\
       &= A(S^{d-2}) \int_\epsilon^1 (1-x_1^2)^{(d-2)/2} dx_1 \\
-      &\leqslant$${1\over \epsilon (d-2) } e^{-(d-2)\epsilon^2/2} A(S^{d-2})
+      &\leqslant {1\over \epsilon (d-2) } e^{-(d-2)\epsilon^2/2} A(S^{d-2})
 \end{align*}
 
 Usando o cilindro de altura $1/\sqrt{d-2}$ e raio $\sqrt{1- 1/(d-2)}$ em torno do eixo $x_1$, vemos que a $A(S^{d-1}) = A(d-1) \geqslant {1 \over \sqrt{d-2}} A(d-2)$.
@@ -94,11 +94,13 @@ Seja $c > 0$, temos $A(S_{c/\sqrt{d-2}}) \leqslant {1 \over c} e^{-c^2/2} A(S^{d
 Use $\epsilon = c/\sqrt{d-2}$
 \end{proof}
 
-\textit{Exercício}. Sejam $x_1, x_2, \dots, x_N$ vetores unitários em $\mathbb{R}^d$. Dizemos que esses $x_i$ formam um sistema normal se $\langle x_i, x_j \rangle = 0, \forall i \not = j$ (em notação matricial, $x_i^Tx_j = 0$). Eles formam um sistema negativo se $\langle x_i, x_j \rangle < 0, \forall i \not = j$. Finalmente, eles foram um sistema $\delta$-quase-normal se $| \langle x_i, x_j \rangle | \leqslant \delta, \forall i \not = j$. Prove:
+\begin{exercicio}
+Sejam $x_1, x_2, \dots, x_N$ vetores unitários em $\mathbb{R}^d$. Dizemos que esses $x_i$ formam um sistema normal se $\langle x_i, x_j \rangle = 0, \forall i \not = j$ (em notação matricial, $x_i^Tx_j = 0$). Eles formam um sistema negativo se $\langle x_i, x_j \rangle < 0, \forall i \not = j$. Finalmente, eles foram um sistema $\delta$-quase-normal se $| \langle x_i, x_j \rangle | \leqslant \delta, \forall i \not = j$. Prove:
 
 \begin{enumerate}
 \item Se $x_1, x_2, \dots, x_N$ é um sistema normal, então $N \leqslant d$. Ademais, existem sistemas normais com $N = d$.
 \item Se $x_1, x_2, \dots, x_N$ é um sistema negativo, então $N \leqslant d+1$. Ademais, existem sistemas negativos com $N = d+1$.
 \item Para todo $\delta > 0$, existe um $c = c(\delta) > 0$ tal que existe um sistema $\delta$-quase-normal com $N = e^{cd}$.
 \end{enumerate}
+\end{exercicio}
 
