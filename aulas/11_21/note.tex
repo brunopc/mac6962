@@ -1,0 +1,145 @@
+\section{Aula 21 de Novembro de 2019}
+\label{2019_11_21}
+
+No método de Monte Carlo visto anteriormente, considerávamos 
+amostragens de uma distribuição uniforme do espaço de medida. Agora
+veremos que a condição de uniformidade pode ser relaxada um pouco.
+
+\begin{definicao}
+	Seja $\Omega$ conjunto finito, $\varepsilon > 0$ e $\cA$ que gera 
+	elementos aleatórios $\omega$ de $\Omega$. Dizemos que $\cA$ fornece
+	uma amostra \emph{$\varepsilon$-uniforme} se, para todo 
+	$S\subset \Omega$, temos 
+	$\left|\PP(\omega \in S) - \frac{|S|}{|\Omega|}\right|\leq \varepsilon$
+\end{definicao}
+
+Mais geralmente, temos $X \mapsto \Omega(X) \subseteq \Omega$ e 
+queremos que $\cA(X) = \omega$ seja uma amostra~$\varepsilon$-uniforme
+de $\Omega(X)$:
+\begin{equation*}\
+\forall S\subset \Omega(X), \;
+\left| \PP(\omega \in \Omega) - \frac{|S|}{|\Omega|} \right|
+\end{equation*}
+
+Por exemplo, a aplicação $G\mapsto I(G) = \{\text{conjuntos independentes de} G\}$.
+Estamos interessados em algoritmos que fazem essa amostragem rapidamente:
+\begin{definicao}[FPAUS]
+	Dizemos que um algoritmo $\cA$ é um \emph{Fully Polinomial Almost 
+	Uniform Sampler} (FPAUS) se $\omega = \cA(X)$ é uma amostra
+	$\varepsilon$-uniforme de $\Omega(X)$, e tem tempo polinomial
+	de execução em $|X|$ e $|\log (1/\varepsilon)|$.
+\end{definicao}
+Algo desejável também são resultados da forma $\exists FPAUS \implies \exists FPRAS$.
+
+\subsection{Contagem de conjuntos independentes em grafos}
+Seja $G = G^n$ um grafo fixo. Sejam $e_1, \dots, e_m$ suas arestas, e 
+$G_i = G[e_1, \dots, e_i]$. É fácil ver que $G_0$ = grafo com $n$ 
+vértices isolados e $G_m = G$.
+
+Seja $\Omega(G_i) = I(G_i) = \{ \text{conjuntos independentes de} G_i \}$.
+Temos, pela série telescópica,
+\begin{equation*}\label{key}
+|G(\Omega)| = \frac{|\Omega(G_{m})|}{|\Omega(G_{m-1})|} \cdot \frac{|\Omega(G_{m-1})|}{|\Omega(G_{m-2})|} \cdot \cdots \cdot \frac{|\Omega(G_{1})|}{|\Omega(G_{0})|}\cdot|\Omega(G_0)|
+\end{equation*}
+Vamos encontrar boas aproximações para $r_i = \frac{|\Omega(G_i)|}{|\Omega(G_{i-1})|}.$ com $i = 1, \dots, m$.
+Usaremos o FPAUS para gerar amostrar quase uniformes em $\Omega(G_{i-1})$. Note que $G_{i-1} \subset G_i$ mas 
+$\Omega(G_{i}) \subset \Omega(G_{i-1})$. Obteremos uma aproximação
+$\tilde{r}_i$ para $r_i$. A saída do algoritmo será então
+$2^n\prod_{1 \leq i \leq m}\tilde{r}_i$.
+
+Precisamos comparar esse valor com $|\Omega(G)| = 2^n\prod_{1 \leq i \leq m}r_i$. 
+Vamos estimar $R:= \prod_{1 \leq i \leq m} \frac{\tilde{r}_i}{r_i}$.
+
+Para termos uma $(\varepsilon, \delta)$-aproximação de $|\Omega(G)|$,
+queremos
+\begin{equation*}\label{key}
+	\PP\left(\left|2^n\prod_{1 \leq i \leq m}\tilde{r}_i - |\Omega(G)| \right| \geq \varepsilon|\Omega(G)|\right) leq \delta
+\end{equation*}
+isto é, dividindo por $|\Omega(G)|$, basta que
+\begin{equation}\label{Rprob}
+	\PP(|R-1| \geq \varepsilon) \leq \delta
+\end{equation}
+\begin{lema}
+	Suponha que $\tilde{r}_i$ é uma $(\varepsilon/2m, \delta/m)$-aproximação de $r_i$.
+	Então \ref{Rprob} vale.
+\end{lema}
+\begin{proof}
+	Temos que $\PP(|\tilde{r}_i - r_i|\geq \frac{\varepsilon}{2m}r_i)\leq \delta$
+	para todo $i = 1, \dots, m$. Assim, 
+	${\PP(\exists i : |\tilde{r}_i - r_i|\geq \frac{\varepsilon}{2m}r_i) \leq \delta}$.	 
+	Temos que, com probabilidade pelo menos $1-\delta$
+	$$ 1 - \frac{\varepsilon}{2m} \leq \frac{\tilde{r}_i}{r_i} \leq 1 + \frac{\varepsilon}{2m} \; \forall i = 1, \dots, m.$$
+	Por fim, com probabilidade pelo menos $1 - \delta$ temos
+	$$1-\varepsilon \leq \left(1 - \frac{\varepsilon}{2m}\right)^m \leq R = \prod_{1 \leq i \leq m}\frac{\tilde{r}_i}{r_i} \leq \left(1 + \frac{\varepsilon}{2m}\right)^m\leq e^{\varepsilon/2} \leq 1 + \varepsilon. \;(\varepsilon \leq \varepsilon_0).$$
+	como queríamos demonstrar.
+\end{proof}
+\subsection{Algoritmo para estimativa de $r_i$}
+
+Segue abaixo o algoritmo para a estimativa de $r_i$:
+
+\textbf{Entrada:} Grafos $G_i$ e $G_{i-1}$.
+
+\textbf{Saída:} $\tilde{r}_i$.
+\begin{enumerate}
+	\item $X \leftarrow 0$;
+	\item Repita $M = \lceil 1296 m^2\varepsilon^{-2}\log (2m/\delta)\rceil$;
+	\subitem(a) gere uma amostra $I$ $(\varepsilon/(6m))$-uniforme de $\Omega(G_{i-1})$;
+	\subitem(b) Se a amostra $I$ é independente em $G_i$, faça $X \leftarrow X+1$;
+	\item Devolva $\tilde{r}_i = X/M$.
+\end{enumerate}
+\begin{lema}
+	A saída do algoritmo acima é uma $(\varepsilon/2m, \delta/m)$-aproximação de $r_i$.
+\end{lema}
+\begin{proof}
+	Começamos provando que 
+	$r_i = \frac{|\Omega(G_{i-1})|}{|\Omega(G_i)|} \geq 1/2$. Basta
+	considerar a injeção $\Omega(G_{i-1}) - \Omega(G_i) \to\Omega(G_i)$,
+	$I\mapsto I - \text{ o ``menor'' extremo de } e_i$.
+	Sejam $I_1, \dots, I_n$ as amostras geradas em (a) pelo algoritmo.
+	Seja $X_i = \mathds{1}\{I_j \in \Omega(G_i)\}$. Pela hipótese da 
+	$(\eps/(6m))$-uniformidade, temos
+	$$\left|\PP(X_i = 1) - \frac{|\Omega(G_i)|}{|\Omega(G_{i-1})|} \right| \leq \frac{\eps}{6m}$$
+	para todo $i$. Mas $\EE(X_i) = \PP(X_i).$
+	Somando para $1 \leq i \leq M$, temos
+	\begin{align*}
+	\left| \frac{1}{M} \EE(X) - r_i\right|\leq & \frac{\eps}{6m}, 
+	\text{ mas como }\EE(X) = \EE(\tilde{r}_i) \\
+	\left| \frac{1}{M} \EE(\tilde{r}_i) - r_i\right|\leq & \frac{\eps}{6m}.
+	\end{align*}
+	
+	Note que $\EE(\tilde{r}_i) \geq r_i - \frac{\eps}{6m} \geq \frac{1}{2} - \frac{\eps}{6} \geq \frac{1}{3}$.
+	
+	Pelo teorema da Aproximação de Monte Carlo, temos que se 
+	$M \geq \frac{3\cdot 3}{(\eps/(12m))^2}\cdot \log (2m/\delta)$, 
+	então $\tilde{r}_i$ é uma $(\eps/(12m), \delta/m)$-aproximação
+	de $r_i$, i.e., $\PP(|\tilde{r}_i/\EE(\tilde{r}_i) - 1| \geq \eps/(12m)) \leq \delta/m.$ Equivalentemente, com probabilidade pelo menos $1 - \delta/m$ temos
+	\begin{equation}\label{eq1}
+		1 - \frac{\eps}{12m} \leq \frac{\tilde{r}_i}{\EE(\tilde{r}_i)}
+		\leq 1 + \frac{\eps}{12m}
+	\end{equation}
+	Como $|\EE(\tilde{r}_i) - r_i| \leq \eps/(6m)$, temos
+	\begin{equation}\label{eq2}
+		1 - \frac{\eps}{3m} \leq 1 - \frac{\eps}{6mr_i} \leq
+		\frac{\EE(\tilde{r}_i)}{r_i} \leq 1 + \frac{\eps}{6mr_i} \leq
+		1 + \frac{\eps}{3m},
+	\end{equation}
+	e usando que $r_i \geq 1/2$, e temos, multiplicando \ref{eq1} e \ref{eq2}:
+	\begin{equation*}
+		1 - \frac{\eps}{2m} \leq \left(1 - \frac{\eps}{3m} \right)
+		\left(1 - \frac{\eps}{12m}\right) \leq \frac{\tilde{r}_i}{r_i}
+		\leq \left(1 + \frac{\eps}{3m}\right)
+		\left(1 + \frac{\eps}{12m}\right) \leq 1 + \frac{\eps}{2m}.
+	\end{equation*}
+\end{proof}
+
+\subsection{Conclusão}
+Concluímos que uma amostragem $\eps/6m$-uniforme implica em uma
+$(\eps, \delta)$-aproximação para o problema $\#I(G)$
+
+\begin{pergunta}
+Existe um FPAUS para o problema $\#I(G)$?
+\end{pergunta}
+
+\textbf{Sim}, para grafos com grau máximo $\Delta \leq 4$.
+
+\textbf{Não}, para grafos com grau máximo $\Delta = 2000$ a menos que $RP = NP$.
