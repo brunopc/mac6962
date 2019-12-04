@@ -16,7 +16,7 @@ e~$N_{d}(\mu_{2},1)$ com:
 \end{align*}
 
 \begin{fato}
-  Digamos que eu escolha~$X,Y \sim N_{d}(\mu, 1)$ independentes. Com
+  Digamos que escolhemos~$X,Y \sim N_{d}(\mu, 1)$ independentes. Com
   alta probabilidade~$$\lVert X - Y \rVert^2 = 2d + O(\sqrt{d}).$$
 \end{fato}
 
@@ -37,7 +37,7 @@ e~$N_{d}(\mu_{2},1)$ com:
 \end{proof}
 
 \begin{fato}
-  Se~$X \sim N_{d}(\mu_{1},1)$, $Z \sim N_{d}(\mu_{2},1)$. Com alta
+  Se~$X \sim N_{d}(\mu_{1},1)$ e $Z \sim N_{d}(\mu_{2},1)$. Com alta
   probabilidade~$$\lVert X - Z \rVert^{2} = 2d + \Delta + O(\sqrt{d}) + O(\Delta).$$
 \end{fato}
 
@@ -63,8 +63,8 @@ de normais diferentes.
 
 \subsubsection{$k$ gaussianas}
 
-Agora digamos que eu tenha $k$ gaussianas $N_{k}(\mu_{i},1)$,
-$i=1,\dots,k$ em $\mathbb{R}^{k}$ e eu tenho os pontos
+Agora, considere que temos~$k$ gaussianas $N_{k}(\mu_{i},1)$,
+$i=1,\dots,k$ em $\mathbb{R}^{k}$ e os pontos
 $X_{1},\dots,X_{n} \in \mathbb{R}^{k}$. Queremos descobrir a partição
 $S_{1} \cup \dots \cup S_{k} = [n]$ tal que $i \in S_{j}$ se $x_{i}$
 foi gerado por $N_{k}(\mu_{k}, 1)$. Basta considerar os conjuntos
@@ -135,4 +135,4 @@ que minimiza a soma da distância ao quadrado (SVD).
 
 Seja~$p$ uma distribuição de probabilidade em~$\mathbb{R}^{d}$. A reta
 que \emph{melhor aproxima~$p$} é
-$$\arg\,max_{\lVert v \rVert=1}\mathbb{E}_{X \sim p}(v^{T}X)^2.$$
+$$\underset{\lVert v \rVert=1}{\arg\max}\,\mathbb{E}_{X \sim p}(v^{T}X)^2.$$
