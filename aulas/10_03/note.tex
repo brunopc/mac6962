@@ -1,5 +1,6 @@
 \section{Aula 03 de Outubro de 2019}
 \label{2019_10_03}
+\bibliography{bibliografy}
 
 \subsection{Redução de dimensão por projeções aleatórias}
 Nessa seção iremos discutir o problema de reduzir a dimensão de um conjunto de pontos por meio de projeções com componentes aleatórias preservando as distâncias no conjunto de pontos. Primeiramente, vamos recobrar uma redução dimensional vista anteriormente que não preserva as distâncias.
@@ -13,68 +14,72 @@ A &=
   \end{bmatrix}\\
    A &= \sum\limits_{i = 1}^r \sigma_i u_i^T v_i    
 \end{align*}
-
-\paragraph{}com $posto(A) = r$. Seja $A_k$ uma matriz de $posto$ $k$ em que: 
+com $\posto(A) = r$. Seja $A_k$ uma matriz de $\posto$ $k$ em que: 
 \begin{equation*}
     A_k = \sum\limits_{i = 1}^k \sigma_i u_i^T v_i    
 \end{equation*}
-\paragraph{}Temos que, para toda matriz $D$ tal que $ posto(D)=k$:
+Temos que, para toda matriz $D$ tal que $\posto(D)=k$:
 \begin{equation*}
     \left\Vert A - A_k \right\Vert_F \leq \left\Vert A - D \right\Vert_F
 \end{equation*}
-\paragraph{}em que $\left\Vert \right\Vert_F$ é a norma de Frobenius. Para facilitar, estamos supondo o centroide na origem.
-\paragraph{}A redução por SDV não preserva as distâncias, a mesma minimiza a soma total dos deslocamentos ao quadrado. Vamos ver outra forma de reduzir a dimensão em que preservamos um alta probabilidade as distâncias entre os pontos.
+em que $\left\Vert \right\Vert_F$ é a norma de Frobenius. Para facilitar, estamos supondo o centroide na origem.
+
+
+A redução por SVD não preserva as distâncias, a mesma minimiza a soma total dos deslocamentos ao quadrado. Vamos ver outra forma de reduzir a dimensão em que preservamos um alta probabilidade as distâncias entre os pontos.
 \subsubsection{Projeções que preservam distância} Há aplicações em que é útil preservar as distâncias entre os pontos. Suponha o problema: Dado um conjunto $P$ de $n$ pontos em $\mathbb{R}^d$, com $n$ e $d$ grandes, e várias queries. Em cada querie recebemos um ponto $q \in \mathbb{R}^d$ e o objetivo é descobrir o ponto de $P$ mais próximo de $q$. Para obter um algoritmo eficiente podemos usar aleatorização e permitir soluções aproximadas. Vamos considerar um algoritmo bom se caso a resposta para um querie seja $p_i \in P$ garantidamente não há $p_j \in P$ tal que $\left\Vert p_j - q \right\Vert <(1 - \epsilon) \left\Vert p_i - q \right\Vert$. 
 
-\paragraph{}Considere a aplicação linear $R \colon \mathbb{R}^d \to \mathbb{R}^k$ aleatória, definida da seguinte forma: Escolha $k$ vetores gaussianos $u_1,...,u_k \sim N_d(0,1)$ independentes. Para $v \in \mathbb{R}^d$, pomos:
+
+Considere a aplicação linear $R \colon \mathbb{R}^d \to \mathbb{R}^k$ aleatória, definida da seguinte forma: Escolha $k$ vetores gaussianos $u_1,...,u_k \sim N_d(0,1)$ independentes. Para $v \in \mathbb{R}^d$, pomos:
 \begin{equation*}
     \begin{split}
     R(v) &= (u_1^Tv,...,u_k^Tv)\\
          &= \sum\limits_{i=1}^k (u_i^Tv)e_i
     \end{split}
 \end{equation*}
-\paragraph{}Vamos provar que se definirmos $T = \frac{1}{\sqrt{k-1}}R$, então para $v \in \mathbb{R}^d fixo$:
+
+Vamos provar que se definirmos $T = \frac{1}{\sqrt{k-1}}R$, então para $v \in \mathbb{R}^d$ fixo:
 \begin{equation*}
     \left\Vert T(v) \right\Vert \sim \left\Vert v \right\Vert
 \end{equation*}
-\paragraph{}com alta probabilidade. De fato, se $x_1,...,x_n\in \mathbb{R}^d$, temos que:
+com alta probabilidade. De fato, se $x_1,...,x_n\in \mathbb{R}^d$, temos que:
 \begin{equation*}
     \left\Vert T(x_i) - T(x_j) \right\Vert \sim \left\Vert x_i - x_j \right\Vert
 \end{equation*}
-\paragraph{}Para todo $i,j$ desde que $k$ seja grande o suficiente em relação a n.
+para todo $i,j$ desde que $k$ seja grande o suficiente em relação a n.
 \begin{fato}
 Sejam $u_1,...,u_k \sim N_d(0,1)$ independentes e seja $v \in \mathbb{R}^d$ com $\left\Vert V \right\Vert = 1$ temos que $u_i^Tv \sim N(0,1)$.
 \end{fato}
-\paragraph{}Como esses vetores $u_1,...,u_k \sim N_d(0,1)$ são independentes e $v = (v_1,...,v_d)$, temos que:
+Como esses vetores $u_1,...,u_k \sim N_d(0,1)$ são independentes e $v = (v_1,...,v_d)$, temos que:
 \begin{align*}
     u_{i1},...,u_{id} &\sim N(0,1), \text{ uma normal em cada coordenada}\\
     u^T_iv &= u_{i1}v_1 +...+u_{id}v_d
 \end{align*}
-\paragraph{}Segue do fato que se $v \in \mathbb{R}^d$ e $\left\Vert V \right\Vert = 1$, então $R(v) \sim N_k(0,1)$. Pelo teorema do anel (Gaussian Annulus Theorem).
+segue do fato que se $v \in \mathbb{R}^d$ e $\left\Vert V \right\Vert = 1$, então $R(v) \sim N_k(0,1)$. Pelo teorema do anel (Gaussian Annulus Theorem).
 \begin{equation*}
     \mathbb{P}\left(\left\vert \left\Vert R(v) \right\Vert - \sqrt{k-1} \right\vert > c\right) \leq \frac{4}{c^2}e^{-\frac{c^2}{4}}
 \end{equation*}
-\paragraph{} Tome $c = \epsilon\sqrt{k-1}$. Então
+tome $c = \epsilon\sqrt{k-1}$. Então
 \begin{equation*}
     \mathbb{P}(\left\vert \left\Vert R(v) \right\Vert - \sqrt{k-1} \right\vert > \epsilon\sqrt{k-1}) \leq \frac{4}{\epsilon^2(k-1)}e^{-\frac{(k-1)\epsilon^2}{4}}
 \end{equation*}
-\paragraph{}Tome $T=\frac{1}{\sqrt{k-1}}R$. Então:
+tome $T=\frac{1}{\sqrt{k-1}}R$. Então:
 \begin{equation*}
     \mathbb{P}(\left\vert \left\Vert T(v) \right\Vert - \left\Vert v \right\Vert \right\vert > \epsilon\left\Vert v \right\Vert) \leq \frac{4}{\epsilon^2(k-1)}e^{-\frac{(k-1)\epsilon^2}{4}}
 \end{equation*}
-\paragraph{}Suponha agora que temos pontos $x_1,..,x_n \in \mathbb{R}^d$ fixos. Tome $k \geq 12\epsilon^{-2}\log{n}$ e suponha $n>n_0$ para que:
+
+Suponha agora que temos pontos $x_1,..,x_n \in \mathbb{R}^d$ fixos. Tome $k \geq 12\epsilon^{-2}\log{n}$ e suponha $n>n_0$ para que:
 \begin{equation*}
     \epsilon^2(k-1) \geq 4
 \end{equation*}
-\paragraph{}Note que $(k-1)\frac{\epsilon^2}{4} \geq 3\log(n)$. Assim, para $i \neq j$ fixos, temos:
+note que $(k-1)\frac{\epsilon^2}{4} \geq 3\log(n)$. Assim, para $i \neq j$ fixos, temos:
 \begin{equation*}
     \mathbb{P}(\left\vert \left\Vert T(x_i) - T(x_j) \right\Vert - \left\Vert x_i - x_j \right\Vert \right\vert > \epsilon\left\Vert x_i - x_j \right\Vert) \leq \frac{1}{n^3}
 \end{equation*}
-\paragraph{}Assim, seja $B_{ij} = \left\vert \left\Vert T(x_i) - T(x_j) \right\Vert - \left\Vert x_i - x_j \right\Vert \right\vert > \epsilon\left\Vert x_i - x_j \right\Vert$
+assim, seja $B_{ij} = \left\vert \left\Vert T(x_i) - T(x_j) \right\Vert - \left\Vert x_i - x_j \right\Vert \right\vert > \epsilon\left\Vert x_i - x_j \right\Vert$
 \begin{equation*}
     \mathbb{P}(\exists\> i \neq j : B_{ij}) \leq \binom{n}{2}\frac{1}{n^3} \leq \frac{1}{2n}
 \end{equation*}
-\paragraph{}Portanto, provamos a seguinte versão do lema de Johnson e Lidenstrauss:
+Portanto, provamos a seguinte versão do lema de Johnson e Lidenstrauss:
 \begin{teorema}[Johnson e Lidenstrauss]
 Considere a aplicação linear $R \colon \mathbb{R}^d \to \mathbb{R}^k$ aleatória, definida da seguinte forma: Escolha $k$ vetores gaussianos $u_1,...,u_k$ independentes, para $v \in \mathbb{R}^d$, pomos $R(v) = (u_1^Tv,...,u_k^Tv)$. Seja $T \colon \mathbb{R}^d \to \mathbb{R}^k$ com $T=\frac{1}{\sqrt{k-1}}R$ e $k > 12\epsilon^{-2}\log{n}$. Sejam $x_1,...,x_n \in \mathbb{R}^d (n \geq n_0)$ dados. Com probabilidade maior que $1 - \frac{1}{2n}$, temos que, para todo $i,j$:
 \begin{equation*}
@@ -82,7 +87,7 @@ Considere a aplicação linear $R \colon \mathbb{R}^d \to \mathbb{R}^k$ aleatór
 \end{equation*}
 \end{teorema}
 
-\paragraph{}Algumas observações:
+Algumas observações:
 \begin{enumerate}
     \item É possível provar com resultado análogo com $T$ a projeção ortogonal a um subespaço $k$-dimensional aleatório.
     \item Podemos usar distribuições mais simples do que $N_d(0,1)$ para os $u_i(1 \leq i \leq k)$. Suponha $u_i = (u_{i1,...,id})$. Podemos usar as seguintes duas distribuições:
@@ -102,5 +107,6 @@ Considere a aplicação linear $R \colon \mathbb{R}^d \to \mathbb{R}^k$ aleatór
         \]
     \end{enumerate}
 \end{enumerate}
-\paragraph{} Ambas as distribuições são mais simples que usar binomiais e apresentam resultados de qualidade equivalente $k = \Omega(\epsilon^{-2}\log{n})$. A distribuição (b) pode gerar uma matriz esparsa. Uma análise mais profunda pode ser encontrada em \cite{achlioptas_2003}
+
+Ambas as distribuições são mais simples que usar binomiais e apresentam resultados de qualidade equivalente $k = \Omega(\epsilon^{-2}\log{n})$. A distribuição (b) pode gerar uma matriz esparsa. Uma análise mais profunda pode ser encontrada em \cite{achlioptas_2003}
 e \cite{bingham_2001}.
