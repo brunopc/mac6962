@@ -3,13 +3,13 @@
 
 \subsection{Separação de Gaussianas em Dimensão Alta}
 
-\paragraph{} Sejam $k\ge 2, d \ge 1, \mu_1,\dots,\mu_k\in \mathbb{R}^d,\sigma >0, \gamma_1,\dots,\gamma_k>0$ tais que $\sum \gamma_i = 1$, e sobre a hip\'otese de separa\c{c}\~ao:
+\paragraph{} Sejam $k\ge 2, d \ge 1, \mu_1,\dots,\mu_k\in \mathbb{R}^d,\sigma >0, \gamma_1,\dots,\gamma_k>0$ tais que $\sum \gamma_i = 1$, e sob a hip\'otese de separa\c{c}\~ao
 \[\Delta = \min_{i \neq j}\vert\vert\mu_i-\mu_j\vert\vert\gg \sigma k^{1/4}\]
-Seja a distribui\c{c}\~ao de probabilidade $p=\displaystyle \sum_{1\le i\le k}\gamma_i N_d(\mu_i,\sigma^2)$. Suponha que temos amostras independentes $x_i,\dots,x_n \in \mathbb{R}^d$ de $p$. Ademais, suponha que $n\ge Cd^2/(\min \gamma_i )^6$.
+Seja a distribui\c{c}\~ao de probabilidade $p=\displaystyle \sum_{1\le i\le k}\gamma_i N_d(\mu_i,\sigma^2)$. Suponha que temos amostras independentes $x_i,\dots,x_n \in \mathbb{R}^d$ de $p$. Ademais, suponhamos que $n\ge Cd^2/(\min \gamma_i )^6$.
 
-Podemos estimar os $\mu_ie \sigma$ da seguinte forma:
+Podemos estimar os $\mu_i$ e $\sigma$ da seguinte forma:
 \begin{enumerate}
-\item Seja $y = \dfrac{1}{n}\displaystyle\sum_{1\le i\le n} x_i$, o centroide dos $x_i$.(Note que subtraindo $y$ de cada $x_i$ podemos supor que $y=0$)
+\item Seja $y = \dfrac{1}{n}\displaystyle\sum_{1\le i\le n} x_i$, o centroide dos $x_i$ (Note que subtraindo $y$ de cada $x_i$, podemos supor que $y=0$).
 
 \item Encontramos o subespa\c{c}o $(k-1)$-dimensional $H$ que melhor encaixa nos pontos $x_i$ , usando a decomposi\c{c}\~ao em valores singulares (SVD) de 
 \[A = 
@@ -25,13 +25,18 @@ Ent\~ao $H=\langle v_1,\ldots,v_{k-1} \rangle$
 
 \item Seja $P_H: \mathbb{R}^d \to H=\mathbb{R}^{k-1}$ a proje\c{c}\~ao ortogonal sobre $H$. Consideramos \[x'_i = P_H(x_i), 1\le i \le n\]
 \item Determinamos $\mu_i$ a partir dos $x'_i$ calculando todas as dist\^ancias $\vert\vert x'_i-x'_j\vert\vert$ ($i\neq j$).
-
-A hip\'otese de separa\c{c}\~ao garante que os $x'_i$ s\~ao suficientemente separados para este algoritmo funcionar em $\mathbb{R}^{k-1}$
 \end{enumerate}
+
+A hip\'otese de separa\c{c}\~ao garante que os $x'_i$ s\~ao suficientemente separados para este algoritmo funcionar em $\mathbb{R}^{k-1}$.
+
 \subsubsection{Subespa\c{c}os afins/ centraliza\c{c}\~ao de dados}
+Queremos resolver o problema de, a partir de amostras de uma certa distribui\c{c}\~ao em $\mathbb{R}^d$, encontrar tal distribui\c{c}\~ao. Consideremos um problema mais simples, mais especificamente encontrar um subespa\c{c}o $k$-dimensional de $\mathbb{R}^d$ que se aproxima bem dessa amostra. Para tal, utilizaremos um m\'etodo dos m\'inimos quadrados, que motiva a seguinte defini\c{c}\~ao:
+
 \begin{definicao}
-Sejam $x_1,\dots x_n \in \mathbb{R}^d$, ent\~ao $V = \langle v1,\dots,v_k\rangle$ \'e um subespa\c{c}o de dimens\~ao $k$ que melhor se encaixa nos $x_i$, se $\displaystyle\sum _{1 \le i \le n} \text{dist}(x_i,V)^2$ \'e m\'inima.
+Sejam $x_1,\dots x_n \in \mathbb{R}^d$, ent\~ao $V = \langle v_1,\dots,v_k\rangle$ \'e um subespa\c{c}o de dimens\~ao $k$ que melhor se encaixa nos $x_i$, se $\displaystyle\sum _{1 \le i \le n} \text{dist}(x_i,V)^2$ \'e m\'inima.
 \end{definicao}
+
+Lembrando que subespa\c{c}os vetoriais est\~ao condicionados a conter o ponto nulo, um subespa\c{c}o que melhor se encaixa na amostra pode ser otimizada, retirando a restri\c{c}\~ao citada, para tal ser\~ao uteis as seguintes defini\c{c}\~oes:
 
 \begin{definicao}
 Seja $W = V + a$, onde $a\in \mathbb{R}^d$ e $V$ \'e um subespa\c{c}o de $\mathbb{R}^d$ de dimens\~ao $k$, ent\~ao $W$ \'e chamado um subespa\c{c}o afim de dimens\~ao $k$.
@@ -85,7 +90,7 @@ Como $L$ minimiza
 temos $a=0$, e como $a\in L$, terminamos. \qed
 
 \subsubsection{SVD e subespa\c{c}os que melhor se encaixam em distribui\c{c}\~oes}
-Vamos tentar generalizar a no\c{c}ao de subespa\c{c}os que melhor se encaixam em conjuntos para subespa\c{c}os que melhor encaixam distribui\c{c}\~oes. Note que minimizar $\displaystyle\sum_{i} \text{dist}(x_i,H)^2$ \'e equivalente a maximizar $\displaystyle\sum_{i} \vert\vert P_H(x_i)\vert\vert^2$,o que motiva a sequinte defini\c{c}\~ao.
+Vamos tentar generalizar a no\c{c}\~ao de subespa\c{c}os que melhor se encaixam em conjuntos para subespa\c{c}os que melhor encaixam distribui\c{c}\~oes. Note que minimizar $\displaystyle\sum_{i} \text{dist}(x_i,H)^2$ \'e equivalente a maximizar $\displaystyle\sum_{i} \vert\vert P_H(x_i)\vert\vert^2$,o que motiva a sequinte defini\c{c}\~ao.
 
 \begin{definicao}
 Um subespa\c{c}o de dimens\~ao $1$ que melhor se encaixa em $p$ \'e um subespa\c{c}o da forma $L = \langle v \rangle$, $\vert\vert v \vert\vert = 1, v \in \mathbb{R}^d$ tal que 
@@ -125,13 +130,13 @@ Prova: Seja $\{v_1,\dots,v_k\}$ base ortonormal de $V$, ent\~ao:
 																   &= k\sigma^2 + \sum_{1\le i\le k}(v^T\mu)^2\\
 																   &= k\sigma^2 + \vert\vert P_V(\mu)\vert\vert.			   
 \end{align*}
-Queremos maximizae essa quantidade, claramente isso ocorre se e somente se $\mu \in V$. \qed
+Queremos maximizar essa quantidade, claramente isso ocorre se e somente se $\mu \in V$. \qed
 
 Sejam novamente $k \ge 2, \gamma_1,\dots,\gamma_k>0, \sum \gamma_i = 1, \mu_1,\dots, \mu_k, \sigma_1^2, \dots, \sigma_k^2$, e 
 \[p = \displaystyle\sum_{1\le i \le k} \gamma_iN_d(\mu_i, \sigma_i^2)\]
 
 \begin{teorema}
-Se $V$ \'e um subespa\c{c}o de dimens\~ao $k$ que melhor se encaixa em $p$, ent\~ao $V$ cont\'em $\mu_i, (1\le i \le k)$. Se os $\mu_i$ s\~ao linearmente independentes, ent\~ao $V= \langle \mu_1,\dots, \mu_k\rangle$ \'e o \'unico subespa\c{c}o de dimens\~ao $k$ que melhor se encaixa em $p$.
+Se $V$ \'e um subespa\c{c}o de dimens\~ao $k$ que melhor se encaixa em $p$, ent\~ao $V$ cont\'em $\mu_i (1\le i \le k)$. Se os $\mu_i$ s\~ao linearmente independentes, ent\~ao $V= \langle \mu_1,\dots, \mu_k\rangle$ \'e o \'unico subespa\c{c}o de dimens\~ao $k$ que melhor se encaixa em $p$.
 \end{teorema}
 Prova: Seja $W$ um subespa\c{c}o de dimens\~ao $k$ que melhor se encaixa em $p$ ent\~ao:
 \begin{align*}
