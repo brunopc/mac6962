@@ -1,17 +1,18 @@
 \section{Aula 26 de Agosto de 2019}
 \label{2019_08_26}
 
+
 \subsection{SVD - Descomposição em Valores Singulares}
 \[\]
-Descomposição em Valores Singulares, ou SVD, é um tipo de fatorização de matrizes. Temos por ela que qualquer matriz $ A \in {\rm I\!R^{nxd}}$ pode ser decomposta na forma $A = UDV^T$, em que:
+Descomposição em Valores Singulares, ou SVD, é um tipo de fatorização de matrizes. Temos por ela que qualquer matriz $ A \in {\rm I\!R^{n\times d}}$ pode ser decomposta na forma $A = UDV^T$, em que:
 
 \begin{itemize}
-\item[$\ast$]$UU^T = U^TU = I, U \in \rm I\!R^{nxn}$, ou seja, $U$ é uma matriz unitária
-\item[$\ast$]$VV^T = V^TV = I, V \in \rm I\!R^{dxd}$, ou seja, $V$ é uma matriz unitária
-\item[$\ast$]$D \in \rm I\!R^{nxd}$ é uma matriz diagonal tal que, sendo $\sigma_i$ o valor da soma da coluna $i$ de D.
+\item[$\ast$]$UU^T = U^TU = I, U \in \rm I\!R^{n\times n}$, ou seja, $U$ é uma matriz unitária
+\item[$\ast$]$VV^T = V^TV = I, V \in \rm I\!R^{d\times d}$, ou seja, $V$ é uma matriz unitária
+\item[$\ast$]$D \in \rm I\!R^{n\times d}$ é uma matriz diagonal tal que, sendo $\sigma_i$ o valor da soma da coluna $i$ de D.
  \[\sigma_1 \geq \sigma_2 \geq ... \geq \sigma_r > 0 = \sigma_{r+1} = ... = \sigma_p \]
  
-Com $ r = posto(A)$ e $p = min(n,d)$
+Com $ r = \posto(A)$ e $p = \min(n,d)$
 \end{itemize}
 \[\]
 Chamaremos os $\sigma$s acima definidos de valores singulares da matriz A e estabeleceremos adicionalmente as seguintes notações:
@@ -24,27 +25,36 @@ Dessa forma, a SVD também pode ser escrita como:
 
 \subsection{Normas para matrizes}
 
-Usaremos a notação que a matriz $M = \rm{(m_{ij})_{nxd}}$.
+Denotaremos uma matriz $M$ de tamanho $n\times m$ por $\rm{(m_{ij})_{n\times d}}$.
 Definimos então a norma Frobenius, denotada por norma $F$ de $M$ ou
 $||M||_F$ como:
 \[||M||_F = ( \sum_{i,j} m_{ij}^2)^{1/2} \]
-Iremos também definir a norma 2, ou espectral, de $M$ denotada também por $||M||_2$ como $ max_{1\leq i \leq n} \ \sigma_i = \sigma_1 $ na SVD de M.
+Iremos também definir a norma 2, ou espectral, de $M$ denotada também por $||M||_2$ como $ \max_{1\leq i \leq n} \ \sigma_i = \sigma_1 $ na SVD de M.
 
 \[\]
 Vale também pontuar uma importante relação entre as normas Frobenius e 2 de uma matriz, essa sendo que para toda matriz $A$, $||M||_2 \leq ||M||_F$.
 
 \subsection{Teorema de Eckard, Young e Minsky}
 \[\]
-Tome $A_k = \sum_{1\leq i \leq k} \sigma_i u_i v_i^T $ para algum $k\leq posto(A)$.\\
 
-O Teorema de Eckard, Young e Minsky afirma que:\
+\begin{teorema}
+Seja $ A \in {\rm I\!R^{n\times d}}$ uma matriz e $A = UDV^T$ sua decomposição em valores singulares.\\
 
-\begin{enumerate}
-(i) $ ||A-A_k||_F= min_{posto(B) \leq k} ||A-B||_F $\\
-(ii) $ ||A-A_k||_2 = min_{posto(B) \leq k} ||A-B||_2 $
-\end{enumerate}
+Tome $A_k = \sum_{1\leq i \leq k} \sigma_i u_i v_i^T $ para algum $k\leq \posto(A)$.\\
 
-Ou seja, tanto na norma Frobenius quanto na norma 2, a norma de $A-A_k$ é mínima entre as matrizes da forma $A-B$ com $posto(B) \leq k$.
+O Teorema de Eckard, Young e Minsky afirma que, para toda matriz $B$ tal que $\posto(B) \leq k$, $ ||A-A_k||_F \leq ||A-B||_F $.
+\end{teorema}.
+
+\begin{teorema}
+Seja $ A \in {\rm I\!R^{n\times d}}$ uma matriz e $A = UDV^T$ sua decomposição em valores singulares.\\
+
+Tome $A_k = \sum_{1\leq i \leq k} \sigma_i u_i v_i^T $ para algum $k\leq \posto(A)$.\\
+
+O Teorema de Eckard, Young e Minsky afirma que, para toda matriz $B$ tal que $\posto(B) \leq k$, $ ||A-A_k||_2 \leq ||A-B||_2 $.
+\end{teorema}.
+
+
+Ou seja, tanto na norma Frobenius quanto na norma 2, a norma de $A-A_k$ é mínima entre as matrizes da forma $A-B$ com $\posto(B) \leq k$.
 
 \subsection{Traços}
 
@@ -53,29 +63,33 @@ Seja $A$ uma matriz quadrada, iremos definir o traço de $A$, ou $Tr(A)$, como $
 Algumas propriedades de traços de matriz são:
 
 \begin{enumerate}
-(i) Seja $A \in   {\rm I\!R^{nxd}}, B \in   {\rm I\!R^{dxn}} $, $Tr(AB)=Tr(BA)$. Isso vale pois:
+\item Seja $A \in   {\rm I\!R^{n\times d}}, B \in   {\rm I\!R^{d\times n}} $, $Tr(AB)=Tr(BA)$. Isso vale pois:
+\begin{proof}
 \[Tr(AB) =  \sum_{1 \leq i \leq n} \sum_{1\leq j \leq d} a_{ij}b_{ji} = \sum_{i,j} b_{ji} a_{ij} = Tr(BA)\]
+\end{proof}
 
-(ii) Seja $A \in  {\rm I\!R^{nxd}} $, $ Tr(AA^T)= ||A||_F^2$. Isso vale pois:
+\item Seja $A \in  {\rm I\!R^{n\times d}} $, $ Tr(AA^T)= ||A||_F^2$. Isso vale pois:
+\begin{proof}
 \[ Tr(AA^T) = Tr((\sum_{1\leq k \leq d} a_{ik} a_{jk} )) = \sum_{1 \leq i \leq n} \sum_{1\leq k \leq d} a_{ik}^2 = ||A||_F^2 \]
+\end{proof}
 
-(iii) Seja $A \in  {\rm I\!R^{nxd}} $, $ Tr(AA^T)= \sum_{1\leq i \leq r} \sigma_i^2$, com $r = posto(A)$. Isso vale pois:
+\item Seja $A \in  {\rm I\!R^{n\times d}} $, $ Tr(AA^T)= \sum_{1\leq i \leq r} \sigma_i^2$, com $r = \posto(A)$. Isso vale pois:
+\begin{proof}
 \[A = UDV^T \implies A^T = VD^T U^T \implies\]
 \[AA^T = UDV^T VD^T U^T = UDD^T U^T\]
 Portanto:
 \[Tr(AA^T) = Tr(UDD^T U^T) = Tr(U^T UDD^T) = Tr(diag(\sigma_1^2, \sigma_2^2 , ...))\]
-\[= \sum_{1\leq i \leq p} \sigma_i^2 = \sum_{1\leq i \leq r} \sigma_i^2, \ com \ r = posto(A) \]\\
+\[= \sum_{1\leq i \leq p} \sigma_i^2 = \sum_{1\leq i \leq r} \sigma_i^2, \ com \ r = \posto(A) \]\\
+\end{proof}
 \end{enumerate}
 
 \subsection{Aproximações de baixo posto}
 
-Iremos chamar de $V_k$ o subespaço de posto $k$, com $1\leq k \leq r = posto(A)$, que melhor aproxima os vetores linha $a_1, ... , a_n$ que constituem a matriz A.
-Iremos utilizar a seguinte notação:
+Iremos chamar de $V_ =  <v_1,...,v_k>$ o subespaço de posto $k$, com $1\leq k \leq r = \posto(A)$, que melhor aproxima os vetores linha $a_1, ... , a_n$ que constituem a matriz A.\\
 
-\[V_k = \ <v_1,...,v_k>  \]\\
-$V_k$ o subespaço de posto $k$ que minimiza a soma das distâncias ao quadrado entre os vetores linha de $A$ e $V_k$. Ou seja:
+$V_k$ [é o subespaço de posto $k$ que minimiza a soma das distâncias ao quadrado entre os vetores linha de $A$ e $V_k$. Ou seja:
 
-\[\sum_{1\leq i \leq n} dist^2(a_i,V_k) = min_{dim(Z)=k} \sum_{1\leq i \leq n} dist^2(a_i,Z) = min_{dim(Z)\leq k} \sum_{1\leq i \leq n} dist^2(a_i,Z)  \]\\
+\[\sum_{1\leq i \leq n} \dist^2(a_i,V_k) = \min_{dim(Z)=k} \sum_{1\leq i \leq n} \dist^2(a_i,Z) = \min_{dim(Z)\leq k} \sum_{1\leq i \leq n} \dist^2(a_i,Z)  \]\\
 
 Toma $a \in {\rm I\!R^d}$ um vetor linha, $a = a_1,...,a_n$, e $V_k$ como definido anteriormente, seja:
 
@@ -95,9 +109,9 @@ P_{V_k}(a_1)\\ ...\\P_{V_k}(a_n)
 
 Usando o fato acima, temos:\\
 
-\[\sum_{1\leq i\leq n} dist^2(a_i,V_k) = \sum_{1\leq i\leq n} ||a_i = P_{V_k}(a_i)||^2 = ||A-A_k||_F^2\]
+\[\sum_{1\leq i\leq n} \dist^2(a_i,V_k) = \sum_{1\leq i\leq n} ||a_i = P_{V_k}(a_i)||^2 = ||A-A_k||_F^2\]
 
-\subsection{Prova do teorema de Eckard, Young e Minsky (i)}
+\subsection{Prova do teorema de Eckard, Young e Minsky (1)}
 
 Queremos provar que a melhor aproximação em dimensão k para uma matriz A na norma Frobenius é dada por $A_k = \sum_{1\leq i \leq k} \sigma_i u_i v_i^T $.\\
 
@@ -120,7 +134,7 @@ Portanto,
 $\square$
 \end{flushright}
 
-\subsection{Prova do teorema de Eckard, Young e Minsky (ii)}
+\subsection{Prova do teorema de Eckard, Young e Minsky (2)}
 
 Queremos provar que a melhor aproximação em dimensão k para uma matriz A na norma 2 é dada por $A_k = \sum_{1\leq i \leq k} \sigma_i u_u v_i^T $.\\
 
