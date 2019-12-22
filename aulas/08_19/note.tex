@@ -1,19 +1,4 @@
-{ %define guard
-
-%region settings
-\newcommand{\given}{\,\middle|\,}               % conditional probability
-
-\newcommand{\Reals}{\mathds{R}}                 % Reals set
-
-\newcommand{\defeq}{\vcentcolon=}               % definition
-\newcommand{\eqdef}{=\vcentcolon}               % reverse definition
-
-\renewcommand{\l}{\mathopen{}\left}             % \left alias
-\renewcommand{\r}{\vphantom{1j}\right}          % \right alias
-%endregion
-
 %region recapitulating
-\cleardoublepage
 \section{Aula 19 de Agosto de 2019}
 \label{2019_08_19}
 
@@ -22,37 +7,41 @@
 \paragraph{\nopunct} Sejam
 \begin{enumerate}
   \item $\mathcal{X}$ espaço de instâncias;
-  \item $\mathcal{D}\colon\ \mathcal{X}\mapsto\Reals$ distribuição sobre $\mathcal{X}$;
-  \item $\mathrm{S}\subseteq\mathcal{X}$ conjunto de treinamento, $\mathrm{S}=\l\{s_1,\ \ldots,\ s_n\r\},\ s_i\sim\mathcal{D}$ i.i.d.;
+  \item $\mathcal{D}\colon\ \mathcal{X}\mapsto\mathds{R}$ distribuição sobre $\mathcal{X}$;
+  \item $\mathrm{S}\subseteq\mathcal{X}$ conjunto de treinamento, 
+  $\mathrm{S}=\left\{s_1,\ \ldots,\ s_n\vphantom{1j}\right\},\ s_i\sim\mathcal{D}$ i.i.d.;
   \item $c^\star\subseteq\mathcal{X}$ conceito objetivo;
   \item $h\subseteq\mathcal{X}$ hipótese sobre $\mathcal{X}$;
-  \item $\mathrm{err}_\mathcal{D}\l(h\r)=\mathrm{P}\l(h\mathrel{\Delta}c^\star\r)$, onde $h\mathrel{\Delta}c^\star\defeq\l(h\setminus c^\star\r)\cup\l(c^\star\setminus h\r)$;
-  \item $\mathrm{err}_\mathrm{S}\l(h\r)=\nicefrac{\l|\l(h\mathrel{\Delta}c^\star\r)\cap\mathrm{S}\r|}{\l|\mathrm{S}\r|}$; e
-  \item $\mathcal{H}\subseteq 2^\mathcal{X}$, com $h\in\mathcal{H}$ \textbf{classe de hipóteses} (ou classe de conceitos).
+  \item $\mathrm{err}_\mathcal{D}\left(h\vphantom{1j}\right)=\mathrm{P}\left(h\mathrel{\Delta}c^\star\vphantom{1j}\right)$, onde 
+  $h\mathrel{\Delta}c^\star\vcentcolon=\left(h\setminus c^\star\vphantom{1j}\right)\cup\left(c^\star\setminus h\vphantom{1j}\right)$;
+  \item $\mathrm{err}_\mathrm{S}\left(h\vphantom{1j}\right)=
+  \nicefrac{\left|\left(h\mathrel{\Delta}c^\star\vphantom{1j}\right)\cap\mathrm{S}\vphantom{1j}\right|}{\left|\mathrm{S}\vphantom{1j}\right|}$; e
+  \item $\mathcal{H}\subseteq 2^\mathcal{X}$, com $h\in\mathcal{H}$ \textbf{classe de hipóteses} 
+  (ou classe de conceitos).
 \end{enumerate}
 
 Temos
 
 \textbf{Teorema 1 (ref:label?):} $\eps,\ \delta>0$. Se
 \[
-  n = \l|\mathrm{S}\r| \geq \frac{1}{\eps}\cdot\l(\log\l|\mathcal{H}\r| + \log\nicefrac{1}{\delta}\r),
+  n = \left|\mathrm{S}\vphantom{1j}\right| \geq \frac{1}{\eps}\cdot\left(\log\left|\mathcal{H}\vphantom{1j}\right| + \log\nicefrac{1}{\delta}\vphantom{1j}\right),
 \]
 
 então
 \[
-  \mathrm{P}\l(\exists h\in\mathcal{H}\colon\ \l(\mathrm{S},\ \eps\r)\text{-ruim}\r) \leq \delta
+  \mathrm{P}\left(\exists h\in\mathcal{H}\colon\ \left(\mathrm{S},\ \eps\vphantom{1j}\right)\text{-ruim}\vphantom{1j}\right) \leq \delta
 \]
 
-\textbf{Definição ? (ref:label?):} $h$ é \textbf{$\l(\mathrm{S},\ \eps\r)$-ruim} se $\mathrm{err}_\mathrm{S}\l(h\r)=0$, mas $\mathrm{err}_\mathcal{D}\l(h\r)>\eps$.
+\textbf{Definição ? (ref:label?):} $h$ é \textbf{$\left(\mathrm{S},\ \eps\vphantom{1j}\right)$-ruim} se $\mathrm{err}_\mathrm{S}\left(h\vphantom{1j}\right)=0$, mas $\mathrm{err}_\mathcal{D}\left(h\vphantom{1j}\right)>\eps$.
 
 \textbf{Teorema 2 (ref:label?):} $\eps,\ \delta>0$. Se
 \[
-  n = \l|\mathrm{S}\r| \geq \frac{1}{2\cdot\eps^2}\cdot\l(\log\l|\mathcal{H}\r| + \log\nicefrac{2}{\delta}\r),
+  n = \left|\mathrm{S}\vphantom{1j}\right| \geq \frac{1}{2\cdot\eps^2}\cdot\left(\log\left|\mathcal{H}\vphantom{1j}\right| + \log\nicefrac{2}{\delta}\vphantom{1j}\right),
 \]
 
 então
 \[
-  \mathrm{P}\l(\l|\mathrm{err}_\mathrm{S}\l(h\r)-\mathrm{err}_\mathcal{D}\l(h\r)\r| > \eps\r) \leq \delta
+  \mathrm{P}\left(\left|\mathrm{err}_\mathrm{S}\left(h\vphantom{1j}\right)-\mathrm{err}_\mathcal{D}\left(h\vphantom{1j}\right)\vphantom{1j}\right| > \eps\vphantom{1j}\right) \leq \delta
 \]
 %endregion
 
@@ -71,22 +60,22 @@ então
 \paragraph{\nopunct} Seja $\mathcal{L}$ linguagem para descrever as $h\in\mathcal{H}$.
 
 \begin{exemplo}
-  $\mathcal{H}=\l\{\text{disjunções}\r\}$, e.g. $h\l(x_1,\ \ldots,\ x_d\r)=x_2\lor x_5\lor x_7$
+  $\mathcal{H}=\left\{\text{disjunções}\vphantom{1j}\right\}$, e.g. $h\left(x_1,\ \ldots,\ x_d\vphantom{1j}\right)=x_2\lor x_5\lor x_7$
   
-  segue que $\mathcal{L}=\l\{0,\ 1\r\}^d$.
+  segue que $\mathcal{L}=\left\{0,\ 1\vphantom{1j}\right\}^d$.
 \end{exemplo}
 
 \begin{exemplo}
-  $\mathcal{H}=\l\{\text{funções booleanas}\r\}$, $h\colon\ \l\{0,\ 1\r\}^d\mapsto\l\{-1,\ 1\r\}$
+  $\mathcal{H}=\left\{\text{funções booleanas}\vphantom{1j}\right\}$, $h\colon\ \left\{0,\ 1\vphantom{1j}\right\}^d\mapsto\left\{-1,\ 1\vphantom{1j}\right\}$
   
-  segue que $\mathcal{L}=\l\{\text{árvores de decisão}\r\}=\l\{\text{circuitos booleanos}\r\}$.
+  segue que $\mathcal{L}=\left\{\text{árvores de decisão}\vphantom{1j}\right\}=\left\{\text{circuitos booleanos}\vphantom{1j}\right\}$.
 \end{exemplo}
 
-Dado $\mathcal{L}$, podemos definir $\mathrm{size}\l(h\r)=\#\mathrm{bits}$ para especificar $h$ na linguagem $\mathcal{L}$.
+Dado $\mathcal{L}$, podemos definir $\mathrm{size}\left(h\vphantom{1j}\right)=\#\mathrm{bits}$ para especificar $h$ na linguagem $\mathcal{L}$.
 
 Vamos considerar
 \[
-  \mathcal{L}_b = \l\{h\in\mathcal{H}\colon\ \mathrm{size}\l(h\r)=b\r\}
+  \mathcal{L}_b = \left\{h\in\mathcal{H}\colon\ \mathrm{size}\left(h\vphantom{1j}\right)=b\vphantom{1j}\right\}
 \]
 
 e
@@ -95,9 +84,9 @@ e
 \]
 
 \begin{observacao}
-  $\l|\mathcal{L}_b\r| \leq 2^b$
+  $\left|\mathcal{L}_b\vphantom{1j}\right| \leq 2^b$
   \[
-    \l|\mathcal{L}_{<b}\r| \leq 1 + 2 + \ldots + 2^{b-1} < 2^b
+    \left|\mathcal{L}_{<b}\vphantom{1j}\right| \leq 1 + 2 + \ldots + 2^{b-1} < 2^b
   \]
 \end{observacao}
 
@@ -108,22 +97,22 @@ e
   (Cor do Teo1 (ref:label?))
   Fixe $\eps,\ \delta>0$ e suponha
   \[
-    n = \l|\mathrm{S}\r| \geq \frac{1}{\eps}\cdot\l(b\cdot\log2 + \log\nicefrac{1}{\delta}\r).
+    n = \left|\mathrm{S}\vphantom{1j}\right| \geq \frac{1}{\eps}\cdot\left(b\cdot\log2 + \log\nicefrac{1}{\delta}\vphantom{1j}\right).
   \]
 
   Então
   \[
-    \mathrm{P}\l(\exists h\in\mathcal{H}\colon\ \l(\mathrm{S},\ \eps\r)\text{-ruim}\r) \leq \delta
+    \mathrm{P}\left(\exists h\in\mathcal{H}\colon\ \left(\mathrm{S},\ \eps\vphantom{1j}\right)\text{-ruim}\vphantom{1j}\right) \leq \delta
   \]
 \end{teorema}
 
 Equivalentemente, com probabilidade $\geq 1-\delta$,
 
-se $\mathrm{err}_\mathcal{S}\l(h\r)$ e $h\in\mathcal{L}_{<b}$,
+se $\mathrm{err}_\mathcal{S}\left(h\vphantom{1j}\right)$ e $h\in\mathcal{L}_{<b}$,
 
 então
 \[
-  \mathrm{err}_\mathcal{D}\l(h\r) \leq \frac{b\cdot\log2 + \log\nicefrac{1}{\delta}}{\l|\mathrm{S}\r|}.
+  \mathrm{err}_\mathcal{D}\left(h\vphantom{1j}\right) \leq \frac{b\cdot\log2 + \log\nicefrac{1}{\delta}}{\left|\mathrm{S}\vphantom{1j}\right|}.
 \]
 
 \begin{teorema}
@@ -133,12 +122,12 @@ então
   (Cor do Teo2 (ref:label?))
   Fixe $\eps,\ \delta>0$ e suponha
   \[
-    n = \l|\mathrm{S}\r| \geq \frac{1}{2\cdot\eps^2}\cdot\l(b\cdot\log2 + \log\nicefrac{2}{\delta}\r).
+    n = \left|\mathrm{S}\vphantom{1j}\right| \geq \frac{1}{2\cdot\eps^2}\cdot\left(b\cdot\log2 + \log\nicefrac{2}{\delta}\vphantom{1j}\right).
   \]
 
   Então, com probabilidade $\geq 1-\delta$, temos que se $h\in\mathcal{L}_{<b}$, então
   \[
-    \mathrm{err}_\mathcal{D}\l(h\r) \leq \mathrm{err}_\mathrm{S}\l(h\r) + \eps
+    \mathrm{err}_\mathcal{D}\left(h\vphantom{1j}\right) \leq \mathrm{err}_\mathrm{S}\left(h\vphantom{1j}\right) + \eps
   \]
 \end{teorema}
 
@@ -147,7 +136,7 @@ então
   Equivalente: $h\in\mathcal{L}_{<b}$, $\delta>0$, com probabilidade $\geq 1-\delta$,
   Fixe $\eps,\ \delta>0$ e suponha
   \[
-    \mathrm{err}_\mathcal{D}\l(h\r) \leq \mathrm{err}_\mathrm{S}\l(h\r) + \sqrt{\frac{1}{2\cdot\l|\mathrm{S}\r|}\cdot\l(b\cdot\log2 + \log\nicefrac{2}{\delta}\r)}.
+    \mathrm{err}_\mathcal{D}\left(h\vphantom{1j}\right) \leq \mathrm{err}_\mathrm{S}\left(h\vphantom{1j}\right) + \sqrt{\frac{1}{2\cdot\left|\mathrm{S}\vphantom{1j}\right|}\cdot\left(b\cdot\log2 + \log\nicefrac{2}{\delta}\vphantom{1j}\right)}.
   \]
 \end{corolario}
 
@@ -157,13 +146,13 @@ Fixe $\delta>0$. Seja $\delta_i=\nicefrac{\delta}{2^i},\ i=1,\ 2,\ \ldots$. Ent�
 
 Consideramos $\mathcal{L}_b$ para $b=0,\ 1,\ 2,\ \ldots$. Aplicando o Teorema 2 (ref:label?) para $\mathcal{L}_b$ e $\delta_i$, temos que, com prob. $\geq 1-\delta_i$, se $h\in\mathcal{L}_b$ então
 \begin{align*}
-  \mathrm{err}_\mathcal{D}\l(h\r) &\leq \mathrm{err}_\mathrm{S}\l(h\r) + \sqrt{\frac{1}{2\cdot\l|\mathrm{S}\r|}\cdot\l(i\cdot\log2 + \log\nicefrac{2}{\delta_i}\r)}. \\
-                                  &= \mathrm{err}_\mathrm{S}\l(h\r) + \sqrt{\frac{1}{2\cdot\l|\mathrm{S}\r|}\cdot\l(i\cdot\log4 + \log\nicefrac{2}{8}\r)}.
+  \mathrm{err}_\mathcal{D}\left(h\vphantom{1j}\right) &\leq \mathrm{err}_\mathrm{S}\left(h\vphantom{1j}\right) + \sqrt{\frac{1}{2\cdot\left|\mathrm{S}\vphantom{1j}\right|}\cdot\left(i\cdot\log2 + \log\nicefrac{2}{\delta_i}\vphantom{1j}\right)}. \\
+                                  &= \mathrm{err}_\mathrm{S}\left(h\vphantom{1j}\right) + \sqrt{\frac{1}{2\cdot\left|\mathrm{S}\vphantom{1j}\right|}\cdot\left(i\cdot\log4 + \log\nicefrac{2}{8}\vphantom{1j}\right)}.
 \end{align*}
 
 Concluímos que, com prob. $\geq 1-\delta$,
 \[
-  \mathrm{err}_\mathcal{D}\l(h\r) \leq = \mathrm{err}_\mathrm{S}\l(h\r) + \sqrt{\frac{1}{2\cdot\l|\mathrm{S}\r|}\cdot\l(\mathrm{size}\l(h\r)\cdot\log4 + \log\nicefrac{2}{8}\r)}.
+  \mathrm{err}_\mathcal{D}\left(h\vphantom{1j}\right) \leq = \mathrm{err}_\mathrm{S}\left(h\vphantom{1j}\right) + \sqrt{\frac{1}{2\cdot\left|\mathrm{S}\vphantom{1j}\right|}\cdot\left(\mathrm{size}\left(h\vphantom{1j}\right)\cdot\log4 + \log\nicefrac{2}{8}\vphantom{1j}\right)}.
 \]
 
 Podemos agora minimizar o todo direto variando $h\in\mathcal{H}$
@@ -216,33 +205,33 @@ Podemos agora minimizar o todo direto variando $h\in\mathcal{H}$
   {
     \delimitershortfall=-1pt                        % bigger wrapping brackets
     $\mathcal{L}$: 
-    $\l(x_2
-            \l(x_1
-                  \l(+\r)
-                  \l(-\r)
-            \r)
-            \l(x_3
-                  \l(+\r)
-                  \l(x_1
-                      \l(-\r)
-                      \l(+\r)
-                  \r)
-            \r)
-      \r)$
+    $\left(x_2
+            \left(x_1
+                  \left(+\vphantom{1j}\right)
+                  \left(-\vphantom{1j}\right)
+            \vphantom{1j}\right)
+            \left(x_3
+                  \left(+\vphantom{1j}\right)
+                  \left(x_1
+                      \left(-\vphantom{1j}\right)
+                      \left(+\vphantom{1j}\right)
+                  \vphantom{1j}\right)
+            \vphantom{1j}\right)
+      \vphantom{1j}\right)$
   }
 
-  Alfabeto: $\l\{1,\ \ldots,\ d\r\}\cup\l\{\text{'('},\ \text{')'},\ \text{'+'},\ \text{'-'}\r\}$, $\l\lceil\lg\l(d+4\r)\r\rceil$ bits por símbolo.
+  Alfabeto: $\left\{1,\ \ldots,\ d\vphantom{1j}\right\}\cup\left\{\text{'('},\ \text{')'},\ \text{'+'},\ \text{'-'}\vphantom{1j}\right\}$, $\left\lceil\lg\left(d+4\vphantom{1j}\right)\vphantom{1j}\right\rceil$ bits por símbolo.
 \end{exemplo}
 
 \begin{exercicio}
   Seja $f(k)$ o número de símbolos que precisamos para representar uma árvore de decisão com $k$ nós externos em $\mathcal{L}$. Prove que
   \[
-    f(k) = 3\cdot\l(2\cdot k-1\r),\ k\geq 1
+    f(k) = 3\cdot\left(2\cdot k-1\vphantom{1j}\right),\ k\geq 1
   \]
 
   Representação de uma árvore de decisão com $k$ nós externos:
   \[
-    3\cdot\l(2\cdot k-1\r)\cdot\l\lceil\lg\l(d+4\r)\r\rceil = \mathcal{O}\l(k\cdot\log d\r) \text{bits}
+    3\cdot\left(2\cdot k-1\vphantom{1j}\right)\cdot\left\lceil\lg\left(d+4\vphantom{1j}\right)\vphantom{1j}\right\rceil = \mathcal{O}\left(k\cdot\log d\vphantom{1j}\right) \text{bits}
   \]
 \end{exercicio}
 \begin{resolucao}
@@ -250,40 +239,40 @@ Podemos agora minimizar o todo direto variando $h\in\mathcal{H}$
 
   Os $k-1$ nós internos contribuem com $3$ símbolos cada: '(x' e ')'
 
-  Resultado: $3\cdot k + 3\cdot\l(k-1\r) = 3\cdot\l(2\cdot k-1\r)$.
+  Resultado: $3\cdot k + 3\cdot\left(k-1\vphantom{1j}\right) = 3\cdot\left(2\cdot k-1\vphantom{1j}\right)$.
 
-  O fator $\cdot\l\lceil\lg\l(d+4\r)\r\rceil$ é pela quantidade mínima de bits para representar o alfabeto.
+  O fator $\cdot\left\lceil\lg\left(d+4\vphantom{1j}\right)\vphantom{1j}\right\rceil$ é pela quantidade mínima de bits para representar o alfabeto.
 \end{resolucao}
 
-Dado $\mathrm{S}\subseteq\l\{0,\ 1\r\}^d$, como obtemos uma Árvore de Decisão $T$ com $\mathrm{err}_\mathrm{S}\l(T\r)=0$?
+Dado $\mathrm{S}\subseteq\left\{0,\ 1\vphantom{1j}\right\}^d$, como obtemos uma Árvore de Decisão $T$ com $\mathrm{err}_\mathrm{S}\left(T\vphantom{1j}\right)=0$?
 
 \begin{exercicio}
-  Fácil obter uma $T$ com $\leq2\cdot\l|\mathrm{S}\r|$ nós externos.
+  Fácil obter uma $T$ com $\leq2\cdot\left|\mathrm{S}\vphantom{1j}\right|$ nós externos.
 \end{exercicio}
 \begin{resolucao}
-  Uma árvore balanceada com $2^d=\l|\mathrm{S}\r|$ nós externos é capaz de estilhaçar $\mathrm{S}\subseteq\l\{0,\ 1\r\}^d$
+  Uma árvore balanceada com $2^d=\left|\mathrm{S}\vphantom{1j}\right|$ nós externos é capaz de estilhaçar $\mathrm{S}\subseteq\left\{0,\ 1\vphantom{1j}\right\}^d$
 \end{resolucao}
 
 Assim
 \[
-  \mathrm{size}\l(T\r) = \mathcal{O}\l(\l|\mathrm{S}\r|\log d\r).
+  \mathrm{size}\left(T\vphantom{1j}\right) = \mathcal{O}\left(\left|\mathrm{S}\vphantom{1j}\right|\log d\vphantom{1j}\right).
 \]
 
 Se conseguimos $T$ com (pelo Teo 4 (ref:label?))
 \[
-  \mathrm{size}\l(T\r) \leq \frac{\eps}{2\cdot\log 2} \l|\mathrm{S}\r|
+  \mathrm{size}\left(T\vphantom{1j}\right) \leq \frac{\eps}{2\cdot\log 2} \left|\mathrm{S}\vphantom{1j}\right|
 \]
 
-e $\l|\mathrm{S}\r|\geq\frac{2}{\eps}\cdot\log\nicefrac{1}{\delta}$, então com prob. $\geq 1-\delta$,
+e $\left|\mathrm{S}\vphantom{1j}\right|\geq\frac{2}{\eps}\cdot\log\nicefrac{1}{\delta}$, então com prob. $\geq 1-\delta$,
 \begin{align}
-  \mathrm{err}_\mathcal{D}\l(T\r) &\leq \frac{\mathrm{size}\l(T\r)\cdot\log2 + \log\nicefrac{1}{\delta}}{\l|\mathrm{S}\r|}  \\
+  \mathrm{err}_\mathcal{D}\left(T\vphantom{1j}\right) &\leq \frac{\mathrm{size}\left(T\vphantom{1j}\right)\cdot\log2 + \log\nicefrac{1}{\delta}}{\left|\mathrm{S}\vphantom{1j}\right|}  \\
                                   &\leq \frac{\eps}{2} + \frac{\eps}{2} = \eps
 \end{align}
 
 Podemos deduzir algo análogo para o Teo. 5 (ref:label?).
 
 \begin{fato}
-  Obter uma menor $T$ tal que $\mathrm{err}_\mathrm{S}\l(T\r)=0$ é NP-difícil.
+  Obter uma menor $T$ tal que $\mathrm{err}_\mathrm{S}\left(T\vphantom{1j}\right)=0$ é NP-difícil.
 \end{fato}
 %endregion
 
@@ -295,13 +284,13 @@ Podemos deduzir algo análogo para o Teo. 5 (ref:label?).
 
 Considere a partição $\mathrm{S}=\mathrm{S}^+\cup\mathrm{S}^-$ de instâncias positivas e negativas.
 
-Seja também a indicação $\mathrm{S}_{x_i=0}\defeq\l\{s\in \mathrm{S}\colon\ x_i=0\r\}$
+Seja também a indicação $\mathrm{S}_{x_i=0}\vcentcolon=\left\{s\in \mathrm{S}\colon\ x_i=0\vphantom{1j}\right\}$
 
 \begin{definicao}
   \normalfont
   \textbf{Entropia binária}
   \[
-    \mathrm{H}\l(p\r) = \mathrm{H}_2\l(p\r) \defeq p\cdot\lg\nicefrac{1}{p} + q\cdot\lg\nicefrac{1}{q}
+    \mathrm{H}\left(p\vphantom{1j}\right) = \mathrm{H}_2\left(p\vphantom{1j}\right) \vcentcolon= p\cdot\lg\nicefrac{1}{p} + q\cdot\lg\nicefrac{1}{q}
   \]
 
   onde $p+q=1$ e $0\leq 0\leq1$.
@@ -310,11 +299,11 @@ Seja também a indicação $\mathrm{S}_{x_i=0}\defeq\l\{s\in \mathrm{S}\colon\ x
 \end{definicao}
 
 \[
-  \mathrm{H}\l(\mathrm{S}\r) = \mathrm{H}\l(\nicefrac{\l|\mathrm{S}^+\r|}{\l|\mathrm{S}\r|}\r)
+  \mathrm{H}\left(\mathrm{S}\vphantom{1j}\right) = \mathrm{H}\left(\nicefrac{\left|\mathrm{S}^+\vphantom{1j}\right|}{\left|\mathrm{S}\vphantom{1j}\right|}\vphantom{1j}\right)
 \]
 
 \[
-  \mathrm{H}\l(\mathrm{S}\given x_i\r) = \frac{\mathrm{S}_{x_i=0}}{\mathrm{S}}\cdot\mathrm{H}\l(\mathrm{S}_{x_i=0}\r) + \frac{\mathrm{S}_{x_i=1}}{\mathrm{S}}\cdot\mathrm{H}\l(\mathrm{S}_{x_i=1}\r)
+  \mathrm{H}\left(\mathrm{S}\,\middle|\, x_i\vphantom{1j}\right) = \frac{\mathrm{S}_{x_i=0}}{\mathrm{S}}\cdot\mathrm{H}\left(\mathrm{S}_{x_i=0}\vphantom{1j}\right) + \frac{\mathrm{S}_{x_i=1}}{\mathrm{S}}\cdot\mathrm{H}\left(\mathrm{S}_{x_i=1}\vphantom{1j}\right)
 \]
 
 \begin{definicao}
@@ -323,7 +312,7 @@ Seja também a indicação $\mathrm{S}_{x_i=0}\defeq\l\{s\in \mathrm{S}\colon\ x
 
   \textbf{Information Gain:}
   \[
-    \mathrm{IG}\l(i\r) \defeq \mathrm{H}\l(S\r) - \mathrm{H}\l(\mathrm{S}\given x_i\r).
+    \mathrm{IG}\left(i\vphantom{1j}\right) \vcentcolon= \mathrm{H}\left(S\vphantom{1j}\right) - \mathrm{H}\left(\mathrm{S}\,\middle|\, x_i\vphantom{1j}\right).
   \]
 
   \begin{tikzpicture}[
@@ -351,4 +340,4 @@ Seja também a indicação $\mathrm{S}_{x_i=0}\defeq\l\{s\in \mathrm{S}\colon\ x
 \end{definicao}
 %endregion
 
-}
+

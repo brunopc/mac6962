@@ -1,26 +1,3 @@
-{ %define guard
-
-\delimitershortfall=-0.10pt
-
-%region settings
-\newcommand{\given}{\,\middle|\,}               % conditional probability
-
-\newcommand{\Reals}{\mathds{R}}                 % Reals set
-
-\newcommand{\defeq}{\vcentcolon=}               % definition
-\newcommand{\eqdef}{=\vcentcolon}               % reverse definition
-
-\renewcommand{\l}{\mathopen{}\left}             % \left alias
-\renewcommand{\r}{\vphantom{1j}\right}          % \right alias
-
-\renewcommand{\P}{\mathrm{P}}                   % probability
-\newcommand{\E}{\mathrm{E}}                     % expected value
-\newcommand{\e}{\mathrm{e}}                     % euler number
-\newcommand{\nf}{\nicefrac}                     % nicefrac
-\renewcommand{\d}{\cdot}                        % multiplication
-%endregion
-
-\cleardoublepage
 \section{Aula 17 de Outubro de 2019}
 \label{2019_10_17}
 
@@ -32,20 +9,20 @@
   Seja
   \vspace*{-\baselineskip}
   \[
-    p = \nicefrac{1}{n}\l(\log n + c_n\r)
+    p = \nicefrac{1}{n}\left(\log n + c_n\vphantom{1j}\right)
   \]
   então
   \vspace*{-\baselineskip}
   \[
-    \lim_{n\rightarrow\infty} \P\l(G\l(n,\ p\r) \text{ é conexo}\r) = \l\{\begin{array}{ll}
+    \lim_{n\rightarrow\infty} \mathds{P}\left(G\left(n,\ p\vphantom{1j}\right) \text{ é conexo}\vphantom{1j}\right) = \left\{\begin{array}{ll}
       0                               & \text{se } c_n\rightarrow-\infty                            \\
-      \mathrel{e}^{-\mathrel{e}^{-c}} & \text{se } c_n\rightarrow c\in\Reals                        \\
+      \mathrel{e}^{-\mathrel{e}^{-c}} & \text{se } c_n\rightarrow c\in\mathds{R}                        \\
       1                               & \text{se } c_n\rightarrow\infty                             \\
-    \end{array}\r.
+    \end{array}\vphantom{1j}\right.
   \]
 \end{teorema}
 
-Seja $X_k=\#$componentes de $G\l(n,\ p\r)$ com $k$ vértices.
+Seja $X_k=\#$componentes de $G\left(n,\ p\vphantom{1j}\right)$ com $k$ vértices.
 
 Por exemplo, $X_1=\#$vértices isolados.
 
@@ -54,32 +31,32 @@ Por exemplo, $X_1=\#$vértices isolados.
   Temos
   \vspace*{-\baselineskip}
   \begin{align*}
-    \P\l(G\l(n,\ p\r)\text{ é desconexo}\r)
-      &=    \P\l(\sum_{1\leq k\leq\nf{n}{2}}X_k\geq 1\r)
-      \leq  \E\l(\sum_{1\leq k\leq\nf{n}{2}}\r)                                                     \\
-      &=    \sum_{1\leq k\leq\nf{n}{2}}\E\l(X_k\r)
-      \leq  \sum_{1\leq k\leq\nf{n}{2}}\binom{n}{k}\l(1-p\r)^{k\l(n-k\r)}
+    \mathds{P}\left(G\left(n,\ p\vphantom{1j}\right)\text{ é desconexo}\vphantom{1j}\right)
+      &=    \mathds{P}\left(\sum_{1\leq k\leq\nicefrac{n}{2}}X_k\geq 1\vphantom{1j}\right)
+      \leq  \mathds{E}\left(\sum_{1\leq k\leq\nicefrac{n}{2}}\vphantom{1j}\right)                                                     \\
+      &=    \sum_{1\leq k\leq\nicefrac{n}{2}}\mathds{E}\left(X_k\vphantom{1j}\right)
+      \leq  \sum_{1\leq k\leq\nicefrac{n}{2}}\binom{n}{k}\left(1-p\vphantom{1j}\right)^{k\left(n-k\vphantom{1j}\right)}
   \end{align*}
 
   Também temos
   \begin{align*}
-    \sum_{1\leq k\leq n^{\nf{3}{4}}}\binom{n}{k}\l(1-p\r)^{k\l(n-k\r)}
-      &\leq \sum_{1\leq k\leq n^{\nf{3}{4}}}\l(\nf{\e n}{k}\d\e^{-p\l(n-k\r)}\r)^k                  \\
-      &\leq \sum_{1\leq k\leq n^{\nf{3}{4}}}
-              \l(\nf{\e n}{k}\d\e^{-\log n-c_n+\smash{\overbrace{2\nf{k}{n}\log n}^{o(1)}}}\r)^k    \\
-      &\leq \sum_{1\leq k\leq n^{\nf{3}{4}}}\l(\nf{2}{k}\d\e^{1-c_n}\r)^k
-      \leq  3\e^{1-c_n} 
+    \sum_{1\leq k\leq n^{\nicefrac{3}{4}}}\binom{n}{k}\left(1-p\vphantom{1j}\right)^{k\left(n-k\vphantom{1j}\right)}
+      &\leq \sum_{1\leq k\leq n^{\nicefrac{3}{4}}}\left(\nicefrac{\mathrm{e} n}{k}\cdot\mathrm{e}^{-p\left(n-k\vphantom{1j}\right)}\vphantom{1j}\right)^k                  \\
+      &\leq \sum_{1\leq k\leq n^{\nicefrac{3}{4}}}
+              \left(\nicefrac{\mathrm{e} n}{k}\cdot\mathrm{e}^{-\log n-c_n+\smash{\overbrace{2\nicefrac{k}{n}\log n}^{o(1)}}}\vphantom{1j}\right)^k    \\
+      &\leq \sum_{1\leq k\leq n^{\nicefrac{3}{4}}}\left(\nicefrac{2}{k}\cdot\mathrm{e}^{1-c_n}\vphantom{1j}\right)^k
+      \leq  3\mathrm{e}^{1-c_n} 
       \rightarrow 0
   \end{align*}
 
   Ademais,
   \begin{align*}
-    \sum_{n^{\nf{3}{4}}<k\leq\nf{n}{2}}\binom{n}{k}\l(1-p\r)^{k\l(n-k\r)}
-      &\leq \sum_{n^{\nf{3}{4}}<k\leq\nf{n}{2}}
-              \l(\e\d\smash{\overbrace{\nf{n}{k}}^{<n^{\nf{1}{4}}}}\d
-              \e^{\smash{\overbrace{-p\l(n-k\r)}^{\geq\nf{n}{2}}}}\r)^k                             \\
-      &\leq \sum_{n^{\nf{3}{4}}<k\leq\nf{n}{2}}\l(\e\d n^{\nf{1}{4}}\d\e^{\nf{-\log n}{2}}\r)^k
-      \leq  n^{\nf{1}{5}\d n^{\nf{3}{4}}}
+    \sum_{n^{\nicefrac{3}{4}}<k\leq\nicefrac{n}{2}}\binom{n}{k}\left(1-p\vphantom{1j}\right)^{k\left(n-k\vphantom{1j}\right)}
+      &\leq \sum_{n^{\nicefrac{3}{4}}<k\leq\nicefrac{n}{2}}
+              \left(\mathrm{e}\cdot\smash{\overbrace{\nicefrac{n}{k}}^{<n^{\nicefrac{1}{4}}}}\cdot
+              \mathrm{e}^{\smash{\overbrace{-p\left(n-k\vphantom{1j}\right)}^{\geq\nicefrac{n}{2}}}}\vphantom{1j}\right)^k                             \\
+      &\leq \sum_{n^{\nicefrac{3}{4}}<k\leq\nicefrac{n}{2}}\left(\mathrm{e}\cdot n^{\nicefrac{1}{4}}\cdot\mathrm{e}^{\nicefrac{-\log n}{2}}\vphantom{1j}\right)^k
+      \leq  n^{\nicefrac{1}{5}\cdot n^{\nicefrac{3}{4}}}
       \rightarrow 0
   \end{align*}
 \end{proof}
@@ -87,49 +64,49 @@ Por exemplo, $X_1=\#$vértices isolados.
 
 % #region comentários sobre teo5 caso ->c
 \clearpage
-\subsection*{\normalfont Comentários sobre o caso $c_n\rightarrow c\in\Reals$.}$ $\newline
+\subsection*{\normalfont Comentários sobre o caso $c_n\rightarrow c\in\mathds{R}$.}$ $\newline
 
 Podemos usar
 \vspace*{-\baselineskip}
 \[
-  \E\l(X_k\r) = \binom{n}{k} \l(1-p\r)^{k\l(n-k\r)} k^{k-2} p^{k-1}
+  \mathds{E}\left(X_k\vphantom{1j}\right) = \binom{n}{k} \left(1-p\vphantom{1j}\right)^{k\left(n-k\vphantom{1j}\right)} k^{k-2} p^{k-1}
 \]
 
 Pelo Teorema de Cayley [<\href{https://en.wikipedia.org/wiki/Cayley%27s_formula}{https://en.wikipedia.org/wiki/Cayley\%27s\_formula}>: \#árvores geradoras de ordem $n$, temos que
 \[
-  k^{k-2} p^{k-1} = p\l(k\,p\r)^{k-2} \rightarrow 0 \text{ se } k>2
+  k^{k-2} p^{k-1} = p\left(k\,p\vphantom{1j}\right)^{k-2} \rightarrow 0 \text{ se } k>2
 \]
 
 Segue que no outro caso caso $c_n\rightarrow c$
 \[
-  \P\l(\sum_{k=2}^{\nf{n}{2}} X_k \geq 1\r) = \E\l(\sum_{k=2}^{\nf{n}{2}} X_k\r) \rightarrow 0
+  \mathds{P}\left(\sum_{k=2}^{\nicefrac{n}{2}} X_k \geq 1\vphantom{1j}\right) = \mathds{E}\left(\sum_{k=2}^{\nicefrac{n}{2}} X_k\vphantom{1j}\right) \rightarrow 0
 \]
 
-Concluímos que, com prob. $\rightarrow1$, $G\l(n,\ p\r)$ é composto por uma componente e $X_1$ vértices isolados.
+Concluímos que, com prob. $\rightarrow1$, $G\left(n,\ p\vphantom{1j}\right)$ é composto por uma componente e $X_1$ vértices isolados.
 
-Assim, $G\l(n,\ p\r)$ é conexo se e só se $X_1=0$.
+Assim, $G\left(n,\ p\vphantom{1j}\right)$ é conexo se e só se $X_1=0$.
 
-Vale que $X_1$ converge em probabilidade para uma v.a. $\mathrm{Pois}\l(\e^{-c}\r)$.
+Vale que $X_1$ converge em probabilidade para uma v.a. $\mathrm{Pois}\left(\mathrm{e}^{-c}\vphantom{1j}\right)$.
 
 Distribuição \textbf{Poison} [<\href{https://en.wikipedia.org/wiki/Poisson_distribution}{https://en.wikipedia.org/wiki/Poisson\_distribution}>]:
 \begin{itemize}
-  \item $Z\sim\mathrm{Pois}\l(\lambda\r)$;
-  \item $Z\in\mathbb{N}$;
-  \item $\P\l(Z=t\r) = \e^{-\lambda}\d\nf{\lambda^t}{t!}$, $t>0$;
-  \item $\E\l(Z\r) = \lambda$; e 
-  \item $\P\l(Z=0\r) = \e^{-c}$.
+  \item $Z\sim\mathrm{Pois}\left(\lambda\vphantom{1j}\right)$;
+  \item $Z\in\mathds{N}$;
+  \item $\mathds{P}\left(Z=t\vphantom{1j}\right) = \mathrm{e}^{-\lambda}\cdot\nicefrac{\lambda^t}{t!}$, $t>0$;
+  \item $\mathds{E}\left(Z\vphantom{1j}\right) = \lambda$; e 
+  \item $\mathds{P}\left(Z=0\vphantom{1j}\right) = \mathrm{e}^{-c}$.
 \end{itemize}
 
-Lembrando que $\E\l(X_1\r)\rightarrow\e^{-c}$:
+Lembrando que $\mathds{E}\left(X_1\vphantom{1j}\right)\rightarrow\mathrm{e}^{-c}$:
 \[
-  \lim_{n\rightarrow\infty} \P\l(X_1=t\r)
-    = \P\l(\mathrm{Pois}\l(\e^{-c}\r)=t\r)
-    = \e^{-\e^{-c}}\,\nf{\l(\e^{-c}\r)^t}{t!}
+  \lim_{n\rightarrow\infty} \mathds{P}\left(X_1=t\vphantom{1j}\right)
+    = \mathds{P}\left(\mathrm{Pois}\left(\mathrm{e}^{-c}\vphantom{1j}\right)=t\vphantom{1j}\right)
+    = \mathrm{e}^{-\mathrm{e}^{-c}}\,\nicefrac{\left(\mathrm{e}^{-c}\vphantom{1j}\right)^t}{t!}
 \]
 
 Para todo $t$ fixo. Em particular,
 \[
-  \P\l(G\l(n,\ p\r) \text{ é conexo}\r) = \lim_{n\rightarrow\infty} \P\l(X_1=0\r)=\e^{-\e^{-c}}
+  \mathds{P}\left(G\left(n,\ p\vphantom{1j}\right) \text{ é conexo}\vphantom{1j}\right) = \lim_{n\rightarrow\infty} \mathds{P}\left(X_1=0\vphantom{1j}\right)=\mathrm{e}^{-\mathrm{e}^{-c}}
 \]
 %endregion
 
@@ -146,45 +123,45 @@ Para todo $t$ fixo. Em particular,
   Seja $\mathcal{P}$ uma propriedade não trivial crescente. Então $\mathcal{P}$ admite uma função limiar:
   \vspace*{-\baselineskip}
   \begin{align*}
-    \P\l(G_p\in\mathcal{P}\r)
-      &\rightarrow \l\{\begin{array}{ll}
+    \mathds{P}\left(G_p\in\mathcal{P}\vphantom{1j}\right)
+      &\rightarrow \left\{\begin{array}{ll}
                       0 & \text{se } p \ll p_0  \\
                       1 & \text{se } p \gg p_0  \\
-                    \end{array}\r.                                                                  \\
-    \P\l(G_p\not\in\mathcal{P}\r)
+                    \end{array}\vphantom{1j}\right.                                                                  \\
+    \mathds{P}\left(G_p\not\in\mathcal{P}\vphantom{1j}\right)
       &\leq\epsilon
   \end{align*}
 \end{teorema}
 
 \begin{proof}[(Esboço)]$ $\newline
-  Seja $p_0<p_0\l(n\r)$ tal que
+  Seja $p_0<p_0\left(n\vphantom{1j}\right)$ tal que
   \vspace*{-\baselineskip}
   \[
-    \P\l(G\l(n,\ p\r)\in\mathcal{P} = \nf{1}{2}\r)
+    \mathds{P}\left(G\left(n,\ p\vphantom{1j}\right)\in\mathcal{P} = \nicefrac{1}{2}\vphantom{1j}\right)
   \]
 
-  Fixe $\epsilon>0$, e seja $t$ t.q. $\l(\nf{1}{2}\r)t\leq\epsilon$. Considere $t$ cópias independentes de $G\l(n,\ p\r)$, digamos $G_1,\ \ldots,\ G_t$. Seja $p'$ t.q. $1-p'=(1-p_0)^t$. Temos
+  Fixe $\epsilon>0$, e seja $t$ t.q. $\left(\nicefrac{1}{2}\vphantom{1j}\right)t\leq\epsilon$. Considere $t$ cópias independentes de $G\left(n,\ p\vphantom{1j}\right)$, digamos $G_1,\ \ldots,\ G_t$. Seja $p'$ t.q. $1-p'=(1-p_0)^t$. Temos
   \[
-    G\l(n,\ p'\r) = G_1\cup\ldots\cup G_t
+    G\left(n,\ p'\vphantom{1j}\right) = G_1\cup\ldots\cup G_t
   \]
 
   Temos que
   \vspace*{-\baselineskip}
   \[
-    \P\l(G\l(n,\ p\r)\not\in\mathcal{P}\r)
-      \leq \prod_{1\leq i\leq t} \P\l(G_i\not\in\mathcal{P}\r)
-      = \l(\nf{1}{2}\r)^t
+    \mathds{P}\left(G\left(n,\ p\vphantom{1j}\right)\not\in\mathcal{P}\vphantom{1j}\right)
+      \leq \prod_{1\leq i\leq t} \mathds{P}\left(G_i\not\in\mathcal{P}\vphantom{1j}\right)
+      = \left(\nicefrac{1}{2}\vphantom{1j}\right)^t
       \leq \epsilon
   \]
 
   Segue que se $p\gg p_0$, então
   \[
-    \P\l(G\l(n, p\r)\not\in\mathcal{P}\r) \rightarrow 0
+    \mathds{P}\left(G\left(n, p\vphantom{1j}\right)\not\in\mathcal{P}\vphantom{1j}\right) \rightarrow 0
   \]
 
   Um argumento análogo prova que se $p\ll p_0$, então
   \[
-    \P\l(G\l(n, p\r)\in\mathcal{P}\r) \rightarrow 0
+    \mathds{P}\left(G\left(n, p\vphantom{1j}\right)\in\mathcal{P}\vphantom{1j}\right) \rightarrow 0
   \]
 \end{proof}
 % #endregion
@@ -193,77 +170,77 @@ Para todo $t$ fixo. Em particular,
 \clearpage
 \subsection{Transição de fase em $G(n,\ p)$}$ $\newline
 
-[$G_t\approx G\l(n,\ \nf{t}{\binom{n}{2}}\r)$, $t=p\binom{n}{2}\sim p\,\nf{n^2}{2}$, $p=\nf{1}{n}$.]
+[$G_t\approx G\left(n,\ \nicefrac{t}{\binom{n}{2}}\vphantom{1j}\right)$, $t=p\binom{n}{2}\sim p\,\nicefrac{n^2}{2}$, $p=\nicefrac{1}{n}$.]
 
-[Propriedades crescente têm uma transição tipo $\l[a\,p,\ b\,p\r]$, com $a\rightarrow0$ e $b\rightarrow\infty$.]
+[Propriedades crescente têm uma transição tipo $\left[a\,p,\ b\,p\vphantom{1j}\right]$, com $a\rightarrow0$ e $b\rightarrow\infty$.]
 
-Seja $L_k\l(G\r)=$\#vértices da $k$-ésima maior componente de $G$. Claro que $L_1\l(G\r)\geq L_1\l(G\r)\geq\ldots$.
+Seja $L_k\left(G\vphantom{1j}\right)=$\#vértices da $k$-ésima maior componente de $G$. Claro que $L_1\left(G\vphantom{1j}\right)\geq L_1\left(G\vphantom{1j}\right)\geq\ldots$.
 
 \begin{teorema}
   \normalfont\textbf{[T7.]}
   Seja $\epsilon>0$ uma constante fixa.
   \begin{enumerate}
-    \item Se $p=\nf{\l(1-\epsilon\r)}{n}$, então q.c. $G\l(n,\ p\r)$ é t.q. $L_1\l(G\l(n,\ p\r)\r)\leq c\,\log n$, onde $c=c_\epsilon$.
-    \item Se $p=\nf{\l(1+\epsilon\r)}{n}$, então q.c. $G\l(n,\ p\r)$ é t.q. $L_1\l(G\l(n,\ p\r)\r)\geq c\,n$ e $L_2\l(G\l(n,\ p\r)\r)\leq c\,\log n$, onde $c=c_\epsilon$.
+    \item Se $p=\nicefrac{\left(1-\epsilon\vphantom{1j}\right)}{n}$, então q.c. $G\left(n,\ p\vphantom{1j}\right)$ é t.q. $L_1\left(G\left(n,\ p\vphantom{1j}\right)\vphantom{1j}\right)\leq c\,\log n$, onde $c=c_\epsilon$.
+    \item Se $p=\nicefrac{\left(1+\epsilon\vphantom{1j}\right)}{n}$, então q.c. $G\left(n,\ p\vphantom{1j}\right)$ é t.q. $L_1\left(G\left(n,\ p\vphantom{1j}\right)\vphantom{1j}\right)\geq c\,n$ e $L_2\left(G\left(n,\ p\vphantom{1j}\right)\vphantom{1j}\right)\leq c\,\log n$, onde $c=c_\epsilon$.
   \end{enumerate}
 \end{teorema}
 
 \begin{proof}[Prova]$ $\newline
-  Vamos provar que se $p=\nf{\l(1+\epsilon\r)}{n}$, então $L_1\l(G\l(n,\ p\r)\r)\geq\nf{1}{24}\,\epsilon^2\,n$ com prob. $\rightarrow1$.
+  Vamos provar que se $p=\nicefrac{\left(1+\epsilon\vphantom{1j}\right)}{n}$, então $L_1\left(G\left(n,\ p\vphantom{1j}\right)\vphantom{1j}\right)\geq\nicefrac{1}{24}\,\epsilon^2\,n$ com prob. $\rightarrow1$.
 
   Usamos busca em profundidade:
   \begin{enumerate}
-    \item $U\leftarrow V=V\l(G\r)$;
-    \item $G=G\l(n,\ p\r)$;
+    \item $U\leftarrow V=V\left(G\vphantom{1j}\right)$;
+    \item $G=G\left(n,\ p\vphantom{1j}\right)$;
     \item $E\leftarrow\varnothing$;
     \item $F\leftarrow\varnothing$; e
-    \item Para cada $v\in V$, se $v\in U$ então $\texttt{dfs}\l(v\r)$.
+    \item Para cada $v\in V$, se $v\in U$ então $\texttt{dfs}\left(v\vphantom{1j}\right)$.
   \end{enumerate}
 \end{proof}
 
 \begin{itemize}[label={}]
-  \item $\texttt{dfs}\l(v\r)$
+  \item $\texttt{dfs}\left(v\vphantom{1j}\right)$
   \begin{itemize}[label={}]
-    \item $F\leftarrow F\cup\l\{v\r\}$
-    \item $U\leftarrow U\setminus\l\{v\r\}$
+    \item $F\leftarrow F\cup\left\{v\vphantom{1j}\right\}$
+    \item $U\leftarrow U\setminus\left\{v\vphantom{1j}\right\}$
     \item Para cada $w\neq v$
     \begin{itemize}[label={}]
       \item se $w\in U$
-      \item então se $\l\{v,\ w\r\}\in\E\l(G\l(n,\ p\r)\r)$ (query)
+      \item então se $\left\{v,\ w\vphantom{1j}\right\}\in\mathds{E}\left(G\left(n,\ p\vphantom{1j}\right)\vphantom{1j}\right)$ (query)
       \begin{itemize}[label={}]
-        \item $\texttt{dfs}\l(w\r)$
+        \item $\texttt{dfs}\left(w\vphantom{1j}\right)$
       \end{itemize}
     \end{itemize}
-    \item $E\leftarrow E\cup\l\{v\r\}$
-    \item $F\leftarrow F\setminus\l\{v\r\}$
+    \item $E\leftarrow E\cup\left\{v\vphantom{1j}\right\}$
+    \item $F\leftarrow F\setminus\left\{v\vphantom{1j}\right\}$
   \end{itemize}
 \end{itemize}
 
-Executamos a $\texttt{dfs}$ até fazermos $t=\delta\,n^2$ queries, onde $\delta=\nf{\epsilon}{4}$.
+Executamos a $\texttt{dfs}$ até fazermos $t=\delta\,n^2$ queries, onde $\delta=\nicefrac{\epsilon}{4}$.
 
 \includegraphics[width=0.75\textwidth]{aulas/10_17/dfs.png}
 
 \begin{observacao}
-  O valor esperado de queries com resposta positiva é $\delta\,n^2\,p=\delta\l(1+\epsilon\r)$. Com prob. $\rightarrow1$, temos que o número de respostas positivas é t.q.
+  O valor esperado de queries com resposta positiva é $\delta\,n^2\,p=\delta\left(1+\epsilon\vphantom{1j}\right)$. Com prob. $\rightarrow1$, temos que o número de respostas positivas é t.q.
   \[
-    \delta\l(1+\nf{\epsilon}{2}\r)n \leq s \leq \delta\l(1+2\,\epsilon\r)n
+    \delta\left(1+\nicefrac{\epsilon}{2}\vphantom{1j}\right)n \leq s \leq \delta\left(1+2\,\epsilon\vphantom{1j}\right)n
   \]
   
   Por Chebyshev ou Chernoff.
   
-  Sem perda de generalidade, $\epsilon\leq\nf{1}{4}$.
+  Sem perda de generalidade, $\epsilon\leq\nicefrac{1}{4}$.
 \end{observacao}
 
 \begin{fato}
   \normalfont
-  $\not\exists$ arestas  em $G\l(n,\ p\r)$ entre $E$ e $U$.
+  $\not\exists$ arestas  em $G\left(n,\ p\vphantom{1j}\right)$ entre $E$ e $U$.
 \end{fato}
 
-Provamos que, se $L_1\l(G\l(n,\ p\r)\r)<\nf{1}{24}\,\epsilon^2\,n$, então $\l|E\r|\,\l|U\r|>t$.
+Provamos que, se $L_1\left(G\left(n,\ p\vphantom{1j}\right)\vphantom{1j}\right)<\nicefrac{1}{24}\,\epsilon^2\,n$, então $\left|E\vphantom{1j}\right|\,\left|U\vphantom{1j}\right|>t$.
 
 Isso é uma contradição.
 
-Vamos provar que, em algum momento, $\l|F\r|\geq\nf{1}{24}\,\epsilon^2\,n$, c.c. $\l|E\r|\,\l|U\r|>t$.
+Vamos provar que, em algum momento, $\left|F\vphantom{1j}\right|\geq\nicefrac{1}{24}\,\epsilon^2\,n$, c.c. $\left|E\vphantom{1j}\right|\,\left|U\vphantom{1j}\right|>t$.
 % #endregion
 
-}
+
