@@ -11,77 +11,75 @@
 \section{Aula 21 de Outubro de 2019}
 \label{2019_10_21}
 
-Relembrando:
+Da aula passada temos que:
 
 \[\frac{1}{H}\geq\epsilon>0 ,\ p=\frac{1+\epsilon}{n}\]
 
-Então:
+Então $\mathbb{P}(L_1(G(n,p))\geq (1/24)\epsilon^2 n)$ converge para 1 quando $n\rightarrow\infty$.\\
 
-\[\mathbb{P}(L_1(G(n,p))\geq\frac{1}{24}\epsilon^2 n)\]
+Executamos $t=sn^2$ passos da busca em profundidade, onde $\sigma=\epsilon/4$, e paramos.Examinamos a estrutura neste momento.\\
 
-Converge para 1 quando $n\rightarrow\infty$.\\
-\\
-P.S: (relembrando)\\
-\\
-Executamos $t=sn^2$ passos da busca em profundidade, onde $\sigma=\epsilon/4$, e paramos.\\
-Examinamos a estrutura neste momento. Vamos provar que quase certamente $|F|\geq n\epsilon^2/24$ sendo que $L_1(G_p) \geq n\epsilon^2/24$, quase certamente.\\
-Podemos supor que o $n^o$ de arestas descobertas até este momento é tal que, com alta probabilidade,
+Vamos provar que quase certamente $|F|\geq n\epsilon^2/24$ sendo que $L_1(G_p) \geq n\epsilon^2/24$, quase certamente.\\
+Podemos supor que o número de arestas descobertas até este momento é tal que, com alta probabilidade,
 \[(*)\sigma(1+\frac{2\epsilon}{n})n\leq A\leq \sigma (1+2\epsilon)\]
 
 De fato $\mathbb{E}(A)=tp=\sigma n (1+\epsilon)$ e $Ap_i(t,p)$ e * ocorre quase certamente. Suponha que * ocorre e $\epsilon \leq\ 1/4 $.
 
-\subsection{Fato $ |E|<2sn $}
-
-$\rightarrow$ suponha o contrário, considere o momento em que $ |E|=2sn$. Temos o seguinte:
+\begin{fato}
+$ |E|<2sn $
+\end{fato}
+\begin{proof}
+Suponha o contrário. Considere o momento em que $ |E|=2sn$. Temos o seguinte:
 \[|F|\leq1+A\leq1+\sigma(1+2\epsilon)n<2\sigma n\]
-Assim 
+Dessa forma temos que:
 \[\sigma n^2 = t \geq |E||U|\geq2\sigma n(n-|E|-|F|) \geq 2\sigma n (n-2\sigma n - 2\sigma n ) = 2 \sigma n^2 (1-4\sigma)\]
 
-Contradição.\\
-\\
+O que é uma contradição.\\
+\end{proof}
 
-Provaremos agora que $|F|\geq(1/6)\epsilon\sigma n = (1/24)\epsilon ^2 n$. Assim $|E|>\sigma(1+2/3\epsilon)n-(1/6)\epsilon\sigma n = \sigma(1+\epsilon/2)n$.\\
-Temos assim que $\sigma(1+\epsilon/2)n<|E|<2\sigma n$, mas $|E||U|-|E|(n-|E|-|F|)\geq\sigma(1+\epsilon/2)n(n-\sigma(+\epsilon/2)n-(1/6)\epsilon\sigma n)=\sigma n^2 (1+\epsilon/2)(1-\sigma-2/3\epsilon\sigma)\geq\sigma n^2(1+\epsilon/6-\epsilon^2/6)>\sigma n^2$, mas $|E||U|\leq\sigma n^2$, contradição.
+\begin{fato}
+ $|F|\geq(1/6)\epsilon\sigma n = (1/24)\epsilon ^2 n$
+\end{fato}
+\begin{proof}
+Suponha o contrário, ou seja, que $|F|<(1/6)\epsilon\sigma n$.
+Temos que $|E|+|F|\geq A = \delta (1+\frac{\epsilon}{3})n$, portanto, usando o resultado acima:
 
+\[|E|>\sigma(1+2/3\epsilon)n-(1/6)\epsilon\sigma n = \sigma(1+\epsilon/2)n\]
 
+Temos assim que $\sigma(1+\epsilon/2)n<|E|<2\sigma n$.\\
 
-\subsection{Teorema: suponha $0<\epsilon\leq1/2$, $p=(1+\epsilon/n)$. Então $\lim_{n\to\infty} \mathbb{P}(L_2(G_p)>(200/\epsilon^3)\log n)=0$}
+Sabemos, porém, que:
 
-Prova: Usamos exploração em duas rodadas. Seja $p_1 = (1+\epsilon/2)/n$, $p_2$ tal que $(1-p)=(1-p_1)(1-p_2)$.\\
-Então $G(n,p)=G(n,p_1)\cup G(n,p_2)$, independentes. Temos $p=p_1+p_2-p$, $p_2\leq p_1+p_2\rightarrow p_2\geq\epsilon/2n$.\\
+\[|E||U|-|E|(n-|E|-|F|)\]
+\[\geq\sigma(1+\epsilon/2)n(n-\sigma(+\epsilon/2)n-(1/6)\epsilon\sigma n)\]
+\[=\sigma n^2 (1+\epsilon/2)(1-\sigma-2/3\epsilon\sigma)\]
+\[\geq\sigma n^2(1+\epsilon/6-\epsilon^2/6)\]
+\[>\sigma n^2\]
+
+Como $|E||U|\leq\sigma n^2$, chegamos em uma contradição.
+\end{proof}
+
+\begin{teorema}
+Suponha que $0<\epsilon\leq1/2$, $p=(1+\epsilon/n)$. Então $\lim_{n\to\infty} \mathbb{P}(L_2(G_p)>(200/\epsilon^3)\log n)=0$
+\end{teorema}
+\begin{proof}
+Para a prova, usaremos exploração em duas rodadas. Seja $p_1 = (1+\epsilon/2)/n$ e $p_2$ tal que $(1-p)=(1-p_1)(1-p_2)$.\\
+
+Então $G(n,p)=G(n,p_1)\cup G(n,p_2)$, independentes. Temos $p=p_1+p_2-p_1p_2\leq p_1+p_2$, o que implica que  $p_2\geq\epsilon/2n$.\\
 
 Sabemos que quase certamente $L_1(G,n,p_1))\geq(1/24)(\epsilon^2/4)n = (1/96)\epsilon^2n$.\\
 
-Seja $C$ uma componente de $G(n,p_1)$ com $|V(C)|=L_1(G(n,p_1))$. Adicione as arestas de $G(n,p_2)$ com ambas as pontas em $V(G(n,p_1))\backslash V(C)$ ou $G(n,p_1)$. Seja $C'$ uma componente contida em $V(G(n,p_1))\backslash V(C)$ neste novo grafo.\\
+Seja $C$ uma componente de $G(n,p_1)$ com $|V(C)|=L_1(G(n,p_1))$. Adicione as arestas de $G(n,p_2)$ com ambas as pontas em $V(G(n,p_1))\backslash V(C)$ ou $G(n,p_1)$, criando um novo grafo.\\ 
+
+Seja $C'$ uma componente contida em $V(G(n,p_1))\backslash V(C)$ neste novo grafo.
 Suponha que $|C'|\geq (200/\epsilon^3)\log n$. Adicione agora as arestas de $G(n,p_2)$ entre $V(C')$ e $V(C)$. A probabilidade de nenhuma aresta aparecer entre $C'$ e $C$ é:\\
+\[(1-p_2)^{|V(C)||V(C')|}\]
+\[\leq e^{-p_2|V(C)||V(C')|}\]
+\[\leq  e^{-\frac{\epsilon}{2n}}\frac{1}{96}\epsilon^2 n \frac{200}{\epsilon^3}\log n\]
+\[=n^{-\frac{-2\epsilon}{27}}\rightarrow\]
 
-\[(1-p_2)^{|V(C)||V(C')|}\leq e^{-p_2|V(C)||V(C')|}\leq  e^{-\frac{\epsilon}{2n}}\frac{1}{96}\epsilon^2 n \frac{200}{\epsilon^3}\log n=n^{-\frac{-2\epsilon}{27}}\rightarrow 0  \]
+Como o número de tais $C'$ é menor ou igual a n, temos pela cota da união que a probabilidade de que alguma delas não é "absorvida" por $C$ é menor ou igual a $n^{-\frac{1}{24}}$, o que tende a zero, como queríamos demonstrar.\\
 
-\begin{flushright}
-$\square$
-\end{flushright}\\
-
-Vamos agora para o caso $p=(1-\epsilon)/n$. Temos que $(1-\epsilon)/n<(1-\epsilon)/(n-1)$.
-Estudaremos o comportamento da busca em largura no $G(n,p)$.\\
-Fixe o vértice inicial da busca $v=v_1$. A partir de $v_1$, descobrimos os vértices $v_2,v_3,..,v_k,...$ que pertencem à componente $C_v$ de v. Seja $z_0=1$ e $z_i =$ # de novos vértices de $C_v$ descobertos pelo vértice $v_i$ na busca em largura.\\
-\\
-Afirmação: Se $\sum_{i=1}^{k-1}z_i<k-1$, então $|V(C_u)|<k$.\\
-\\
-Prova: Suponha $|V(C_u)|\geq k$: $v=v_1,v_2,...,v_k,...$, $k-1\leq z_1+...+z_k$.\\
-
-\begin{flushright}
-$\square$
-\end{flushright}\\
-
-Portanto,
- \[\mathbb{P}(|V(C_v)|\geq k)\leq \mathbb{P}(\sum_{i=1}^{k-1}z_i\geq k-1).  \]
- 
- Sejam $Y_1,Y_2,...,Y_{k-1}$ variáveis aleatórias independentes, todas com distribuição $ B_i(n-1,(1-\epsilon)/(n-1))$. Um argumento de acoplamento mostra que:
- 
- \[\mathbb{P}(\sum_{i=1}^{n-1}z_i\geq T)\leq\mathbb{P}(\sum_{i=1}^{n-1}y_i\geq T)=\mathbb{P}(B_i((k-1)(n-1),(1-\epsilon)/(n-1))\geq T) \]
- 
- 
- Para $T=k-1$, $\mathbb{P}(\sum z_i \geq T)\leq e^{-(1/2)\epsilon^2(k-1)}$.
-
+\end{proof}
 
 \end{document}
