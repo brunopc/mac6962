@@ -1,0 +1,78 @@
+\section{Aula 31 de Outubro de 2019}
+\label{2019_10_31}
+
+O esquema de hashing que veremos hoje tem como características principais a busca em tempo constante no pior caso e a inserção em tempo médio, amortizado, constante.
+
+A análise do algoritmo vai ser baseada no que vimos do $G(n,p)$, para $p = \frac{1-\eps}{n}$, \ $\eps>0$, então vamos retomar alguns dados importantes das últimas aulas.
+
+Tal $p = \frac{1-\eps}{n}$ enquadra a \emph{fase subcrítica}, na qual o grafo $G(n,p)$ é formado quase certamente apenas por componentes conexas que possuem no máximo 1 circuito cada.
+
+De forma mais detalhada, vamos dizer que uma componente/grafo conexo é de \emph{tipo} $(n,m)$ se possui $n$ vértices e $m$ arestas. Desse modo, uma árvore é de tipo $(k,k-1)$ e uma componente unicíclica é de tipo $(k,k)$. Dizemos que uma componente é \emph{complexa} se é de tipo $(k, \geq k+1)$ i.e. possui $k$ vértices e pelo menos $k+1$ arestas para algum $k$.
+
+Então a fase subcrítica tem (quase certamente) as seguintes três propriedades:
+
+\begin{enumerate}
+	\item A maior componente de $G_p = G(n,p)$ tem $L_1(G_p) = O_\eps(\log n)$ vértices;
+	\item \label{tamanho medio}O número esperado de vértices na componente de um vértice de $G_p$ é $\EE(|V(C_v)|) = O_\eps(1)$;
+	\item \label{complexa}$G(n,p)$ não tem componentes complexas.
+\end{enumerate}
+A notação $O_\eps(\cdot)$ é para enfatizar que a constante envolvida depende de $\eps$.
+
+Vamos então introduzir o \emph{cuckoo hashing}. O assunto a partir de agora foi dado com a apresentação de slides \cite{1}, que possui vários exemplos muito bem feitos. Uma versão mais curta sem o passo a passo desses exemplos se encontra em \cite{2}.
+
+
+\subsection{Cuckoo hashing} 
+
+\subsubsection{Hashings perfeitos}
+
+Seja $h:\mathcal{U}\rightarrow H$ uma função de hash de um universo $\mathcal{U}$ para um conjunto de hashes $H$. Dizemos que $h$ é \emph{perfeito} se não há colisões i.e. a função $h$ é injetora. Hashings perfeitos são muito difíceis de se ter na prática, então vamos estudar funções de hash aleatórias.
+
+\subsubsection{Pior caso esperado para busca em encadeamento e linear probing} Quando posicionamos $\Theta(n)$ bolas em $n$ urnas, vimos que a urna mais cheia tem $\Theta(\frac{\log n}{\log \log n})$ bolas; na versão de linear probing, o pior caso é o maior cluster, de tamanho $\Omega(\log n)$.
+
+Para reduzir esses piores casos, faremos pequenas modificações.
+
+\subsubsection{Second-choice hashing} Uma mudança muito útil é usar pares de urnas, como vimos na aula passada. Tal estratégia diminui o tamanho da urna mais cheia para $\Theta(\log\log n)$. Mais precisamente, se a cada passo colocamos a bola na urna mais vazia dentre $k$ urnas escolhidas aleatoriamente ($k=2$ no second-choice hashing, e.g. página 9 de \cite{1}), então com alta probabilidade temos (após $n$ passos) que toda urna contém no máximo $\frac{1}{k}\log\log n + O(1)$ bolas. 
+
+Na prática, consideramos duas funções de hash $h_1$ e $h_2$, e colocamos a bola $x$ na urna menos cheia dentre $h_1(x)$ e $h_2(x)$.
+
+Por outro lado, podemos resolver colisões realocando as bolas que estão ocupando as posições que precisamos usar.
+
+\subsubsection{Robin-Hood hashing} Imagine $n$ urnas inicialmente vazias dispostas em ciclo. Cada bola que chega vem rotulada com a posição de uma urna, um $p\in\ZZ/n\ZZ$. Se a urna $p$ está livre, então colocamos a bola nessa urna. Caso contrário, vamos escolher uma das duas bolas (a atual ou a da urna $p$) para ficar na urna $p$ e a outra deve ser realocada para frente, nas urnas $p+1$, $p+2$, etc. A regra de escolha é a seguinte: entre as duas bolas, escolhemos deixar na urna $p$ aquela que está mais urnas a frente do que o seu rótulo indica (vide animação a partir da página 32 de \cite{1}). A bola que não ficou na urna $p$ tenta ser realocada na urna $p+1$, seguindo o mesmo critério, e assim vai até encontrarmos uma urna vazia. A ideia desse processo é equilibrar (à medida do possível) o quão longe cada bola está da sua respectiva urna, tirando dos ``ricos'' (as bolas mais próximas de suas urnas) para dar aos ``pobres'' (as bolas mais distantes das urnas que deveriam estar); por isso chama-se hashing de Robin-Hood. Note que tal algoritmo faz com que, em cada cluster, as bolas estejam em ordem crescente, no sentido de que, começando do primeiro termo, podemos obter os próximos realizando a operação de somar 1 num total de no máximo $n-1$ vezes. Desse modo, se queremos buscar uma bola de rótulo $p$, basta verificar as urnas $p$, $p+1$, etc.\ até encontrar uma bola de rótulo maior ou terminar o cluster.
+
+O cuckoo hashing mistura essas duas ideias para realizar queries em tempo constante.
+
+\subsubsection{Cuckoo hashing} Começamos com duas funções de hash, uma $h_1$ que associa a cada bola~$x$ uma posição $h_1(x)$ em uma tabela $T_1$ de $m$ entradas, e uma função $h_2$ que associa a cada bola~$x$ uma posição $h_2(x)$ em uma outra tabela $T_2$, também composta de $[m]$ entradas. Cada bola $x$ deve sempre estar em $h_1(x)$ ou $h_2(x)$.
+
+Inicialmente, $T_1$ e $T_2$ estão vazios. O algoritmo de inserção é como segue (p.75 de \cite{1}): para alocar uma bola $x$, primeiramente a colocamos na urna $h_1(x)$. Se essa urna estava vazia, não há mais nada a fazer. Caso contrário, se havia uma bola $y$ em $h_1(x)$, realocamos $y$ na tabela $T_2$, i.e.\ na urna $h_2(y)$. Se em $h_2(y)$ também havia uma bola, digamos $z$, a bola $z$ volta para a primeira tabela em $h_1(z)$, e assim sucessivamente, alternando entre $T_1$ e $T_2$. O nome cuckoo hashing vem da espécie de pássaro que deposita seus ovos em ninhos de outras aves e derruba os que estavam lá.
+
+O algoritmo acima pode entrar em loop; nesse caso, dizemos que a inserção falhou e refazemos todo o processo utilizando novas funções de hash $h_1$ e $h_2$. Isso é feito quantas vezes for necessário.
+
+Seja $n$ o total de bolas a serem inseridas. Vamos considerar $n = (1-\eps)m$, onde $\eps>0$ é um real fixado. Sob essas condições, veremos que cada inserção tem tempo esperado $O(1)$ e quase certamente nenhuma inserção falha.
+
+Para fazer essa análise, representamos o funcionamento desse esquema por um multigrafo bipartido, o cuckoo graph (vide \cite{1}, p.141). Cada uma das $2m$ urnas é um vértice desse multigrafo, e cada bola $x$ alocada é representada por uma aresta ligando as duas urnas $h_1(x)$ e $h_2(x)$ que ela pode estar. Mais ainda, orientamos essa aresta para apontar para a urna na qual a bola $x$ atualmente está. Note que a condição de ter no máximo uma bola por urna se traduz a nenhum vértice receber duas flechas, enquanto que cada inserção adiciona uma aresta ao grafo e a operação permitida é trocar a orientação das arestas.
+
+Podemos estudar o cuckoo graph em termos de suas componentes conexas. Em particular, se uma inserção cria uma componente complexa, que é aquela de $k$ vértices e mais de $k$ arestas, então tal inserção certamente falha. Com efeito, não há vértices suficientes para receber todas as flechas, de modo que para qualquer orientação das arestas sempre haverá um vértice recebendo pelo menos duas flechas. Mais precisamente, uma inserção falha exatamente quando se tem uma componente complexa; as árvores e componentes unicíclicas não fazem o algoritmo de inserção entrar em loop, como ilustrado nos exemplos a partir da página 153 de \cite{1}.
+
+Outro fator importante é o tempo médio de uma inserção que não falha, que é limitado proporcionalmente ao número de vértices da componente conexa. Os resultados que temos sobre tamanho esperado da componente conexa e (não) existência de componentes complexas são para o grafo aleatório $G(n,p)$, que é diferente do modelo aleatório do cuckoo graph. Mesmo assim, a propriedade mais importante para obter esses resultados é o grau esperado de cada vértice, de modo que é possível adaptar a demonstração do $G(n,p)$ para o cuckoo graph. De fato, o grau esperado em $G(n,p)$ é $p(n-1) = \frac{1-\eps}{n}(n-1) \approx 1-\eps$, enquanto que, no cuckoo graph, cada aresta contribui em $1/m$ para o grau esperado, de modo que o grau esperado é $n/m = 1-\eps$ também. Com isso, o cuckoo graph satisfaz as mesmas propriedades do $G(n,p)$, em particular (\ref{tamanho medio}) e (\ref{complexa}). Essas propriedades fazem com que o tempo de inserção seja $O(1)$ em média, amortizado (a parte de quando a inserção não falha é consequência direta de (\ref{tamanho medio}), e (\ref{complexa}) garante que a outra parte é desprezível). Os tempos de busca e remoção são $O(1)$ no pior caso pois para uma bola $x$, basta verificar $h_1(x)$ e $h_2(x)$.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\begin{thebibliography}{9}
+	\bibitem{1} (Keith Schwarz?) \emph{Cuckoo hashing.} Disponível em \url{https://web.stanford.edu/class/cs166/lectures/13/Slides13.pdf}
+	
+	\bibitem{2} \url{https://web.stanford.edu/class/cs166/lectures/13/Small13.pdf}
+	
+\end{thebibliography}
+
+
