@@ -1,16 +1,16 @@
-%region recapitulating
 \section{Aula 19 de Agosto de 2019}
 \label{2019_08_19}
 
 Esta nota de aula foi escrita por Vitor Santa Rosa Gomes, seguindo o conteúdo apresentado em aula por Yoshiharu Kohayakawa, com base principalmente no capítulo 5 de \cite[p.~129]{blum_hopcroft}, iniciado na aula anterior. As interpretações dadas são compiladas por Vitor podem não podem ser consideradas citações nem de Kohayakawa, nem de \cite{blum_hopcroft}.
 
+%region recapitulating
 \subsection*{Relembrando conceitos do Aprendizado de Máquina}
 
 Algoritmos de \textit{Aprendizado de Máquina} (ML) são ferramentas que permitem generalizar estruturas a partir de dados, sem conhecimento detalhado sobre o domínio. Um dos problemas fundamentais em ML é aprender a classificar bem dados rotulados em \textit{classes} ou \textit{categorias} --- chamados de \textit{Problemas de Classificação}. Tipicamente, consideramos um \textit{espaço de instâncias} $\mathcal{X}$ --- com $\mathcal{X}=\left\{0,\ 1\right\}^d$ ou $\mathcal{X}=\mathds{R}^d$ ---, correspondendo a dados com $d$ \text{descritores}, \text{dimensões} ou \text{features}. Para abordar esse problema, usa-se um \textit{conjunto de treinamento} $\mathrm{S}\subseteq\mathcal{X}$ corretamente rotulado, a fim de \textit{generalizar} nosso conhecimento inferido de $\mathrm{S}$ para $\mathcal{X}$.
 
 Para afirmar garantias da capacidade de generalização dos algoritmos de ML, é necessário assumir que (1) $\mathrm{S}$ é uma boa representação de $\mathcal{X}$, e que (2) as regras usadas pelos algoritmos são ``simples'' de alguma forma. Mais formalmente, seja $\mathcal{D}\colon\ \mathcal{X}\mapsto\mathds{R}$ uma distribuição de probabilidade sobre $\mathcal{X}$ tal que $\mathrm{S}$ é amostrado uniforme e independentemente (i.i.d) em $\mathcal{D}$; nosso objetivo é fazer boas afirmações sobre novos pontos tomados em $\mathcal{D}$. Quando há apenas duas classes, definição das categorias é feita por um \textit{conceito objetivo} $c^\star\subseteq\mathcal{X}$ --- isto é, $c^\star$ e ${c^\star}^\complement$ particionam $\mathcal{X}$ nas duas classes. Finalmente, o propósito está em encontrar uma \textit{hipótese} $h\subseteq\mathcal{X}$ que seja próxima de $c^\star$ com respeito à distribuição $\mathcal{D}$. Uma métrica para verificar essa proximidade é o \textit{erro de generalização}
 \[
-  \mathrm{err}_\mathcal{D}\left(h\vphantom{1j}\right)=\mathrm{P}\left(h\mathrel{\Delta}c^\star\vphantom{1j}\right),
+  \mathrm{err}_\mathcal{D}\left(h\vphantom{1j}\right)=\mathrm{P}\left[h\mathrel{\Delta}c^\star\vphantom{1j}\right],
 \]
 sendo que o operador $\Delta$ é a \textit{diferença simétrica}
 \[
@@ -49,7 +49,7 @@ Vimos na aula passada a motivação e a prova dos teoremas \autoref{teo:pac} e \
   \]
   é amostrado da distribuição $\mathcal{D}$ dos dados $\mathcal{X}$, então
   \[
-    \mathrm{P}\left(\left|\mathrm{err}_\mathrm{S}\left(h\vphantom{1j}\right)-\mathrm{err}_\mathcal{D}\left(h\vphantom{1j}\right)\vphantom{1j}\right| > \eps\vphantom{1j}\right) \leq \delta.
+    \mathrm{P}\left[\left|\mathrm{err}_\mathrm{S}\left(h\vphantom{1j}\right)-\mathrm{err}_\mathcal{D}\left(h\vphantom{1j}\right)\vphantom{1j}\right| > \eps\vphantom{1j}\right] \leq \delta.
   \]
 \end{teorema}
 %endregion
@@ -86,7 +86,7 @@ Ainda assim, é possível formalizar o conceito de ``simples'' dentro de Ciênci
   \]
   Então
   \[
-    \mathrm{P}\left(\exists h\in\mathcal{H}\colon\ \left(\mathrm{S},\ \eps\vphantom{1j}\right)\text{-ruim}\vphantom{1j}\right) \leq \delta
+    \mathrm{P}\left[\exists h\in\mathcal{H}\colon\ \left(\mathrm{S},\ \eps\vphantom{1j}\right)\text{-ruim}\vphantom{1j}\right] \leq \delta
   \]
 
   Equivalentemente, com probabilidade pelo menos $1-\delta$, se $\mathrm{err}_\mathcal{S}\left(h\vphantom{1j}\right)$ e $h\in\mathcal{L}_{<b}$, então
