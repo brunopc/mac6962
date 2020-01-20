@@ -1,181 +1,180 @@
-{ %define guard
-
-%region settings
-\newcommand{\given}{\,\middle|\,}               % conditional probability
-
-\newcommand{\Reals}{\mathds{R}}                 % Reals set
-
-\newcommand{\defeq}{\vcentcolon=}               % definition
-\newcommand{\eqdef}{=\vcentcolon}               % reverse definition
-
-\renewcommand{\l}{\mathopen{}\left}             % \left alias
-\renewcommand{\r}{\vphantom{1j}\right}          % \right alias
-%endregion
-
-%region recapitulating
-\cleardoublepage
 \section{Aula 19 de Agosto de 2019}
 \label{2019_08_19}
 
-\subsection*{\it Relembrando}
+Esta nota de aula foi escrita por Vitor Santa Rosa Gomes, seguindo o conteúdo apresentado em aula por Yoshiharu Kohayakawa, com base principalmente no capítulo 5 de \cite[p.~129]{blum_hopcroft}, iniciado na aula anterior. As interpretações dadas são compiladas por Vitor e não podem ser consideradas citações nem de Kohayakawa, nem de \cite{blum_hopcroft}.
 
-\paragraph{\nopunct} Sejam
-\begin{enumerate}
-  \item $\mathcal{X}$ espaço de instâncias;
-  \item $\mathcal{D}\colon\ \mathcal{X}\mapsto\Reals$ distribuição sobre $\mathcal{X}$;
-  \item $\mathrm{S}\subseteq\mathcal{X}$ conjunto de treinamento, $\mathrm{S}=\l\{s_1,\ \ldots,\ s_n\r\},\ s_i\sim\mathcal{D}$ i.i.d.;
-  \item $c^\star\subseteq\mathcal{X}$ conceito objetivo;
-  \item $h\subseteq\mathcal{X}$ hipótese sobre $\mathcal{X}$;
-  \item $\mathrm{err}_\mathcal{D}\l(h\r)=\mathrm{P}\l(h\mathrel{\Delta}c^\star\r)$, onde $h\mathrel{\Delta}c^\star\defeq\l(h\setminus c^\star\r)\cup\l(c^\star\setminus h\r)$;
-  \item $\mathrm{err}_\mathrm{S}\l(h\r)=\nicefrac{\l|\l(h\mathrel{\Delta}c^\star\r)\cap\mathrm{S}\r|}{\l|\mathrm{S}\r|}$; e
-  \item $\mathcal{H}\subseteq 2^\mathcal{X}$, com $h\in\mathcal{H}$ \textbf{classe de hipóteses} (ou classe de conceitos).
-\end{enumerate}
+%region recapitulating
+\subsection*{Relembrando conceitos do Aprendizado de Máquina}
 
-Temos
+Algoritmos de \textit{Aprendizado de Máquina} (ML) são ferramentas que permitem generalizar estruturas a partir de dados, sem conhecimento detalhado sobre o domínio. Um dos problemas fundamentais em ML é aprender a classificar bem dados rotulados em \textit{classes} ou \textit{categorias} --- chamados de \textit{Problemas de Classificação}. Tipicamente, consideramos um \textit{espaço de instâncias} $\mathcal{X}$ --- com $\mathcal{X}=\left\{0,\ 1\right\}^d$ ou $\mathcal{X}=\mathds{R}^d$ ---, correspondendo a dados com $d$ \textit{descritores}, \textit{dimensões} ou \textit{features}. Para abordar esse problema, usa-se um \textit{conjunto de treinamento} $\mathrm{S}\subseteq\mathcal{X}$ corretamente rotulado, a fim de \textit{generalizar} nosso conhecimento inferido de $\mathrm{S}$ para $\mathcal{X}$.
 
-\textbf{Teorema 1 (ref:label?):} $\eps,\ \delta>0$. Se
+Para afirmar garantias da capacidade de generalização dos algoritmos de ML, é necessário assumir que (1) $\mathrm{S}$ é uma boa representação de $\mathcal{X}$, e que (2) as regras usadas pelos algoritmos são ``simples'' de alguma forma. Mais formalmente, seja $\mathcal{D}\colon\ \mathcal{X}\mapsto\mathds{R}$ uma distribuição de probabilidade sobre $\mathcal{X}$ tal que $\mathrm{S}$ é amostrado uniforme e independentemente (i.i.d) em $\mathcal{D}$; nosso objetivo é fazer boas afirmações sobre novos pontos tomados em $\mathcal{D}$. Quando há apenas duas classes, definição das categorias é feita por um \textit{conceito objetivo} $c^\star\subseteq\mathcal{X}$ --- isto é, $c^\star$ e ${c^\star}^\complement$ particionam $\mathcal{X}$ nas duas classes. Finalmente, o propósito está em encontrar uma \textit{hipótese} $h\subseteq\mathcal{X}$ que seja próxima de $c^\star$ com respeito à distribuição $\mathcal{D}$. Uma métrica para verificar essa proximidade é o \textit{erro de generalização}
 \[
-  n = \l|\mathrm{S}\r| \geq \frac{1}{\eps}\cdot\l(\log\l|\mathcal{H}\r| + \log\nicefrac{1}{\delta}\r),
+  \mathrm{err}_\mathcal{D}\left(h\vphantom{1j}\right)=\mathrm{P}\left[h\mathrel{\Delta}c^\star\vphantom{1j}\right],
+\]
+sendo que o operador $\Delta$ é a \textit{diferença simétrica}
+\[
+  h\mathrel{\Delta}c^\star\vcentcolon=\left(h\setminus c^\star\vphantom{1j}\right)\cup\left(c^\star\setminus h\vphantom{1j}\right).
+\]
+Interpreta-se $\mathrm{err}_\mathcal{D}$ como a probabilidade de classificar incorretamente com $h$ um ponto tomado aleatoriamente de $\mathcal{D}$. Uma forma de estimá-lo é usar o \textit{erro de treinamento}
+\[
+  \mathrm{err}_\mathrm{S}=\frac{\left|\left(h\mathrel{\Delta}c^\star\vphantom{1j}\right)\cap\mathrm{S}\vphantom{1j}\right|}{\left|\mathrm{S}\vphantom{1j}\right|}.
 \]
 
-então
-\[
-  \mathrm{P}\l(\exists h\in\mathcal{H}\colon\ \l(\mathrm{S},\ \eps\r)\text{-ruim}\r) \leq \delta
-\]
+Mesmo que $\mathrm{S}$ seja representativo de $\mathcal{X}$, um algoritmo que apenas memorize $\mathrm{S}$ costuma ter $\mathrm{err}_\mathrm{S}\ll\mathrm{err}_\mathcal{D}$, evento conhecimento como \textit{overfitting}. A fim de analisar a diferença esperada entre o erro de treinamento e o erro de generalização, define-se uma \textit{classe de hipóteses} $\mathcal{H}\subseteq 2^\mathcal{X}$, com $h\in\mathcal{H}$ que impõe um limite de complexidade sobre $h$. A motivação de que $h$ seja simples é garantir que $\mathrm{err}_\mathrm{S}\approx\mathrm{err}_\mathcal{D}$.
 
-\textbf{Definição ? (ref:label?):} $h$ é \textbf{$\l(\mathrm{S},\ \eps\r)$-ruim} se $\mathrm{err}_\mathrm{S}\l(h\r)=0$, mas $\mathrm{err}_\mathcal{D}\l(h\r)>\eps$.
+Vimos na aula passada a motivação e a prova dos teoremas \autoref{teo:pac} e \autoref{teo:convergencia_uniforme}.
 
-\textbf{Teorema 2 (ref:label?):} $\eps,\ \delta>0$. Se
-\[
-  n = \l|\mathrm{S}\r| \geq \frac{1}{2\cdot\eps^2}\cdot\l(\log\l|\mathcal{H}\r| + \log\nicefrac{2}{\delta}\r),
-\]
+\begin{definicao}
+  Uma hipótese $h\in\mathcal{H}$ é $\left(\mathrm{S},\ \eps\vphantom{1j}\right)\!\text{-ruim}$ se $\mathrm{err}_\mathrm{S}\left(h\vphantom{1j}\right)=0$, mas $\mathrm{err}_\mathcal{D}\left(h\vphantom{1j}\right)>\eps$.
+\end{definicao}
 
-então
-\[
-  \mathrm{P}\l(\l|\mathrm{err}_\mathrm{S}\l(h\r)-\mathrm{err}_\mathcal{D}\l(h\r)\r| > \eps\r) \leq \delta
-\]
+\begin{teorema}[Provavelmente Aproximadamente Correto]
+  \label{teo:pac}
+  Seja $\mathcal{H}$ uma classe de hipóteses, e sejam $\eps$ e $\delta$ positivos. Se um conjunto de treinamento $\mathrm{S}$ com tamanho
+  \[
+    n \coloneqq \left|\mathrm{S}\vphantom{1j}\right| \geq \frac{1}{\eps}\cdot\left(\log\left|\mathcal{H}\vphantom{1j}\right| + \log\nicefrac{1}{\delta}\vphantom{1j}\right),
+  \]
+  é amostrado da distribuição $\mathcal{D}$ dos dados $\mathcal{X}$, então
+  \[
+    \mathrm{P}\left[\exists h\in\mathcal{H}\colon\ \left(\mathrm{S},\ \eps\vphantom{1j}\right)\!\text{-ruim}\vphantom{1j}\right] \leq \delta.
+  \]
+\end{teorema}
+
+\begin{teorema}[Convergência Uniforme]
+  \label{teo:convergencia_uniforme}
+  Seja $\mathcal{H}$ uma classe de hipóteses, e sejam $\eps$ e $\delta$ positivos. Se um conjunto de treinamento $\mathrm{S}$ com tamanho
+  \[
+    n \coloneqq \left|\mathrm{S}\vphantom{1j}\right| \geq \frac{1}{2\cdot\eps^2}\cdot\left(\log\left|\mathcal{H}\vphantom{1j}\right| + \log\nicefrac{2}{\delta}\vphantom{1j}\right),
+  \]
+  é amostrado da distribuição $\mathcal{D}$ dos dados $\mathcal{X}$, então
+  \[
+    \mathrm{P}\left[\left|\mathrm{err}_\mathrm{S}\left(h\vphantom{1j}\right)-\mathrm{err}_\mathcal{D}\left(h\vphantom{1j}\right)\vphantom{1j}\right| > \eps\vphantom{1j}\right] \leq \delta.
+  \]
+\end{teorema}
 %endregion
 
 %region occam's razor
-\clearpage
 \subsection{Navalha de Occam}
 
-\paragraph{\nopunct}[\textit{Sugestão: <\href{https://en.wikipedia.org/wiki/Philosophical\_razor}{https://en.wikipedia.org/wiki/Philosophical\_razor}>}]
+Na filosofia, é comum tratar objetos em função dos mesmos, como pensar sobre o ato de pensar, por isso são usadas diversas técnicas práticas ou \textit{argumentos de corte} com intuito de ``podar a árvore de recursão'', numa interpretação mais computacional. Como sugestão de leitura sobre esses métodos , há <\href{https://en.wikipedia.org/wiki/Philosophical\_razor}{https://en.wikipedia.org/wiki/Philosophical\_razor}>.
 
-\begin{afirmacao}
+Em particular, pela \textit{Navalha de Occam} --- declarada por William Occam por volta de 1320 antes de Cristo ---, ``explicações simples dos fenômenos observados são mais prováveis de estarem corretas; busca-se evitar explicações improváveis''. Embora essa afirmação não possua qualquer validade formal, é uma regra que funciona bem na prática. Ainda assim, os teoremas \autoref{teo:pac} e \autoref{teo:convergencia_uniforme} podem ser vistos como casos especiais da Navalha de Occam, dadas suas fortes, necessárias e normalmente irreais hipóteses.
+
+\begin{afirmacao}[Navalha de Occam]
   \label{afr:navalha_de_occam}
-  \normalfont
-  \textbf{Navalha de Occam:} damos preferência a conceitos/hipóteses simples.
+  Damos preferência a conceitos ou hipóteses simples, em detrimento de mais complicadas.
 \end{afirmacao}
 
-\paragraph{\nopunct} Seja $\mathcal{L}$ linguagem para descrever as $h\in\mathcal{H}$.
+\begin{definicao}[Estilhaçamento]
+  \label{def:estilhacamento}
+  Dizemos que uma hipótese $h\in\mathcal{H}$ \textit{estilhaça} o conjunto de treinamento $\mathrm{S}$ se ela for igual ao conceito objetivo em seus pontos; ou seja, $h\left(s\right)=c^\star\left(s\right),\ \forall s\in\mathrm{S}$.
+\end{definicao}
 
-\begin{exemplo}
-  $\mathcal{H}=\l\{\text{disjunções}\r\}$, e.g. $h\l(x_1,\ \ldots,\ x_d\r)=x_2\lor x_5\lor x_7$
-  
-  segue que $\mathcal{L}=\l\{0,\ 1\r\}^d$.
-\end{exemplo}
+Ainda assim, é possível formalizar o conceito de ``simples'' dentro de Ciência da Computação com \textit{linguagens de descrição} da seguinte forma:
+\begin{teorema}[Cota de estilhaçamento]
+  \label{teo:navalha_de_occam}
+  Dada uma linguagem de descrição $\mathcal{L}$, seja $b\coloneqq\#\mathrm{bits}\left(h\vphantom{1j}\right)$ a quantidade de bits usados para especificar uma hipótese $h\in\mathcal{H}$ em $\mathcal{L}$.
 
-\begin{exemplo}
-  $\mathcal{H}=\l\{\text{funções booleanas}\r\}$, $h\colon\ \l\{0,\ 1\r\}^d\mapsto\l\{-1,\ 1\r\}$
-  
-  segue que $\mathcal{L}=\l\{\text{árvores de decisão}\r\}=\l\{\text{circuitos booleanos}\r\}$.
-\end{exemplo}
-
-Dado $\mathcal{L}$, podemos definir $\mathrm{size}\l(h\r)=\#\mathrm{bits}$ para especificar $h$ na linguagem $\mathcal{L}$.
-
-Vamos considerar
-\[
-  \mathcal{L}_b = \l\{h\in\mathcal{H}\colon\ \mathrm{size}\l(h\r)=b\r\}
-\]
-
-e
-\[
-  \mathcal{L}_{<b} = \bigcup_{b'<b} \mathcal{L}_b.
-\]
-
-\begin{observacao}
-  $\l|\mathcal{L}_b\r| \leq 2^b$
+  Defina por conveniência
   \[
-    \l|\mathcal{L}_{<b}\r| \leq 1 + 2 + \ldots + 2^{b-1} < 2^b
+    \mathcal{L}_b\coloneqq\left\{h\in\mathcal{H}\colon\ \mathrm{size}\left(h\vphantom{1j}\right)=b\vphantom{1j}\right\}
   \]
-\end{observacao}
-
-\begin{teorema}
-  \label{teo:teo4}
-  \normalfont
-  (teorema 4...)
-  (Cor do Teo1 (ref:label?))
-  Fixe $\eps,\ \delta>0$ e suponha
-  \[
-    n = \l|\mathrm{S}\r| \geq \frac{1}{\eps}\cdot\l(b\cdot\log2 + \log\nicefrac{1}{\delta}\r).
+  e
+  \[ 
+    \mathcal{L}_{<b} = \bigcup_{b'<b} \mathcal{L}_b.
   \]
 
+  Fixe $\eps$ e $\delta$ positivos, e seja um conjunto de treinamento $\mathrm{S}$ com tamanho
+  \[
+    n \coloneqq \left|\mathrm{S}\vphantom{1j}\right| \geq \frac{1}{\eps}\cdot\left(b\cdot\log2 + \log\nicefrac{1}{\delta}\vphantom{1j}\right).
+  \]
   Então
   \[
-    \mathrm{P}\l(\exists h\in\mathcal{H}\colon\ \l(\mathrm{S},\ \eps\r)\text{-ruim}\r) \leq \delta
+    \mathrm{P}\left[\exists h\in\mathcal{H}\colon\ \left(\mathrm{S},\ \eps\vphantom{1j}\right)\text{-ruim}\vphantom{1j}\right] \leq \delta
+  \]
+
+  Equivalentemente, com probabilidade pelo menos $1-\delta$, se $\mathrm{err}_\mathcal{S}\left(h\vphantom{1j}\right)$ e $h\in\mathcal{L}_{<b}$, então
+  \[
+    \mathrm{err}_\mathcal{D}\left(h\vphantom{1j}\right) \leq \frac{b\cdot\log2 + \log\nicefrac{1}{\delta}}{\left|\mathrm{S}\vphantom{1j}\right|}.
   \]
 \end{teorema}
 
-Equivalentemente, com probabilidade $\geq 1-\delta$,
+\begin{observacao}
+  Pela construção de $\mathcal{L}_b$, sabemos que
+  \begin{itemize}
+    \item $\left|\mathcal{L}_b\vphantom{1j}\right| \leq 2^b$
+    \item $\left|\mathcal{L}_{<b}\vphantom{1j}\right| \leq 1 + 2 + \ldots + 2^{b-1} < 2^b$
+  \end{itemize}
+\end{observacao}
 
-se $\mathrm{err}_\mathcal{S}\l(h\r)$ e $h\in\mathcal{L}_{<b}$,
+\begin{exemplo}
+  Essa representação de hipóteses em bits é bastante clara quando $\mathcal{X}=\left\{0,\ 1\right\}^d$ e $c^\star$ pode ser expresso como:
+  \begin{itemize}
+    \item Quando $c^\star$ é uma disjunção das features, basta que $\mathcal{L}=\left\{0,\ 1\vphantom{1j}\right\}^d$, com hipóteses no formato $h\left(x_1,\ \ldots,\ x_d\vphantom{1j}\right)=x_2\lor x_5\lor x_7$.
+    \item Quando $c^\star$ é uma função booleana (ou circuito lógico) das features, basta que $\mathcal{L}=\left\{\text{árvores de decisão}\vphantom{1j}\right\}=\left\{\text{circuitos booleanos}\vphantom{1j}\right\}$. com hipóteses no formato $\mathcal{H}=\left\{\text{funções booleanas}\vphantom{1j}\right\}$, $h\colon\ \left\{0,\ 1\vphantom{1j}\right\}^d\mapsto\left\{-1,\ 1\vphantom{1j}\right\}$.
+  \end{itemize}
+\end{exemplo}
 
-então
-\[
-  \mathrm{err}_\mathcal{D}\l(h\r) \leq \frac{b\cdot\log2 + \log\nicefrac{1}{\delta}}{\l|\mathrm{S}\r|}.
-\]
+É possível modificar o Teorema da Convergência Uniforme \autoref{teo:convergencia_uniforme} para incluir linguagens de descrição:
 
-\begin{teorema}
-  \label{teo:teo5}
-  \normalfont
-  (teorema 5...)
-  (Cor do Teo2 (ref:label?))
-  Fixe $\eps,\ \delta>0$ e suponha
+\begin{corolario}[Cota do erro de generalização pelo de treinamento e pela complexidade]
+  \label{cor:convergencia_uniforme_bits}
+  Seja $\mathcal{H}$ uma classe de hipóteses, e sejam $\eps$ e $\delta$ positivos. Se (1) um conjunto de treinamento $\mathrm{S}$ com tamanho
   \[
-    n = \l|\mathrm{S}\r| \geq \frac{1}{2\cdot\eps^2}\cdot\l(b\cdot\log2 + \log\nicefrac{2}{\delta}\r).
+    n \coloneqq \left|\mathrm{S}\vphantom{1j}\right| \geq \frac{1}{2\cdot\eps^2}\cdot\left(\log\left|\mathcal{H}\vphantom{1j}\right| + \log\nicefrac{2}{\delta}\vphantom{1j}\right),
+  \]
+  é amostrado da distribuição $\mathcal{D}$ dos dados $\mathcal{X}$ e se (2) a hipótese $h\in\mathcal{H}$ pode ser descrita numa linguagem $\mathcal{L}_{<b}$, então com probabilidade pelo menos $1-\delta$
+  \[
+    \mathrm{err}_\mathcal{D}\left(h\vphantom{1j}\right) \leq \mathrm{err}_\mathrm{S}\left(h\vphantom{1j}\right) + \eps.
   \]
 
-  Então, com probabilidade $\geq 1-\delta$, temos que se $h\in\mathcal{L}_{<b}$, então
+  Equivalentemente, por manipulação algébrica,
   \[
-    \mathrm{err}_\mathcal{D}\l(h\r) \leq \mathrm{err}_\mathrm{S}\l(h\r) + \eps
-  \]
-\end{teorema}
-
-\begin{corolario}
-  \normalfont
-  Equivalente: $h\in\mathcal{L}_{<b}$, $\delta>0$, com probabilidade $\geq 1-\delta$,
-  Fixe $\eps,\ \delta>0$ e suponha
-  \[
-    \mathrm{err}_\mathcal{D}\l(h\r) \leq \mathrm{err}_\mathrm{S}\l(h\r) + \sqrt{\frac{1}{2\cdot\l|\mathrm{S}\r|}\cdot\l(b\cdot\log2 + \log\nicefrac{2}{\delta}\r)}.
+    \mathrm{err}_\mathcal{D}\left(h\vphantom{1j}\right) \leq \mathrm{err}_\mathrm{S}\left(h\vphantom{1j}\right) + \sqrt{\frac{1}{2\cdot\left|\mathrm{S}\vphantom{1j}\right|}\cdot\left(b\cdot\log2 + \log\nicefrac{2}{\delta}\vphantom{1j}\right)}.
   \]
 \end{corolario}
 
-Nos Teoremas \autoref{teo:teo4} e \autoref{teo:teo5}, $b$ é fixo. Se quisermos considerar vários valores de $b$ simultaneamente, podemos fazer o sequinte.
+Nos Teoremas \autoref{teo:convergencia_uniforme} e \autoref{cor:convergencia_uniforme_bits}, $b$ é fixo. Se quisermos considerar vários valores de $b$ simultaneamente, podemos fazer o sequinte.
 
-Fixe $\delta>0$. Seja $\delta_i=\nicefrac{\delta}{2^i},\ i=1,\ 2,\ \ldots$. Então $\sum_1^\infty \delta_i=\delta$.
+Fixe $\delta>0$ e sejam $\delta_i=\nicefrac{\delta}{2^i}$ com $i\in\mathds{N}$. Então $\sum_1^\infty \delta_i=\delta$.
 
-Consideramos $\mathcal{L}_b$ para $b=0,\ 1,\ 2,\ \ldots$. Aplicando o Teorema 2 (ref:label?) para $\mathcal{L}_b$ e $\delta_i$, temos que, com prob. $\geq 1-\delta_i$, se $h\in\mathcal{L}_b$ então
+Consideramos $\mathcal{L}_b$ para $b\in\mathds{Z}^{\geq}$. Aplicando o teorema \autoref{teo:pac} para $\mathcal{L}_b$ e $\delta_i$, temos que, com $h\in\mathcal{L}_b$ e com probabilidade pelo menos $1-\delta_i$
 \begin{align*}
-  \mathrm{err}_\mathcal{D}\l(h\r) &\leq \mathrm{err}_\mathrm{S}\l(h\r) + \sqrt{\frac{1}{2\cdot\l|\mathrm{S}\r|}\cdot\l(i\cdot\log2 + \log\nicefrac{2}{\delta_i}\r)}. \\
-                                  &= \mathrm{err}_\mathrm{S}\l(h\r) + \sqrt{\frac{1}{2\cdot\l|\mathrm{S}\r|}\cdot\l(i\cdot\log4 + \log\nicefrac{2}{8}\r)}.
+  \mathrm{err}_\mathcal{D}\left(h\vphantom{1j}\right) &\leq \mathrm{err}_\mathrm{S}\left(h\vphantom{1j}\right) + \sqrt{\frac{1}{2\cdot\left|\mathrm{S}\vphantom{1j}\right|}\cdot\left(i\cdot\log2 + \log\nicefrac{2}{\delta_i}\vphantom{1j}\right)}. \\
+                                  &= \mathrm{err}_\mathrm{S}\left(h\vphantom{1j}\right) + \sqrt{\frac{1}{2\cdot\left|\mathrm{S}\vphantom{1j}\right|}\cdot\left(i\cdot\log4 + \log\nicefrac{2}{8}\vphantom{1j}\right)}.
 \end{align*}
 
-Concluímos que, com prob. $\geq 1-\delta$,
+Concluímos que, com probabilidade pelo menos $1-\delta$,
 \[
-  \mathrm{err}_\mathcal{D}\l(h\r) \leq = \mathrm{err}_\mathrm{S}\l(h\r) + \sqrt{\frac{1}{2\cdot\l|\mathrm{S}\r|}\cdot\l(\mathrm{size}\l(h\r)\cdot\log4 + \log\nicefrac{2}{8}\r)}.
+  \mathrm{err}_\mathcal{D}\left(h\vphantom{1j}\right) \leq = \mathrm{err}_\mathrm{S}\left(h\vphantom{1j}\right) + \sqrt{\frac{1}{2\cdot\left|\mathrm{S}\vphantom{1j}\right|}\cdot\left(\mathrm{size}\left(h\vphantom{1j}\right)\cdot\log4 + \log\nicefrac{2}{8}\vphantom{1j}\right)}.
 \]
 
-Podemos agora minimizar o todo direto variando $h\in\mathcal{H}$
+Podemos agora minimizar o todo direito variando $h\in\mathcal{H}$.
+
+Esses teoremas que definem um cota ao erro de generalização dados o erro de treinamento e a complexidade da classe de hipóteses são justificativas mais formais de que devemos buscar o algoritmo de ML mais simples capaz descrever o conjunto de treinamento, a fim de garantir uma boa generalização para os dados desconhecidos.
 %endregion
 
 %region decision trees
-\clearpage
 \subsection{Árvores de decisão}
 
-\paragraph{\nopunct}[\textit{Sugestão: <\href{https://scikit-learn.org/stable/modules/tree.html}{https://scikit-learn.org/stable/modules/tree.html}>}]
+\textit{Árvores de decisão} são algoritmos bastante comuns em ML. Mesmo sendo provado que encontrar uma árvore ótima (com menor altura) dado o conjunto de treinamento $\mathrm{S}$ seja NP-difícil, existem diversas heurísticas usadas na prática. Uma biblioteca muito comumente usada para construção de árvores de decisão é a Scikit-Learn, disponível em <\href{https://scikit-learn.org/stable/modules/tree.html}{https://scikit-learn.org/stable/modules/tree.html}>. Modelos baseados em árvores hoje atingem o estado da arte para dados tabulares, notavelmente tanto boosting trees como XGBoost e LightGBM, quanto árvores aleatórias de regressão como PRIM, MARS e CART.
 
-\begin{exemplo}
+\begin{fato}[Árvores ótima são NP=difícieis]
+  Obter uma menor $T$ tal que $\mathrm{err}_\mathrm{S}\left(T\vphantom{1j}\right)=0$ é NP-difícil.
+\end{fato}
+
+Suponha que $\mathcal{X}=\left\{0,\ 1\right\}^d$ e que $c^\star$ é uma função booleana (ou circuito lógico) das features. Seja $T$ uma árvore construída por algoritmo a partir de $\mathrm{S}$ com $k$ nós internos. Essa árvore pode ser descrita com $O\left(k\cdot\log d\right)$ bits, considerando a indução:
+\begin{enumerate}
+  \item $O\left(\lg d\right)$ para descrever a feature na raiz;
+  \item $O\left(1\right)$ para indicar se um nó é folha;
+  \item $O\left(\left(k-1\right)\cdot\log d\right)$ para descrever a subárvore esquerda e direita se nõa forem folhas.
+\end{enumerate}
+
+Assim, pelo teorema \autoref{teo:navalha_de_occam}, nós podemos confiar que o erro de generalização é baixo se conseguirmos criar uma árvore com no máximo $\eps\cdot\nicefrac{\left|\mathrm{S}\vphantom{1j}\right|}{\log d}$ nós.
+
+\begin{figure}
+  \label{fig:arvore_de_decisao}
   \begin{tikzpicture}[
     auto, thick,
     node/.style={draw, circle, thick, text centered, 
@@ -210,122 +209,112 @@ Podemos agora minimizar o todo direto variando $h\in\mathcal{H}$
     (x4)  edge  node[above right] {$1$}  (y5)
     ;
   \end{tikzpicture}
+\end{figure}
 
-  Fórmula booleana equivalente: $\overline{x_1}\overline{x_2}\lor x_2\overline{x_1}\lor x_1x_2x_3$.
+\begin{exemplo}
+  Considere a árvore de decisão da figura \autoref{fig:arvore_de_decisao}.
 
+  Sua fórmula booleana equivalente é $\overline{x_1}\overline{x_2}\lor x_2\overline{x_1}\lor x_1x_2x_3$.
+
+  Como uma hipótese sobre os dados, pode ser descrita da seguinte forma linguagem recursiva:
   {
-    \delimitershortfall=-1pt                        % bigger wrapping brackets
+    \delimitershortfall=-1pt
     $\mathcal{L}$: 
-    $\l(x_2
-            \l(x_1
-                  \l(+\r)
-                  \l(-\r)
-            \r)
-            \l(x_3
-                  \l(+\r)
-                  \l(x_1
-                      \l(-\r)
-                      \l(+\r)
-                  \r)
-            \r)
-      \r)$
+    $\left(x_2
+            \left(x_1
+                  \left(+\vphantom{1j}\right)
+                  \left(-\vphantom{1j}\right)
+            \vphantom{1j}\right)
+            \left(x_3
+                  \left(+\vphantom{1j}\right)
+                  \left(x_1
+                      \left(-\vphantom{1j}\right)
+                      \left(+\vphantom{1j}\right)
+                  \vphantom{1j}\right)
+            \vphantom{1j}\right)
+      \vphantom{1j}\right)$
   }
 
-  Alfabeto: $\l\{1,\ \ldots,\ d\r\}\cup\l\{\text{'('},\ \text{')'},\ \text{'+'},\ \text{'-'}\r\}$, $\l\lceil\lg\l(d+4\r)\r\rceil$ bits por símbolo.
+  Usando como alfabeto $\left\{1,\ \ldots,\ d\vphantom{1j}\right\}\cup\left\{\text{`('},\ \text{`)'},\ \text{`+'},\ \text{`-'}\vphantom{1j}\right\}$, temos $\left\lceil\lg\left(d+4\vphantom{1j}\right)\vphantom{1j}\right\rceil$ bits por símbolo.
 \end{exemplo}
 
 \begin{exercicio}
   Seja $f(k)$ o número de símbolos que precisamos para representar uma árvore de decisão com $k$ nós externos em $\mathcal{L}$. Prove que
   \[
-    f(k) = 3\cdot\l(2\cdot k-1\r),\ k\geq 1
+    f(k) = 3\cdot\left(2\cdot k-1\vphantom{1j}\right),\ k\geq 1.
   \]
 
   Representação de uma árvore de decisão com $k$ nós externos:
   \[
-    3\cdot\l(2\cdot k-1\r)\cdot\l\lceil\lg\l(d+4\r)\r\rceil = \mathcal{O}\l(k\cdot\log d\r) \text{bits}
+    3\cdot\left(2\cdot k-1\vphantom{1j}\right)\cdot\left\lceil\lg\left(d+4\vphantom{1j}\right)\vphantom{1j}\right\rceil = \mathcal{O}\left(k\cdot\log d\vphantom{1j}\right) \text{bits}.
   \]
 \end{exercicio}
 \begin{resolucao}
-  Os $k$ nós externos contribuem com $3$ símbolos cada: '(+)' ou '(-)'.
+  Os $k$ nós externos contribuem com $3$ símbolos cada: `(+)' ou `(-)'.
 
-  Os $k-1$ nós internos contribuem com $3$ símbolos cada: '(x' e ')'
+  Os $k-1$ nós internos contribuem com $3$ símbolos cada: `(x' e `')'
 
-  Resultado: $3\cdot k + 3\cdot\l(k-1\r) = 3\cdot\l(2\cdot k-1\r)$.
+  Resultado: $3\cdot k + 3\cdot\left(k-1\vphantom{1j}\right) = 3\cdot\left(2\cdot k-1\vphantom{1j}\right)$.
 
-  O fator $\cdot\l\lceil\lg\l(d+4\r)\r\rceil$ é pela quantidade mínima de bits para representar o alfabeto.
+  O fator $\cdot\left\lceil\lg\left(d+4\vphantom{1j}\right)\vphantom{1j}\right\rceil$ é pela quantidade mínima de bits para representar o alfabeto.
 \end{resolucao}
-
-Dado $\mathrm{S}\subseteq\l\{0,\ 1\r\}^d$, como obtemos uma Árvore de Decisão $T$ com $\mathrm{err}_\mathrm{S}\l(T\r)=0$?
 
 \begin{exercicio}
-  Fácil obter uma $T$ com $\leq2\cdot\l|\mathrm{S}\r|$ nós externos.
+  Dado $\mathrm{S}\subseteq\left\{0,\ 1\vphantom{1j}\right\}^d$, como obtemos uma Árvore de Decisão $T$ com $\mathrm{err}_\mathrm{S}\left(T\vphantom{1j}\right)=0$?
+  
+  Fácil obter uma $T$ com $\leq2\cdot\left|\mathrm{S}\vphantom{1j}\right|$ nós externos.
 \end{exercicio}
 \begin{resolucao}
-  Uma árvore balanceada com $2^d=\l|\mathrm{S}\r|$ nós externos é capaz de estilhaçar $\mathrm{S}\subseteq\l\{0,\ 1\r\}^d$
+  Uma árvore balanceada com $2^d=\left|\mathrm{S}\vphantom{1j}\right|$ nós externos é capaz de estilhaçar $\mathrm{S}\subseteq\left\{0,\ 1\vphantom{1j}\right\}^d$ (há uma bijeção clara).
+
+  Assim
+  \[
+    \mathrm{size}\left(T\vphantom{1j}\right) = \mathcal{O}\left(\left|\mathrm{S}\vphantom{1j}\right|\log d\vphantom{1j}\right).
+  \]
+
+  Se conseguimos $T$ com \autoref{teo:navalha_de_occam}
+  \[
+    \mathrm{size}\left(T\vphantom{1j}\right) \leq \frac{\eps}{2\cdot\log 2} \left|\mathrm{S}\vphantom{1j}\right|
+  \]
+
+  e $\left|\mathrm{S}\vphantom{1j}\right|\geq\frac{2}{\eps}\cdot\log\nicefrac{1}{\delta}$, então com prob. $\geq 1-\delta$,
+  \begin{align}
+    \mathrm{err}_\mathcal{D}\left(T\vphantom{1j}\right) &\leq \frac{\mathrm{size}\left(T\vphantom{1j}\right)\cdot\log2 + \log\nicefrac{1}{\delta}}{\left|\mathrm{S}\vphantom{1j}\right|}  \\
+                                    &\leq \frac{\eps}{2} + \frac{\eps}{2} = \eps
+  \end{align}
+
+  Podemos deduzir algo análogo para o \autoref{cor:convergencia_uniforme_bits}.
 \end{resolucao}
-
-Assim
-\[
-  \mathrm{size}\l(T\r) = \mathcal{O}\l(\l|\mathrm{S}\r|\log d\r).
-\]
-
-Se conseguimos $T$ com (pelo Teo 4 (ref:label?))
-\[
-  \mathrm{size}\l(T\r) \leq \frac{\eps}{2\cdot\log 2} \l|\mathrm{S}\r|
-\]
-
-e $\l|\mathrm{S}\r|\geq\frac{2}{\eps}\cdot\log\nicefrac{1}{\delta}$, então com prob. $\geq 1-\delta$,
-\begin{align}
-  \mathrm{err}_\mathcal{D}\l(T\r) &\leq \frac{\mathrm{size}\l(T\r)\cdot\log2 + \log\nicefrac{1}{\delta}}{\l|\mathrm{S}\r|}  \\
-                                  &\leq \frac{\eps}{2} + \frac{\eps}{2} = \eps
-\end{align}
-
-Podemos deduzir algo análogo para o Teo. 5 (ref:label?).
-
-\begin{fato}
-  Obter uma menor $T$ tal que $\mathrm{err}_\mathrm{S}\l(T\r)=0$ é NP-difícil.
-\end{fato}
 %endregion
 
 %region Iterative dichotomizer
-\clearpage
 \subsection{Heurística ID3}
 
-\paragraph{\nopunct}[\textit{Sugestão: <\href{https://en.wikipedia.org/wiki/Mutual\_information}{https://en.wikipedia.org/wiki/Mutual\_information}>}]
-
-Considere a partição $\mathrm{S}=\mathrm{S}^+\cup\mathrm{S}^-$ de instâncias positivas e negativas.
-
-Seja também a indicação $\mathrm{S}_{x_i=0}\defeq\l\{s\in \mathrm{S}\colon\ x_i=0\r\}$
+A deurística \textit{Iterative Dichotomizer 3} é um método guloso de construção de árvores de decisão. A cada nó, escolhe-se a feature com maior \textit{information gain}, isto é, que melhor separa os dados em um único passo, até que numa subdivisão ocorram apenas pontos negativos ou positivos. Esse algoritmo converge para um ótimo local, que em geral pode ser arbitrariamente pior (altura da árvore) que o ótimo global, porém existem alguns resultados extremais com relação à \textit{informação mútua} <\href{https://en.wikipedia.org/wiki/Mutual\_information}{https://en.wikipedia.org/wiki/Mutual\_information}>.
 
 \begin{definicao}
-  \normalfont
-  \textbf{Entropia binária}
+  Considere a partição $\mathrm{S}=\mathrm{S}^+\cup\mathrm{S}^-$ de instâncias positivas e negativas.
+
+  Seja também a indicação $\mathrm{S}_{x_i=0}\vcentcolon=\left\{s\in \mathrm{S}\colon\ x_i=0\vphantom{1j}\right\}$.
+  
+  A entropia binária é definida como
   \[
-    \mathrm{H}\l(p\r) = \mathrm{H}_2\l(p\r) \defeq p\cdot\lg\nicefrac{1}{p} + q\cdot\lg\nicefrac{1}{q}
+    \mathrm{H}\left(p\vphantom{1j}\right) = \mathrm{H}_2\left(p\vphantom{1j}\right) \vcentcolon= p\cdot\lg\nicefrac{1}{p} + q\cdot\lg\nicefrac{1}{q},
   \]
+  onde $p+q=1$ e $0\leq 0\leq1$, tomando como convenção $0\cdot\log\nicefrac{1}{0}=0\cdot\log0=0$.
 
-  onde $p+q=1$ e $0\leq 0\leq1$.
-
-  Convenção: $0\cdot\log\nicefrac{1}{0}=0\cdot\log0=0$
+  De forma similar, definem-se as seguintes notações:
+  \[
+    \mathrm{H}\left(\mathrm{S}\vphantom{1j}\right) = \mathrm{H}\left(\nicefrac{\left|\mathrm{S}^+\vphantom{1j}\right|}{\left|\mathrm{S}\vphantom{1j}\right|}\vphantom{1j}\right),
+  \]
+  e
+  \[
+    \mathrm{H}\left(\mathrm{S}\,\middle|\, x_i\vphantom{1j}\right) = \frac{\mathrm{S}_{x_i=0}}{\mathrm{S}}\cdot\mathrm{H}\left(\mathrm{S}_{x_i=0}\vphantom{1j}\right) + \frac{\mathrm{S}_{x_i=1}}{\mathrm{S}}\cdot\mathrm{H}\left(\mathrm{S}_{x_i=1}\vphantom{1j}\right).
+  \]
 \end{definicao}
 
-\[
-  \mathrm{H}\l(\mathrm{S}\r) = \mathrm{H}\l(\nicefrac{\l|\mathrm{S}^+\r|}{\l|\mathrm{S}\r|}\r)
-\]
-
-\[
-  \mathrm{H}\l(\mathrm{S}\given x_i\r) = \frac{\mathrm{S}_{x_i=0}}{\mathrm{S}}\cdot\mathrm{H}\l(\mathrm{S}_{x_i=0}\r) + \frac{\mathrm{S}_{x_i=1}}{\mathrm{S}}\cdot\mathrm{H}\l(\mathrm{S}_{x_i=1}\r)
-\]
-
-\begin{definicao}
-  \normalfont
-  Heurística: escolhemos $x_i$ para minimizar o ganho de informação.
-
-  \textbf{Information Gain:}
-  \[
-    \mathrm{IG}\l(i\r) \defeq \mathrm{H}\l(S\r) - \mathrm{H}\l(\mathrm{S}\given x_i\r).
-  \]
-
+\begin{figure}
+  \label{fig:information_gain}
   \begin{tikzpicture}[
     auto, thick,
     node/.style={draw, circle, thick, text centered, 
@@ -348,7 +337,12 @@ Seja também a indicação $\mathrm{S}_{x_i=0}\defeq\l\{s\in \mathrm{S}\colon\ x
       (x1)  edge  node[above right] {$1$}  (y2)
     ;
   \end{tikzpicture}
+\end{figure}
+
+\begin{definicao}
+  A heurística de information gain --- ilustrada em \autoref{fig:information_gain} --- é a escolha de $x_i$ para maximizar o ganho de informação.
+  \[
+    \mathrm{IG}\left(i\vphantom{1j}\right) \vcentcolon= \mathrm{H}\left(S\vphantom{1j}\right) - \mathrm{H}\left(\mathrm{S}\,\middle|\, x_i\vphantom{1j}\right).
+  \]
 \end{definicao}
 %endregion
-
-}

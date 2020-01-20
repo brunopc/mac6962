@@ -1,126 +1,161 @@
 \section{Aula 26 de Agosto de 2019}
 \label{2019_08_26}
 
-\subsection{SVD - Singular Value Decomposition}
 
-\[ \forall A \in {\rm I\!R^{nxd}} , A = UDV^T, UU^T = U^TU = I, U \in \rm I\!R^{nxm},VV^T = V^TV = I, V \in \rm I\!R^{dxd} \]
-\[U_i = [ u_i | ... | u_n ], V = [v_1 | ... | v_d]\]
-\[D = diag(\sigma_1,\sigma_2,...,\sigma_p), \sigma_1 \geq \sigma_2 \geq ... \geq \sigma_r > 0 = \sigma_{r+1} = ... = \sigma_p \]
-\[sendo\ r = posto(A), p = min(n,d)\]
-Isso também pode ser escrito como: 
-\[A = \sum_{1 \leq i \leq p} \sigma_i u_i v_i^t =  \sum_{1 \leq i \leq r} \sigma_i u_i v_i^t \]
+\subsection{SVD - Descomposição em Valores Singulares}
+\[\]
+Descomposição em Valores Singulares, ou SVD, é um tipo de fatorização de matrizes. Temos por ela que qualquer matriz $ A \in {\rm I\!R^{n\times d}}$ pode ser decomposta na forma $A = UDV^T$, em que:
 
-\subsection{Teorema de Eckard, Young e Minsky}
+\begin{itemize}
+\item[$\ast$]$UU^T = U^TU = I, U \in \rm I\!R^{n\times n}$, ou seja, $U$ é uma matriz unitária
+\item[$\ast$]$VV^T = V^TV = I, V \in \rm I\!R^{d\times d}$, ou seja, $V$ é uma matriz unitária
+\item[$\ast$]$D \in \rm I\!R^{n\times d}$ é uma matriz diagonal tal que, sendo $\sigma_i$ o valor da soma da coluna $i$ de D.
+ \[\sigma_1 \geq \sigma_2 \geq ... \geq \sigma_r > 0 = \sigma_{r+1} = ... = \sigma_p \]
+ 
+Com $ r = \posto(A)$ e $p = \min(n,d)$
+\end{itemize}
+\[\]
+Chamaremos os $\sigma$s acima definidos de valores singulares da matriz A e estabeleceremos adicionalmente as seguintes notações:
 
-\[k\leq posto(A) \ e \ A_k = \sum_{1\leq i \leq k} \sigma_i u_u v_i^t\]
-Então:\\
-
-(i) $ ||A-A_k||_f = min_{posto(B) \leq k} ||A-B||_f $\\
-
-(ii) $ ||A-A_k||_2 = min_{posto(B) \leq k} ||A-B||_2 $
+\[U = [ u_1 | ... | u_n ]\]
+\[V = [v_1 | ... | v_d]\]
+\[\]
+Dessa forma, a SVD também pode ser escrita como:
+\[A = \sum_{1 \leq i \leq p} \sigma_i u_i v_i^T =  \sum_{1 \leq i \leq r} \sigma_i u_i v_i^T \]
 
 \subsection{Normas para matrizes}
 
-\[M = \rm{(m_{ij})_{nxd}}\]
-\[||M||_f = ( \sum_{i,j} m_{ij}^2)^{1/2} \]
-\[M:  {\rm I\!R^{d}} \rightarrow  {\rm I\!R^{n}} \]
-\[||M||_2 = max_{||x||=1} ||M_x|| = \sigma_1\]
+Denotaremos uma matriz $M$ de tamanho $n\times m$ por $\rm{(m_{ij})_{n\times d}}$.
+Definimos então a norma Frobenius, denotada por norma $F$ de $M$ ou
+$||M||_F$ como:
+\[||M||_F = ( \sum_{i,j} m_{ij}^2)^{1/2} \]
+Iremos também definir a norma 2, ou espectral, de $M$ denotada também por $||M||_2$ como $ \max_{1\leq i \leq n} \ \sigma_i = \sigma_1 $ na SVD de M.
+
+\[\]
+Vale também pontuar uma importante relação entre as normas Frobenius e 2 de uma matriz, essa sendo que para toda matriz $A$, $||M||_2 \leq ||M||_F$.
+
+\subsection{Teorema de Eckard, Young e Minsky}
+\[\]
+
+\begin{teorema}
+Seja $ A \in {\rm I\!R^{n\times d}}$ uma matriz e $A = UDV^T$ sua decomposição em valores singulares.\\
+
+Tome $A_k = \sum_{1\leq i \leq k} \sigma_i u_i v_i^T $ para algum $k\leq \posto(A)$.\\
+
+O Teorema de Eckard, Young e Minsky afirma que, para toda matriz $B$ tal que $\posto(B) \leq k$, $ ||A-A_k||_F \leq ||A-B||_F $.
+\end{teorema}.
+
+\begin{teorema}
+Seja $ A \in {\rm I\!R^{n\times d}}$ uma matriz e $A = UDV^T$ sua decomposição em valores singulares.\\
+
+Tome $A_k = \sum_{1\leq i \leq k} \sigma_i u_i v_i^T $ para algum $k\leq \posto(A)$.\\
+
+O Teorema de Eckard, Young e Minsky afirma que, para toda matriz $B$ tal que $\posto(B) \leq k$, $ ||A-A_k||_2 \leq ||A-B||_2 $.
+\end{teorema}.
+
+
+Ou seja, tanto na norma Frobenius quanto na norma 2, a norma de $A-A_k$ é mínima entre as matrizes da forma $A-B$ com $\posto(B) \leq k$.
 
 \subsection{Traços}
 
-\[A\in {\rm I\!R^{nxn}}, Tr(A) = \sum_{i=1}^n a_{ii}\]
-\[A \in   {\rm I\!R^{nxd}}, B \in   {\rm I\!R^{dxn}} \]
-\[Tr(AB) =  \sum_{1 \leq i \leq n} \sum_{1\leq j \leq d} a_{ij}b_{ji} = \sum_{i,j} b_{ji} a_{ij} = Tr(BA)\]\\
+Seja $A$ uma matriz quadrada, iremos definir o traço de $A$, ou $Tr(A)$, como $\sum_{i=1}^n a_{ii}$.
+\[\]
+Algumas propriedades de traços de matriz são:
 
-\[A \in  {\rm I\!R^{nxd}}\]
-\[ Tr(AA^T) = Tr((\sum_{1\leq k \leq d} a_{ik} a_{jk} )) = \sum_{1 \leq i \leq n} \sum_{1\leq k \leq d} a_{ik}^2 = ||A||_f^2 \]
-\[A = UDV^T   \]
-\[A^T = VD^T U^T   \]
-\[AA^T = UDV^T VD^T U^T = UDD^T U^T  \]
+\begin{enumerate}
+\item Seja $A \in   {\rm I\!R^{n\times d}}, B \in   {\rm I\!R^{d\times n}} $, $Tr(AB)=Tr(BA)$. Isso vale pois:
+\begin{proof}
+\[Tr(AB) =  \sum_{1 \leq i \leq n} \sum_{1\leq j \leq d} a_{ij}b_{ji} = \sum_{i,j} b_{ji} a_{ij} = Tr(BA)\]
+\end{proof}
+
+\item Seja $A \in  {\rm I\!R^{n\times d}} $, $ Tr(AA^T)= ||A||_F^2$. Isso vale pois:
+\begin{proof}
+\[ Tr(AA^T) = Tr((\sum_{1\leq k \leq d} a_{ik} a_{jk} )) = \sum_{1 \leq i \leq n} \sum_{1\leq k \leq d} a_{ik}^2 = ||A||_F^2 \]
+\end{proof}
+
+\item Seja $A \in  {\rm I\!R^{n\times d}} $, $ Tr(AA^T)= \sum_{1\leq i \leq r} \sigma_i^2$, com $r = \posto(A)$. Isso vale pois:
+\begin{proof}
+\[A = UDV^T \implies A^T = VD^T U^T \implies\]
+\[AA^T = UDV^T VD^T U^T = UDD^T U^T\]
+Portanto:
 \[Tr(AA^T) = Tr(UDD^T U^T) = Tr(U^T UDD^T) = Tr(diag(\sigma_1^2, \sigma_2^2 , ...))\]
-\[= \sum_{1\leq i \leq p} \sigma_i^2 = \sum_{1\leq i \leq r} \sigma_i^2, \ sendo \ r = posto(A) \]\\
+\[= \sum_{1\leq i \leq p} \sigma_i^2 = \sum_{1\leq i \leq r} \sigma_i^2, \ com \ r = \posto(A) \]\\
+\end{proof}
+\end{enumerate}
 
-\[1\leq k \leq r = posto(A)  \]
-\[V_k = \ <v_1,...,v_k> \ \leq {\rm I\!R^d} \]\\
-$V_k$ é o subespaço de dimensão k que melhor aproxima os vetores linha $a_1, ... , a_n$ que constituem a matriz A:\\
-\[\sum_{1\leq i \leq n} dist^2(a_i,v_k) = min_{dim(z)=k} \sum_{1\leq i \leq n} dist^2(a_i,z) = min_{dim(z)\leq k} \sum_{1\leq i \leq n} dist^2(a_i,z)  \]\\
+\subsection{Aproximações de baixo posto}
 
-Seja $z \leq {\rm I\!R^d}, a\in  {\rm I\!R^d}: $ 
-\[dist(a,z) = dist(a, P_z(a)) = ||a-P_k(a)|| \]
-\[A = \sum_{i=0}^p \sigma_i u_i v_i^T, V_k = \ <v_1,...,v_k>\]
+Iremos chamar de $V_ =  <v_1,...,v_k>$ o subespaço de posto $k$, com $1\leq k \leq r = \posto(A)$, que melhor aproxima os vetores linha $a_1, ... , a_n$ que constituem a matriz A.\\
 
-\[ a \in {\rm I\!R^d} (vetor \ linha), a = a_1,...,a_n  \]
+$V_k$ [é o subespaço de posto $k$ que minimiza a soma das distâncias ao quadrado entre os vetores linha de $A$ e $V_k$. Ou seja:
+
+\[\sum_{1\leq i \leq n} \dist^2(a_i,V_k) = \min_{dim(Z)=k} \sum_{1\leq i \leq n} \dist^2(a_i,Z) = \min_{dim(Z)\leq k} \sum_{1\leq i \leq n} \dist^2(a_i,Z)  \]\\
+
+Toma $a \in {\rm I\!R^d}$ um vetor linha, $a = a_1,...,a_n$, e $V_k$ como definido anteriormente, seja:
+
 \[ P_{V_k}(a_i) = \sum_{1\leq j \leq k}(a_i v_j)v_j^T  \]\\
 
-Fato: \[A_k =^{def} \sum_{1\leq i\leq k}\sigma_i u_i v_i^T\]
-\begin{equation*}
-A_k =  
+Vamos agora definir $A_k$ como $\sum_{1\leq i\leq k}\sigma_i u_i v_i^T$. É fato que:
+
+\begin{center}
+$A_k = $ 
 \begin{bmatrix}
 a_1^{(k)}\\ ...\\a_n^{(k)}
 \end{bmatrix} = 
 \begin{bmatrix}
 P_{V_k}(a_1)\\ ...\\P_{V_k}(a_n)
 \end{bmatrix}
-\end{equation*}
+\end{center}
 
 Usando o fato acima, temos:\\
 
-\[\sum_{1\leq i\leq n} dist^2(a_i,V_k) = \sum_{1\leq i\leq n} ||a_i = P_{V_k}(a_i)||^2 = ||A-A_k||_f^2\]
+\[\sum_{1\leq i\leq n} \dist^2(a_i,V_k) = \sum_{1\leq i\leq n} ||a_i = P_{V_k}(a_i)||^2 = ||A-A_k||_F^2\]
 
-\subsection{Prova do teorema de Eckard, Young e Minsky (i)}
+\subsection{Prova do teorema de Eckard, Young e Minsky (1)}
 
-Seja $B \leq {\rm I\!R^{d}}$ com posto(B) $\leq $ k. Seja W o subespaço de ${\rm I\!R^{d}}$ gerado pelas linhas de B. Então dim(W) = posto(B) $\leq$ k.\\
+Queremos provar que a melhor aproximação em dimensão k para uma matriz A na norma Frobenius é dada por $A_k = \sum_{1\leq i \leq k} \sigma_i u_i v_i^T $.\\
 
-Considere:
-\begin{equation*}
-A_w =  
-\begin{bmatrix}
-P_w(a_1)\\ ...\\P_w(a_n)
-\end{bmatrix}
-\end{equation*}\\
+Primeiramente note que:
 
-\[ \forall i,||a_i-b_i||^2\geq ||a_i-p_w(a_i)||^2\]
+\[||A-A_k||^2_F =|| \sum_{k+1\leq i \leq n} \sigma_i u_i v_i^T   \ ||^2_F =\sum_{k+1\leq i \leq n} \sigma_i^2 \]
 
-Assim:
-\[||A-B||^2_f\geq ||A-A_w||_f^2 = \sum_{1\leq i\leq n} dist^2(a_i,v_k) = ||A-A_k||^2_f \]
+Pela desigualdade triangular na norma espectral, se $A = A'+A''$ então $\sigma_i(A)\leq \sigma_i(A') +\sigma_i(A'')$.\\
 
-\[A-A_k = \sum_{k<i\leq p}\sigma_iu_iv_i^T \]
+Seja $A'_k$ e $A''_k$ as aproximações de posto $k$ de $A'$ e $A''$ como descrito acima. Temos então que para todo $i,j\geq 1$:
+\[\sigma_i(A') +\sigma_j(A'') =  \sigma_i(A'- A'_{i-1}) +\sigma_j(A''-A''_{j-1}) \]
+\[\geq \sigma_1 (A-A'_{i-1}-A''_{j-1})\geq \sigma_1 (A-A_{i+j-2}) = \sigma_{i+j-1}(A)   \]\\
+Note que quando $A'=A-B_k$ e $A''=B_k$, $\sigma_{k+1}(B_k)=0$. Dessa forma podemos concluir que para $i\geq1$ e $j=k+1$, $\sigma_i(A-B_k)\geq \sigma_{k+i}(A)$.\\
 
-Seja $x \in {\rm I\!R^d}, x=(d/2)\alpha_iv_i$ com:
-\[||x||=(\sum_{i=1}^d\alpha_i^2)^{1/2}=1\]
- 
-Então:
-
-\[(A-A_k)x = (\sum_{k<i\leq p}\sigma_iu_iv_i^T)(\sum_{1\leq j\leq d}\alpha_jv_j)=\sum_{k<i\leq p}\sigma_i\alpha_i u_i\]
-
-Assim: 
-
-\[||(A-A_k)x||= \sum_{k<i\leq p}\sigma_i \alpha_i^2 \leq \sigma_{k+1}^2(\sum_{k<i\leq p} \alpha_i^2) \]
-
-Ademais, temos que $(A-A_k)_{V_{k+1}}=\sigma_{k+1}$
+Portanto, 
+\[||A-B_k||^2_F =\sum_{1\leq i \leq n} \sigma_i (A-B_k)^2 \geq 
+ \sum_{1\leq i \leq n} \sigma_i (A)^2 \geq||A-A_k||^2_F  \]
 
 \begin{flushright}
 $\square$
 \end{flushright}
 
-\subsection{Prova do teorema de Eckard, Young e Minsky (ii)}
+\subsection{Prova do teorema de Eckard, Young e Minsky (2)}
 
-Se $k \geq p$, nada a fazer. Suponha $k<p$. Pelo fato, $||a-A_k||_2^2=\sigma_{k+1}^2$.\\
+Queremos provar que a melhor aproximação em dimensão k para uma matriz A na norma 2 é dada por $A_k = \sum_{1\leq i \leq k} \sigma_i u_u v_i^T $.\\
 
-Seja agora $B \in {\rm I\!R^{nxd}}$ com $posto(B)\leq k$. Segue que $dim(ker B)\geq d-k$. Portanto, $\exists z \in (ker B) \cap <v_1,...,v_{k+1}>$ com $||z||=1$.\\
 
-Suponha: \[z=\sum_{1\leq j\leq k+1}\alpha_j v_j\]
+Primeiramente note que:
 
-\[\therefore \sum_{j=1}^{k+1}\alpha_j^2 = 1.\]
+\[||A-A_k||_2 =|| \sum_{k+1\leq i \leq n} \sigma_i u_i v_i^T   \ ||_2 =\sigma_{k+1} \]
 
-Pela definição de $||$ $||_2$, temos:
+Precisamos então mostrar que sendo $B_k = XY^T$ onde $X$ e $Y$ tem $k$ colunas, então $||A-A_k||_2=\sigma_{k+1}\leq ||A-B_k||_2$.
 
-\[||A-B||_2 \geq^{def} ||(A-B)z|| =^{Bz=0} ||Az||=||(\sum_{1\leq i\leq p}\sigma_iu_iv_i^T)(\sum_{1\leq j\leq k+1}\alpha_j v_j)||\]
+Como $Y$ tem $k$ colunas, deve haver uma combinação linear das primeiras $k+1$ colunas de $V$, ou seja,
 
-\[=||\sum_{1\leq i\leq k+1}\sigma_i\alpha_iu_i||=(\sum_{1\leq i\leq k+1}\sigma_i^2\alpha_i^2)^{1/2}\geq \sigma_{k+1}(\sum\alpha_i^2)^{1/2}=\sigma_{k+1}=||A-A_k||_2  \]
+\[w=\gamma_1v_1+...+\gamma_{k+1}v_{k+1}    \],
+
+tal que $Y^Tw=0$. Tome um $w$ tal que $||w||_2=1$, ou seja, $\gamma_1^2+..+\gamma_{k+1}^2=1$. Então:
+
+\[||A-B_k||_2\geq||(A-B_k)w||_2=||A||_2 = (\gamma_1^2\sigma_1^2+...+\gamma_{k+1}^2\sigma_{k+1}^2)^{1/2} \geq \sigma_{k+1}^2     \]
 
 \begin{flushright}
 $\square$
 \end{flushright}
+
 
 

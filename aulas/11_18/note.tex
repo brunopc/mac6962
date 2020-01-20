@@ -13,7 +13,7 @@ $$
 z_i = \mathbbm{1}\{u_i \in \text{disco unitário}\} = 
 \begin{cases}
     1, & \text{se } u_i \in \text{disco unitário} \\
-    0, & \text{caso contrário}
+    0, & \text{caso contrário},
 \end{cases}
 $$ e seu somatório (para todos os $m$ sorteios) $z = \sum_{i = 1}^m z_i$.
 
@@ -26,11 +26,11 @@ Considerando ainda os objetos definidos acima, $z$ tem distribuição $\mathrm{B
   &P( | z’ - \pi | \geq \varepsilon \pi) \\
       &= P\Big(\Big| {4 \over m}z - \pi \Big| \geq \varepsilon \pi\Big) \\
       &= P\Big(\Big| z - {m \over 4}\pi \Big| \geq {m \over 4} \varepsilon \pi\Big) \\
-      &\leq 2e^{- {1 \over 3} \varepsilon^2\big({m \over 4}\pi\big)}
+      &\leq 2e^{- {1 \over 3} \varepsilon^2\big({m \over 4}\pi\big)}.
 \end{align*}
 
-Logo, se $m \geq {12 \over \varepsilon^2 \pi} \log \big({2 \over \delta}\big)$, então $P( | z’ - \pi | \geq \varepsilon \pi) \leq \delta$. Se realmente $|z’-\pi| \leq \varepsilon \pi$, então $(1-\varepsilon)\pi \leq z’ \leq (1+\varepsilon)\pi$ e assim pode-se concluir que, se $\varepsilon \leq {1 \over 2}$
-$$(1-\varepsilon)z’ \leq {z’ \over 1 + \varepsilon} \leq \pi \leq {z’ \over 1 - \varepsilon} \leq z’(1+2\varepsilon) \text{, ou seja, } (1-\varepsilon)z’ \leq \pi \leq (1+2\varepsilon)z’$$
+Logo, se $m \geq {12 \over \varepsilon^2 \pi} \log \big({2 \over \delta}\big)$, então $P( | z’ - \pi | \geq \varepsilon \pi) \leq \delta$. Se realmente $|z’-\pi| \leq \varepsilon \pi$, então $(1-\varepsilon)\pi \leq z’ \leq (1+\varepsilon)\pi$ e assim pode-se concluir que, se $\varepsilon \leq {1 \over 2}$.
+$$(1-\varepsilon)z’ \leq {z’ \over 1 + \varepsilon} \leq \pi \leq {z’ \over 1 - \varepsilon} \leq z’(1+2\varepsilon) \text{, ou seja, } (1-\varepsilon)z’ \leq \pi \leq (1+2\varepsilon)z’.$$
 
 \begin{definicao}
 Dizemos que o algoritmo $\mathscr{A}$ fornece uma $(\varepsilon, \delta)$-aproximação de $V$ se $\mathscr{A}$ tem como saída um vetor $\mathbf{x}$ tal que $P(|x - V| \geq \varepsilon V) \leq \delta$.
@@ -45,8 +45,8 @@ Sejam $z_1, \dots, z_m$ variáveis indicadoras independentes com $\EE(z_i) = \mu
 
 De forma mais geral, temos uma função $V: x \mapsto V(x)$. Dois exemplos:
 \begin{enumerate}
-\item Grafo $G \mapsto V(G)$, onde $V(G)$ é o número de emparelhamentos perfeitos em $G$
-\item Fórmula booleana $\varphi \mapsto V(\varphi)$, onde $V(\varphi)$ é o número de valorações das variáveis de $\varphi$ para tornar $\varphi$ verdadeira
+\item Grafo $G \mapsto V(G)$, onde $V(G)$ é o número de emparelhamentos perfeitos em $G$,
+\item Fórmula booleana $\varphi \mapsto V(\varphi)$, onde $V(\varphi)$ é o número de valorações das variáveis de $\varphi$ para tornar $\varphi$ verdadeira.
 \end{enumerate}
 
 Acredita-se que certos problemas de contagem são difíceis (em termos da teoria da complexidade) a menos que P = NP. É o caso dos exemplos acima.
