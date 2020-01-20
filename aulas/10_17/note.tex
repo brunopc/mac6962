@@ -1,15 +1,15 @@
 \section{Aula 17 de Outubro de 2019}
 \label{2019_10_17}
 
-Esta nota de aula foi escrita por Vitor Santa Rosa Gomes, seguindo o conteúdo apresentado em aula por Yoshiharu Kohayakawa, com base principalmente no capítulo 5 de \cite[p.~245]{blum_hopcroft}, iniciado na aula anterior. As interpretações dadas são compiladas por Vitor podem não podem ser consideradas citações nem de Kohayakawa, nem de \cite{blum_hopcroft}.
+Esta nota de aula foi escrita por Vitor Santa Rosa Gomes, seguindo o conteúdo apresentado em aula por Yoshiharu Kohayakawa, com base principalmente no capítulo 5 de \cite[p.~245]{blum_hopcroft}, iniciado na aula anterior. As interpretações dadas são compiladas por Vitor e não podem ser consideradas citações nem de Kohayakawa, nem de \cite{blum_hopcroft}.
 
 % #region continuação teo5 caso ->infty
 \subsection*{Relembrando o modelo GNP}
 
-No modelo e grafos aleatórios $G\left(n,\ p\vphantom{1j}\right)$, $n$ é a quantidade de vértices no grafo e $p$ é a probabilidade de que uma aresta $vw$ esteja presente, independentemente das outras arestas. A seguir está a continuação do estudo da transição de fase do GNP quanto à sua conexidade.
+No modelo e grafos aleatórios $G\left(n,\ p\vphantom{1j}\right)$, $n$ é a quantidade de vértices no grafo e $p$ é a probabilidade de que uma aresta $vw$ esteja presente, independentemente das outras arestas. A seguir está a continuação do estudo da transição de fase do GNP quanto à sua conexidade --- fora provado o primeiro caso na aula anterior.
 
-\begin{teorema}
-  No modelo $G\left(n,\ p\vphantom{1j}\right)$ de grafos aleatórios CNP, seja $n$ a quantidade de vértices e 
+\begin{teorema}[Transição de fase de conexidade no GNP]
+  No modelo $G\left(n,\ p\vphantom{1j}\right)$ de grafos aleatórios GNP, seja $n$ a quantidade de vértices e 
   \[
     p = \nicefrac{1}{n}\left(\log n + c_n\vphantom{1j}\right)
   \]
@@ -24,11 +24,11 @@ No modelo e grafos aleatórios $G\left(n,\ p\vphantom{1j}\right)$, $n$ é a quan
   \]
 \end{teorema}
 
-\subsection{Conexidade do CNP no caso $c_n\rightarrow\infty$}
+\subsection{Conexidade do GNP no caso $c_n\rightarrow\infty$}
 \begin{proof}[Prova para o caso $c_n\rightarrow\infty$]
-  Seja $X_k=\#$componentes de $G\left(n,\ p\vphantom{1j}\right]$ com $k$ vértices. Por exemplo, $X_1=\#$vértices isolados.
+  Seja $X_k=\#\left\{\text{componentes de }G\left(n,\ p\vphantom{1j}\right)\right\}$ com $k$ vértices. Por exemplo, $X_1=\#\left\{\text{vértices isolados}\right\}$.
 
-  Temos que a probabilidade do grafo ser desconexo em função da existência de vértices isolados é
+  Temos que a probabilidade do grafo ser desconexo em função da existência de vértices isolados é se existir um vértice isolado:
   \vspace*{-\baselineskip}
   \begin{align*}
     \mathrm{P}\left[G\left(n,\ p\vphantom{1j}\right)\text{ é desconexo}\vphantom{1j}\right]
@@ -38,7 +38,7 @@ No modelo e grafos aleatórios $G\left(n,\ p\vphantom{1j}\right)$, $n$ é a quan
       \leq  \sum_{1\leq k\leq\nicefrac{n}{2}}\binom{n}{k}\left(1-p\vphantom{1j}\right)^{k\left(n-k\vphantom{1j}\right)}.
   \end{align*}
 
-  Quebrando a última expressão em duas parte, por manipulações algébricas, vale que
+  Quebrando a última expressão em duas partes, por manipulações algébricas, vale que
   \begin{align*}
     \sum_{1\leq k\leq n^{\nicefrac{3}{4}}}\binom{n}{k}\left(1-p\vphantom{1j}\right)^{k\left(n-k\vphantom{1j}\right)}
       &\leq \sum_{1\leq k\leq n^{\nicefrac{3}{4}}}\left(\nicefrac{\mathrm{e} n}{k}\cdot\mathrm{e}^{-p\left(n-k\vphantom{1j}\right)}\vphantom{1j}\right)^k  \\
@@ -60,19 +60,19 @@ No modelo e grafos aleatórios $G\left(n,\ p\vphantom{1j}\right)$, $n$ é a quan
       \rightarrow 0
   \end{align*}
 
-  Em suma, 
+  Em suma, no caso $c_n\rightarrow\infty$,
   \[
-    \mathrm{P}\left[G\left(n,\ p\vphantom{1j}\right)\text{ é desconexo}\vphantom{1j}\right] \rightarrow 0,
+    \lim_{n\rightarrow\infty} \mathrm{P}\left[G\left(n,\ p\vphantom{1j}\right)\text{ é desconexo}\vphantom{1j}\right] = 0,
   \]
   o que é equivalente a dizer que
   \[
-    \mathrm{P}\left[G\left(n,\ p\vphantom{1j}\right)\text{ é conexo}\vphantom{1j}\right] \rightarrow 1.
+    \lim_{n\rightarrow\infty} \mathrm{P}\left[G\left(n,\ p\vphantom{1j}\right)\text{ é conexo}\vphantom{1j}\right] = 1.
   \]
 \end{proof}
 % #endregion
 
 % #region comentários sobre teo5 caso ->c
-\subsection{Conexidade do CNP no caso $c_n\rightarrow c\in\mathds{R}$}
+\subsection{Conexidade do GNP no caso $c_n\rightarrow c\in\mathds{R}$}
 
 Este caso é similar aos anteriores, então seguem alguns comentários sobre a prova.
 
@@ -81,7 +81,7 @@ A partir do Teorema de Cayley sobre enumeração de árvores geradoras aleatóri
   \mathrm{E}\left[X_k\vphantom{1j}\right] = \binom{n}{k} \left(1-p\vphantom{1j}\right)^{k\left(n-k\vphantom{1j}\right)} k^{k-2} p^{k-1}.
 \]
 
-É útil algebricamente fazer a substituição:
+É útil algebricamente fazer a seguinte substituição na fórmula de Cayley:
 \[
   k^{k-2} p^{k-1} = p\left(k\,p\vphantom{1j}\right)^{k-2} \rightarrow 0 \text{ se } k>2
 \]
@@ -126,19 +126,18 @@ Para todo $t$ fixo. Em particular,
 % #region teoB-Th87
 \subsection{Teorema de Bollobás e Thomson}
 
-O teorema abaixo é um resultado muito importante em grafos aleatórios, pois proporciona um esquema de prova para qualquer propriedade crescente, assim não é preciso buscar técnicas de prova específicas para conexidade, caminho Hamiltoniano, componentes grandes, entre outros.
+O teorema abaixo é um resultado muito importante em grafos aleatórios, pois proporciona um esquema de prova para qualquer propriedade crescente, assim não é preciso buscar técnicas de prova específicas para conexidade, caminho Hamiltoniano, componentes grandes, entre outros. A prova envolve o conceito de função limiar,\ estudado na aula anterior.
 
-\begin{definicao}
-  Seja $\mathcal{P}$ uma propriedade de grafos e sejam $0\leq p\leq q\leq1$.
+\begin{definicao}[Propriedade crescente]
+  Seja $\mathcal{P}$ uma propriedade crescente de grafos e sejam $0\leq p\leq q\leq1$.
 
   Então a probabilidade de $G\left(n,\ q\vphantom{1j}\right)$ ter a propriedade $\mathcal{P}$ é pelo menos a probabilidade de $G\left(n,\ p\vphantom{1j}\right)$ ter a propriedade $\mathcal{P}$.
 \end{definicao}
 
 Descrevendo o teorema nos termos de função limiar da aula passada:
 
-\begin{teorema}[B-Th'87]
+\begin{teorema}[B-Th'87: Esquema de transição de fase para propriedades crescentes]
   Seja $\mathcal{P}$ uma propriedade não trivial crescente. Então $\mathcal{P}$ admite uma função limiar:
-  \vspace*{-\baselineskip}
   \begin{align*}
     \mathrm{P}\left[G_p\in\mathcal{P}\vphantom{1j}\right]
       &\rightarrow \left\{\begin{array}{ll}
@@ -153,7 +152,7 @@ Descrevendo o teorema nos termos de função limiar da aula passada:
 \begin{proof}
   Seja a função limiar $p_0<p_0\left(n\vphantom{1j}\right)$ tal que
   \[
-    \mathrm{P}\left[G\left(n,\ p\vphantom{1j}\right)\in\mathcal{P} = \nicefrac{1}{2}\vphantom{1j}\right]
+    \mathrm{P}\left[G\left(n,\ p\vphantom{1j}\right)\in\mathcal{P}\vphantom{1j}\right] = \nicefrac{1}{2}
   \]
 
   Fixe $\epsilon>0$, e seja $t$ tal que $\left(\nicefrac{1}{2}\vphantom{1j}\right)t\leq\epsilon$. Considere $t$ cópias independentes de $G\left(n,\ p\vphantom{1j}\right)$, digamos $G_1,\ \ldots,\ G_t$. Seja $p'$ tal que $1-p'=(1-p_0)^t$.
@@ -173,15 +172,17 @@ Descrevendo o teorema nos termos de função limiar da aula passada:
 
   Para o caso $p\gg p_0$, então
   \[
-    \mathrm{P}\left[G\left(n, p\vphantom{1j}\right)\not\in\mathcal{P}\vphantom{1j}\right) \rightarrow 0
+    \mathrm{P}\left[G\left(n, p\vphantom{1j}\right)\not\in\mathcal{P}\vphantom{1j}\right] \rightarrow 0
   \]
   pela definição da função limiar.
 
-  Um argumento análogo prova que se $p\ll p_0$, então
+  Um argumento análogo prova que, se $p\ll p_0$, então
   \[
-    \mathrm{P}\left[G\left(n, p\vphantom{1j}\right)\in\mathcal{P}\vphantom{1j}\right) \rightarrow 0.
+    \mathrm{P}\left[G\left(n, p\vphantom{1j}\right)\in\mathcal{P}\vphantom{1j}\right] \rightarrow 0.
   \]
 \end{proof}
+
+Essa prova é uma boa introdução ao modelo $G_t$ de grafos aleatórios, enunciado na próxima seção.
 % #endregion
 
 % #region transição de fase em GNP
@@ -189,7 +190,7 @@ Descrevendo o teorema nos termos de função limiar da aula passada:
 
 Existem outras formulações de grafos aleatórios além do $G\left(n,\ p\vphantom{1j}\right)$, porém foram descobertas formas de relacionar esses modelos entre si. Por exemplo, o modelo GT pode ser aproximado por um GNP $G_t\approx G\left(n,\ \nicefrac{t}{\binom{n}{2}}\vphantom{1j}\right)$, com $t=p\binom{n}{2}\sim p\,\nicefrac{n^2}{2}$, e $p=\nicefrac{1}{n}$.
 
-Seja $L_k\left(G\vphantom{1j}\right)$ o número de vértices da $k$-ésima maior componente de $G$.
+Vamos estudar agora a transição de fase da maior componente ou \textit{componente grande} de grafos aleatórios. Seja $L_k\left(G\vphantom{1j}\right)$ o número de vértices da $k$-ésima maior componente de $G$.
 
 Claro que $L_1\left(G\vphantom{1j}\right)\geq L_1\left(G\vphantom{1j}\right)\geq\ldots$.
 
@@ -215,15 +216,15 @@ A ocorrência de uma componente gigante no grafo aleatório tem comportamento de
   \end{enumerate}
 \end{teorema}
 
-\begin{proof}[Prova]$ $\newline
-  Vamos provar que se $p=\nicefrac{\left(1+\epsilon\vphantom{1j}\right)}{n}$, então $L_1\left(G\left(n,\ p\vphantom{1j}\right)\vphantom{1j}\right)\geq\nicefrac{1}{24}\,\epsilon^2\,n$ com probabilidade $\rightarrow1$.
+\begin{proof}[Esquema de prova]
+  Vamos provar que se $p=\nicefrac{\left(1+\epsilon\vphantom{1j}\right)}{n}$, então $L_1\left(G\left(n,\ p\vphantom{1j}\right)\vphantom{1j}\right)\geq\nicefrac{1}{24}\,\epsilon^2\,n$ com probabilidade que vai a 1.
 
   Usamos busca em profundidade a partir do estado inicial
   \begin{enumerate}
-    \item $U\leftarrow V=V\left(G\vphantom{1j}\right)$;
-    \item $G=G\left(n,\ p\vphantom{1j}\right)$;
-    \item $E\leftarrow\varnothing$;
-    \item $F\leftarrow\varnothing$; e
+    \item Vértices não descobertos $U\leftarrow V=V\left(G\vphantom{1j}\right)$;
+    \item Grafo $G=G\left(n,\ p\vphantom{1j}\right)$;
+    \item Vértices visitados $E\leftarrow\varnothing$;
+    \item Vértices na pilha $F\leftarrow\varnothing$; e
     \item Para cada $v\in V$, se $v\in U$ então $\texttt{dfs}\left(v\vphantom{1j}\right)$.
   \end{enumerate}
 \end{proof}
@@ -255,7 +256,7 @@ Executamos a $\texttt{dfs}$ até fazermos $t=\delta\,n^2$ queries de existência
 \end{figure}
 
 \begin{observacao}
-  Dado que o valor esperado de queries com resposta positiva é $\delta\,n^2\,p=\delta\left(1+\epsilon\vphantom{1j}\right)$, com probabilidade $\rightarrow1$, temos que o número de respostas positivas é
+  Dado que o valor esperado de queries com resposta positiva é $\delta\,n^2\,p=\delta\left(1+\epsilon\vphantom{1j}\right)$, com probabilidade que vai a 1, temos que o número de respostas positivas é
   \[
     \delta\left(1+\nicefrac{\epsilon}{2}\vphantom{1j}\right)n \leq s \leq \delta\left(1+2\,\epsilon\vphantom{1j}\right)n
   \]
@@ -266,7 +267,7 @@ Executamos a $\texttt{dfs}$ até fazermos $t=\delta\,n^2$ queries de existência
 \end{observacao}
 
 \begin{fato}
-  $\not\exists$ arestas em $G\left(n,\ p\vphantom{1j}\right)$ entre $E$ e $U$, Pelo invariante da DFS.
+  $\not\exists$ arestas em $G\left(n,\ p\vphantom{1j}\right)$ entre $E$ e $U$, pelo invariante da DFS.
 \end{fato}
 
 Provamos que, se $L_1\left(G\left(n,\ p\vphantom{1j}\right)\vphantom{1j}\right)<\nicefrac{1}{24}\,\epsilon^2\,n$, então $\left|E\vphantom{1j}\right|\,\left|U\vphantom{1j}\right|>t$ no modelo $G_t$.
