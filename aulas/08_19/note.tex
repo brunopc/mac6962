@@ -1,12 +1,12 @@
 \section{Aula 19 de Agosto de 2019}
 \label{2019_08_19}
 
-Esta nota de aula foi escrita por Vitor Santa Rosa Gomes, seguindo o conteúdo apresentado em aula por Yoshiharu Kohayakawa, com base principalmente no capítulo 5 de \cite[p.~129]{blum_hopcroft}, iniciado na aula anterior. As interpretações dadas são compiladas por Vitor podem não podem ser consideradas citações nem de Kohayakawa, nem de \cite{blum_hopcroft}.
+Esta nota de aula foi escrita por Vitor Santa Rosa Gomes, seguindo o conteúdo apresentado em aula por Yoshiharu Kohayakawa, com base principalmente no capítulo 5 de \cite[p.~129]{blum_hopcroft}, iniciado na aula anterior. As interpretações dadas são compiladas por Vitor e não podem ser consideradas citações nem de Kohayakawa, nem de \cite{blum_hopcroft}.
 
 %region recapitulating
 \subsection*{Relembrando conceitos do Aprendizado de Máquina}
 
-Algoritmos de \textit{Aprendizado de Máquina} (ML) são ferramentas que permitem generalizar estruturas a partir de dados, sem conhecimento detalhado sobre o domínio. Um dos problemas fundamentais em ML é aprender a classificar bem dados rotulados em \textit{classes} ou \textit{categorias} --- chamados de \textit{Problemas de Classificação}. Tipicamente, consideramos um \textit{espaço de instâncias} $\mathcal{X}$ --- com $\mathcal{X}=\left\{0,\ 1\right\}^d$ ou $\mathcal{X}=\mathds{R}^d$ ---, correspondendo a dados com $d$ \text{descritores}, \text{dimensões} ou \text{features}. Para abordar esse problema, usa-se um \textit{conjunto de treinamento} $\mathrm{S}\subseteq\mathcal{X}$ corretamente rotulado, a fim de \textit{generalizar} nosso conhecimento inferido de $\mathrm{S}$ para $\mathcal{X}$.
+Algoritmos de \textit{Aprendizado de Máquina} (ML) são ferramentas que permitem generalizar estruturas a partir de dados, sem conhecimento detalhado sobre o domínio. Um dos problemas fundamentais em ML é aprender a classificar bem dados rotulados em \textit{classes} ou \textit{categorias} --- chamados de \textit{Problemas de Classificação}. Tipicamente, consideramos um \textit{espaço de instâncias} $\mathcal{X}$ --- com $\mathcal{X}=\left\{0,\ 1\right\}^d$ ou $\mathcal{X}=\mathds{R}^d$ ---, correspondendo a dados com $d$ \textit{descritores}, \textit{dimensões} ou \textit{features}. Para abordar esse problema, usa-se um \textit{conjunto de treinamento} $\mathrm{S}\subseteq\mathcal{X}$ corretamente rotulado, a fim de \textit{generalizar} nosso conhecimento inferido de $\mathrm{S}$ para $\mathcal{X}$.
 
 Para afirmar garantias da capacidade de generalização dos algoritmos de ML, é necessário assumir que (1) $\mathrm{S}$ é uma boa representação de $\mathcal{X}$, e que (2) as regras usadas pelos algoritmos são ``simples'' de alguma forma. Mais formalmente, seja $\mathcal{D}\colon\ \mathcal{X}\mapsto\mathds{R}$ uma distribuição de probabilidade sobre $\mathcal{X}$ tal que $\mathrm{S}$ é amostrado uniforme e independentemente (i.i.d) em $\mathcal{D}$; nosso objetivo é fazer boas afirmações sobre novos pontos tomados em $\mathcal{D}$. Quando há apenas duas classes, definição das categorias é feita por um \textit{conceito objetivo} $c^\star\subseteq\mathcal{X}$ --- isto é, $c^\star$ e ${c^\star}^\complement$ particionam $\mathcal{X}$ nas duas classes. Finalmente, o propósito está em encontrar uma \textit{hipótese} $h\subseteq\mathcal{X}$ que seja próxima de $c^\star$ com respeito à distribuição $\mathcal{D}$. Uma métrica para verificar essa proximidade é o \textit{erro de generalização}
 \[
@@ -18,10 +18,10 @@ sendo que o operador $\Delta$ é a \textit{diferença simétrica}
 \]
 Interpreta-se $\mathrm{err}_\mathcal{D}$ como a probabilidade de classificar incorretamente com $h$ um ponto tomado aleatoriamente de $\mathcal{D}$. Uma forma de estimá-lo é usar o \textit{erro de treinamento}
 \[
-  \mathrm{err}_\mathrm{S}=\nicefrac{\left|\left(h\mathrel{\Delta}c^\star\vphantom{1j}\right)\cap\mathrm{S}\vphantom{1j}\right|}{\left|\mathrm{S}\vphantom{1j}\right|}.
+  \mathrm{err}_\mathrm{S}=\frac{\left|\left(h\mathrel{\Delta}c^\star\vphantom{1j}\right)\cap\mathrm{S}\vphantom{1j}\right|}{\left|\mathrm{S}\vphantom{1j}\right|}.
 \]
 
-Mesmo que $\mathrm{S}$ seja representativo de $\mathcal{X}$, um algoritmo que apenas memorize $\mathrm{S}$ costuma ter $\mathrm{err}_\mathrm{S}\mathcal{L}\mathrm{err}_\mathcal{D}$, evento conhecimento como \textit{overfitting}. A fim de analisar a diferença esperada entre o erro de treinamento e o erro de generalização, define-se uma \textit{classe de hipóteses} $\mathcal{H}\subseteq 2^\mathcal{X}$, com $h\in\mathcal{H}$ que impõe um limite de complexidade sobre $h$. A motivação de que $h$ seja simples é garantir que $\mathrm{err}_\mathrm{S}\approx\mathrm{err}_\mathcal{D}$.
+Mesmo que $\mathrm{S}$ seja representativo de $\mathcal{X}$, um algoritmo que apenas memorize $\mathrm{S}$ costuma ter $\mathrm{err}_\mathrm{S}\ll\mathrm{err}_\mathcal{D}$, evento conhecimento como \textit{overfitting}. A fim de analisar a diferença esperada entre o erro de treinamento e o erro de generalização, define-se uma \textit{classe de hipóteses} $\mathcal{H}\subseteq 2^\mathcal{X}$, com $h\in\mathcal{H}$ que impõe um limite de complexidade sobre $h$. A motivação de que $h$ seja simples é garantir que $\mathrm{err}_\mathrm{S}\approx\mathrm{err}_\mathcal{D}$.
 
 Vimos na aula passada a motivação e a prova dos teoremas \autoref{teo:pac} e \autoref{teo:convergencia_uniforme}.
 
@@ -37,7 +37,7 @@ Vimos na aula passada a motivação e a prova dos teoremas \autoref{teo:pac} e \
   \]
   é amostrado da distribuição $\mathcal{D}$ dos dados $\mathcal{X}$, então
   \[
-    \mathrm{P}\left(\exists h\in\mathcal{H}\colon\ \left(\mathrm{S},\ \eps\vphantom{1j}\right)\!\text{-ruim}\vphantom{1j}\right) \leq \delta.
+    \mathrm{P}\left[\exists h\in\mathcal{H}\colon\ \left(\mathrm{S},\ \eps\vphantom{1j}\right)\!\text{-ruim}\vphantom{1j}\right] \leq \delta.
   \]
 \end{teorema}
 
@@ -57,21 +57,26 @@ Vimos na aula passada a motivação e a prova dos teoremas \autoref{teo:pac} e \
 %region occam's razor
 \subsection{Navalha de Occam}
 
-Na filosofia, é comum tratar objetos em função dos mesmos, como pensar sobre o auto de pensar, por isso são usadas diversas técnicas práticas ou \textit{argumentos de corte} com intuito de ``podar a árvore de recursão'', numa interpretação mais computacional. Como sugestão de leitura sobre esses métodos , há <\href{https://en.wikipedia.org/wiki/Philosophical\_razor}{https://en.wikipedia.org/wiki/Philosophical\_razor}>.
+Na filosofia, é comum tratar objetos em função dos mesmos, como pensar sobre o ato de pensar, por isso são usadas diversas técnicas práticas ou \textit{argumentos de corte} com intuito de ``podar a árvore de recursão'', numa interpretação mais computacional. Como sugestão de leitura sobre esses métodos , há <\href{https://en.wikipedia.org/wiki/Philosophical\_razor}{https://en.wikipedia.org/wiki/Philosophical\_razor}>.
 
 Em particular, pela \textit{Navalha de Occam} --- declarada por William Occam por volta de 1320 antes de Cristo ---, ``explicações simples dos fenômenos observados são mais prováveis de estarem corretas; busca-se evitar explicações improváveis''. Embora essa afirmação não possua qualquer validade formal, é uma regra que funciona bem na prática. Ainda assim, os teoremas \autoref{teo:pac} e \autoref{teo:convergencia_uniforme} podem ser vistos como casos especiais da Navalha de Occam, dadas suas fortes, necessárias e normalmente irreais hipóteses.
 
-\begin{afirmacao}
+\begin{afirmacao}[Navalha de Occam]
   \label{afr:navalha_de_occam}
   Damos preferência a conceitos ou hipóteses simples, em detrimento de mais complicadas.
 \end{afirmacao}
 
+\begin{definicao}[Estilhaçamento]
+  \label{def:estilhacamento}
+  Dizemos que uma hipótese $h\in\mathcal{H}$ \textit{estilhaça} o conjunto de treinamento $\mathrm{S}$ se ela for igual ao conceito objetivo em seus pontos; ou seja, $h\left(s\right)=c^\star\left(s\right),\ \forall s\in\mathrm{S}$.
+\end{definicao}
+
 Ainda assim, é possível formalizar o conceito de ``simples'' dentro de Ciência da Computação com \textit{linguagens de descrição} da seguinte forma:
-\begin{teorema}
+\begin{teorema}[Cota de estilhaçamento]
   \label{teo:navalha_de_occam}
   Dada uma linguagem de descrição $\mathcal{L}$, seja $b\coloneqq\#\mathrm{bits}\left(h\vphantom{1j}\right)$ a quantidade de bits usados para especificar uma hipótese $h\in\mathcal{H}$ em $\mathcal{L}$.
 
-  Defina
+  Defina por conveniência
   \[
     \mathcal{L}_b\coloneqq\left\{h\in\mathcal{H}\colon\ \mathrm{size}\left(h\vphantom{1j}\right)=b\vphantom{1j}\right\}
   \]
@@ -113,7 +118,7 @@ Ainda assim, é possível formalizar o conceito de ``simples'' dentro de Ciênci
 
 É possível modificar o Teorema da Convergência Uniforme \autoref{teo:convergencia_uniforme} para incluir linguagens de descrição:
 
-\begin{corolario}
+\begin{corolario}[Cota do erro de generalização pelo de treinamento e pela complexidade]
   \label{cor:convergencia_uniforme_bits}
   Seja $\mathcal{H}$ uma classe de hipóteses, e sejam $\eps$ e $\delta$ positivos. Se (1) um conjunto de treinamento $\mathrm{S}$ com tamanho
   \[
@@ -145,15 +150,17 @@ Concluímos que, com probabilidade pelo menos $1-\delta$,
   \mathrm{err}_\mathcal{D}\left(h\vphantom{1j}\right) \leq = \mathrm{err}_\mathrm{S}\left(h\vphantom{1j}\right) + \sqrt{\frac{1}{2\cdot\left|\mathrm{S}\vphantom{1j}\right|}\cdot\left(\mathrm{size}\left(h\vphantom{1j}\right)\cdot\log4 + \log\nicefrac{2}{8}\vphantom{1j}\right)}.
 \]
 
-Podemos agora minimizar o todo direito variando $h\in\mathcal{H}$
+Podemos agora minimizar o todo direito variando $h\in\mathcal{H}$.
+
+Esses teoremas que definem um cota ao erro de generalização dados o erro de treinamento e a complexidade da classe de hipóteses são justificativas mais formais de que devemos buscar o algoritmo de ML mais simples capaz descrever o conjunto de treinamento, a fim de garantir uma boa generalização para os dados desconhecidos.
 %endregion
 
 %region decision trees
 \subsection{Árvores de decisão}
 
-\textit{Árvores de decisão} são algoritmos bastante comuns em ML. Mesmo sendo provado que encontrar uma árvore ótima (com menor altura) dado o conjunto de treinamento $\mathrm{S}$ seja NP-difícil, existem diversas heurísticas usadas na prática. Uma biblioteca muito comumente usada para construção de árvores de decisão é a Scikit-learn, disponível em <\href{https://scikit-learn.org/stable/modules/tree.html}{https://scikit-learn.org/stable/modules/tree.html}>. Modelos baseados em árvores hoje atingem o estado da arte para dados tabulares, notavelmente tanto boosting trees como XGBoost e LightGBM, quanto árvores aleatórias de regressão como PRIM, MARS e CART.
+\textit{Árvores de decisão} são algoritmos bastante comuns em ML. Mesmo sendo provado que encontrar uma árvore ótima (com menor altura) dado o conjunto de treinamento $\mathrm{S}$ seja NP-difícil, existem diversas heurísticas usadas na prática. Uma biblioteca muito comumente usada para construção de árvores de decisão é a Scikit-Learn, disponível em <\href{https://scikit-learn.org/stable/modules/tree.html}{https://scikit-learn.org/stable/modules/tree.html}>. Modelos baseados em árvores hoje atingem o estado da arte para dados tabulares, notavelmente tanto boosting trees como XGBoost e LightGBM, quanto árvores aleatórias de regressão como PRIM, MARS e CART.
 
-\begin{fato}
+\begin{fato}[Árvores ótima são NP=difícieis]
   Obter uma menor $T$ tal que $\mathrm{err}_\mathrm{S}\left(T\vphantom{1j}\right)=0$ é NP-difícil.
 \end{fato}
 
@@ -234,12 +241,12 @@ Assim, pelo teorema \autoref{teo:navalha_de_occam}, nós podemos confiar que o e
 \begin{exercicio}
   Seja $f(k)$ o número de símbolos que precisamos para representar uma árvore de decisão com $k$ nós externos em $\mathcal{L}$. Prove que
   \[
-    f(k) = 3\cdot\left(2\cdot k-1\vphantom{1j}\right),\ k\geq 1
+    f(k) = 3\cdot\left(2\cdot k-1\vphantom{1j}\right),\ k\geq 1.
   \]
 
   Representação de uma árvore de decisão com $k$ nós externos:
   \[
-    3\cdot\left(2\cdot k-1\vphantom{1j}\right)\cdot\left\lceil\lg\left(d+4\vphantom{1j}\right)\vphantom{1j}\right\rceil = \mathcal{O}\left(k\cdot\log d\vphantom{1j}\right) \text{bits}
+    3\cdot\left(2\cdot k-1\vphantom{1j}\right)\cdot\left\lceil\lg\left(d+4\vphantom{1j}\right)\vphantom{1j}\right\rceil = \mathcal{O}\left(k\cdot\log d\vphantom{1j}\right) \text{bits}.
   \]
 \end{exercicio}
 \begin{resolucao}
@@ -252,32 +259,32 @@ Assim, pelo teorema \autoref{teo:navalha_de_occam}, nós podemos confiar que o e
   O fator $\cdot\left\lceil\lg\left(d+4\vphantom{1j}\right)\vphantom{1j}\right\rceil$ é pela quantidade mínima de bits para representar o alfabeto.
 \end{resolucao}
 
-Dado $\mathrm{S}\subseteq\left\{0,\ 1\vphantom{1j}\right\}^d$, como obtemos uma Árvore de Decisão $T$ com $\mathrm{err}_\mathrm{S}\left(T\vphantom{1j}\right)=0$?
-
 \begin{exercicio}
+  Dado $\mathrm{S}\subseteq\left\{0,\ 1\vphantom{1j}\right\}^d$, como obtemos uma Árvore de Decisão $T$ com $\mathrm{err}_\mathrm{S}\left(T\vphantom{1j}\right)=0$?
+  
   Fácil obter uma $T$ com $\leq2\cdot\left|\mathrm{S}\vphantom{1j}\right|$ nós externos.
 \end{exercicio}
 \begin{resolucao}
-  Uma árvore balanceada com $2^d=\left|\mathrm{S}\vphantom{1j}\right|$ nós externos é capaz de estilhaçar $\mathrm{S}\subseteq\left\{0,\ 1\vphantom{1j}\right\}^d$
+  Uma árvore balanceada com $2^d=\left|\mathrm{S}\vphantom{1j}\right|$ nós externos é capaz de estilhaçar $\mathrm{S}\subseteq\left\{0,\ 1\vphantom{1j}\right\}^d$ (há uma bijeção clara).
+
+  Assim
+  \[
+    \mathrm{size}\left(T\vphantom{1j}\right) = \mathcal{O}\left(\left|\mathrm{S}\vphantom{1j}\right|\log d\vphantom{1j}\right).
+  \]
+
+  Se conseguimos $T$ com \autoref{teo:navalha_de_occam}
+  \[
+    \mathrm{size}\left(T\vphantom{1j}\right) \leq \frac{\eps}{2\cdot\log 2} \left|\mathrm{S}\vphantom{1j}\right|
+  \]
+
+  e $\left|\mathrm{S}\vphantom{1j}\right|\geq\frac{2}{\eps}\cdot\log\nicefrac{1}{\delta}$, então com prob. $\geq 1-\delta$,
+  \begin{align}
+    \mathrm{err}_\mathcal{D}\left(T\vphantom{1j}\right) &\leq \frac{\mathrm{size}\left(T\vphantom{1j}\right)\cdot\log2 + \log\nicefrac{1}{\delta}}{\left|\mathrm{S}\vphantom{1j}\right|}  \\
+                                    &\leq \frac{\eps}{2} + \frac{\eps}{2} = \eps
+  \end{align}
+
+  Podemos deduzir algo análogo para o \autoref{cor:convergencia_uniforme_bits}.
 \end{resolucao}
-
-Assim
-\[
-  \mathrm{size}\left(T\vphantom{1j}\right) = \mathcal{O}\left(\left|\mathrm{S}\vphantom{1j}\right|\log d\vphantom{1j}\right).
-\]
-
-Se conseguimos $T$ com \autoref{teo:navalha_de_occam}
-\[
-  \mathrm{size}\left(T\vphantom{1j}\right) \leq \frac{\eps}{2\cdot\log 2} \left|\mathrm{S}\vphantom{1j}\right|
-\]
-
-e $\left|\mathrm{S}\vphantom{1j}\right|\geq\frac{2}{\eps}\cdot\log\nicefrac{1}{\delta}$, então com prob. $\geq 1-\delta$,
-\begin{align}
-  \mathrm{err}_\mathcal{D}\left(T\vphantom{1j}\right) &\leq \frac{\mathrm{size}\left(T\vphantom{1j}\right)\cdot\log2 + \log\nicefrac{1}{\delta}}{\left|\mathrm{S}\vphantom{1j}\right|}  \\
-                                  &\leq \frac{\eps}{2} + \frac{\eps}{2} = \eps
-\end{align}
-
-Podemos deduzir algo análogo para o \autoref{cor:convergencia_uniforme_bits}.
 %endregion
 
 %region Iterative dichotomizer
