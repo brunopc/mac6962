@@ -1,126 +1,149 @@
+% Incluir no preâmbulo
+% \DeclareMathOperator{\err}{err}
+
+
 \section{Aula 15 de Agosto de 2019}
 \label{2019_08_15}
 
+
+
 \subsection{Elementos de aprendizado de máquina}
-Ao longo desse tópico considere:
+
+Os algoritmos de aprendizado de máquina têm como propósito fazer generalizações a partir de conjuntos de dados. O problema comum na área de aprendizagem de máquina consiste em encontrar uma boa regra de classificação a partir de dados rotulados. Por exemplo, suponha que temos acesso a um conjunto de transações bancárias, rotuladas como fraudulentas ou não fraudulentas. Neste caso, a ideia consiste em encontrar uma regra, a partir de características das transações que permita classificá-las em fraudulentas ou não fraudulentas, para, posteriormente, utilizar essa mesma regra em transações não rotuladas para detecção rápida de fraudes contra o sistema bancário. Em geral, estaremos interessados em problemas de classificação binária, ou seja, problemas nos quais os elementos de interesse são classificados em apenas duas classes, ou categorias, positiva e negativa. A classe positiva é usualmente utilizada para os elementos de interesse, ou seja, aqueles que precisam ser detectados, no nosso exemplo, a classe positiva é constituída pelas transações fraudulentas. Não é incomum que a classe positiva seja muito menor que a negativa.
+
+
+De modo geral, esses problemas de classificação são determinados por:
 \begin{enumerate}
-    \item $\chi$: espaço de instâncias;
+    \item $\chi$: espaço de instâncias (domínio de interesse), no caso do exemplo anterior, um conjunto de transações bancárias;
     \item $D$: distribuição de probabilidade de $\chi$;
-    \item $S \subset \chi$: conjunto de treinamento amostrado, sendo que $S$ será construído de acordo com a distribuição de probabilidade de $\chi$
-    \item $C^*$: conceito objetivo. A depender do contexto, $C^* \subset \chi$ ou $C^*: \chi \rightarrow \{-1,1\}$;
-    \item $h$: hipótese. Também a depender do contexto, $h \subset \chi$ ou $h: \chi \rightarrow \{-1,1\}$, tal que, em algum sentido $h$ é próximo de $C^*$.
+    \item $S \subset \chi$: conjunto de treinamento,  amostrado de acordo com a distribuição de probabilidade de $\chi$, em outras palavras, estamos assumindo que $S$ é em certo sentido, representativo de $\chi$. No caso do exemplo, $S$ é um conjunto de transações previamente rotuladas;
+    \item $C^*$: conceito objetivo, que identifica a classe positiva em um problema de classificação binária. A depender do contexto, pode-se considerar $C^* \subset \chi$ ou $C^*: \chi \rightarrow \{-1,1\}$. Por exemplo, $C^*$ pode ser o conjunto de todas as transações fraudulentas. Cabe observar que, em geral, $C^*$ não é conhecido;
+    \item $h$: hipótese, que identifica os elementos classificados como pertencentes a classe positiva. Ou seja, utilizamos o conjunto de treinamento para descobrir uma regra de classificação, em seguida utilizamos essa regra para classificar todo o espaço de instâncias, a hipótese $h$ identifica as instâncias classificadas como positivas. No nosso exemplo, são as transações classificadas como fraudulentas, que podem ou não ser fraudulentas. Evidentemente, queremos o menor número de erros possível, ou seja, que em algum sentido $h$ é próximo de $C^*$. Também a depender do contexto, $h \subset \chi$ ou $h: \chi \rightarrow \{-1,1\}$.
 \end{enumerate}{}
-
-\begin{exemplo}
-Se $\chi = \mathbb{R}$, então $\mathcal{H} = \{[a,b],\;a\leq b\}$.
-\end{exemplo}{}
-
-\begin{exemplo}
-Se $\chi = \mathbb{R}^d$,  e $\forall \; \omega \in \mathbb{R}^d$, $\omega_0 \in \mathbb{R}$ tem-se $h_{\omega, \omega_0} = \{x \in \mathbb{R}^d : \left< x, \omega\right> \geq \omega_0\}$.
-\end{exemplo}{}
 
 O sentido de proximidade de $h$ em relação a $C^*$, citado anteriormente, pode ser definido com maior exatidão da seguinte forma.
 \begin{definicao}
-A função $err_D: \{-1,1\}  \rightarrow [0,1]$, tal que $err_D(h) = \mathbb{P}[h \bigtriangleup C^*]$ é chamada de erro real de $h$
+A função $\err_D: \{-1,1\}  \rightarrow [0,1]$, tal que $\err_D(h) = \mathbb{P}[h \bigtriangleup C^*]$, onde $\bigtriangleup$ é a diferença simétrica, é chamada de erro real de $h$.
 \end{definicao}{}
 
 \begin{definicao}
-A função $err_S: \{-1,1\}  \rightarrow [0,1]$, tal que $err_S(h) = | S \cap (h \bigtriangleup C^*)| / |S|$ é chamada de erro de treinamento ou erro empírico.
+A função $\err_S: \{-1,1\}  \rightarrow [0,1]$, tal que $\err_S(h) = | S \cap (h \bigtriangleup C^*)| / |S|$ é chamada de erro de treinamento ou erro empírico.
 \end{definicao}{}
+
+Assim, o erro real se refere a probabilidade de ocorrência de um erro de classificação em todo o conjunto de instâncias e o erro empírico a probabilidade de ocorrer um erro de classificação restrito ao conjunto de treinamento. Cabe observar que pode ocorrer a situação não desejável do erro real ser grande mesmo que o erro empírico seja pequeno.
+
 
 \begin{definicao}
-É chamado de \emph{Overfitting} a ocorrência $err_S(h) = 0$ ou pequeno e $err_D(h)$ grande.
+É chamado de \emph{Overfitting} (ou super-parametrização) a ocorrência $\err_S(h) = 0$ ou pequeno e $\err_D(h)$ grande.
 \end{definicao}{}
 
-Para evitar \emph{Overfitting}, pode-se restringir a análise a uma determinada classe de hipóteses ou conceitos $$\mathcal{H}$$, tal que $\mathcal{H} \subset 2^\chi$.
+Esse fenômeno ocorre porque os algorítimos são otimizados apenas sobre o conjunto de treinamento.
+Para evitar \emph{Overfitting}, pode-se restringir a análise a uma determinada classe de hipóteses ou conceitos $\mathcal{H}$ ($\mathcal{H} \subset 2^\chi$), em outras palavras, o conjunto de todas as hipóteses ($2^\chi$) possui muitas hipóteses não aceitáveis, então reduzimos a busca a um conjunto menor.
 
 \begin{exemplo}
-Considere um caso particular do exemplo anterior, com $\chi = \{-1,1\}^2$, com $\mathcal{H}$ restrito a $\chi$.
+Se $\chi = \mathbb{R}$, então podemos restringir nossa busca a classe de hipóteses $\mathcal{H} = \{[a,b],\;a\leq b\}$, ou seja, apenas os intervalos.
 \end{exemplo}{}
 
+\begin{exemplo}
+Se $\chi = \mathbb{R}^d$,  podemos considerar apenas a classe dos separadores lineares, ou seja, se $\forall \; \omega \in \mathbb{R}^d$, $\omega_0 \in \mathbb{R}$ tem-se $h_{\omega, \omega_0} = \{x \in \mathbb{R}^d : \left< x, \omega\right> \geq \omega_0\}$. Um caso particular do exemplo anterior: considere $\chi = \{-1,1\}^2$, logo, a classe dos separadores lineares contém 14 dos 16 subconjuntos de $\chi$.
+\end{exemplo}{}
+
+A afirmação sobre a qual trabalharemos é se $S$ é suficientemente grande comparado a $\mathcal{H}$, então com alta probabilidade, todas as hipóteses $h \in \mathcal{H}$ devem possuir erro de treinamento próximo ao erro real.
+
 \begin{definicao}
-$h \in \mathcal{H}$ é dito $(S, \epsilon)\text{-ruim}$ se $err_S(h) = 0$ porém $err_D(h) \geq \epsilon$
+$h \in \mathcal{H}$ é dito $(S, \epsilon)\text{-ruim}$ se $\err_S(h) = 0$ porém $\err_D(h) \geq \epsilon$, para um dado $\epsilon$.
 \end{definicao}{}
 
 \begin{teorema}
-Suponha $|\mathcal{H}| < \infty$. Sejam dados  $\epsilon, \delta > 0$, se $n = |S|$ é tal que
+\label{teorema_ap_mq_0}
+Suponha $\mathcal{H}$ uma classe de hipóteses finita. Dados  $\epsilon, \delta > 0$, se $n = |S|$ é tal que
 \begin{equation*}
 n \geq \frac{1}{\epsilon}\left(\log{|\mathcal{H}|} + \log{\frac{1}{\delta}}\right)
 \end{equation*}{}
 então
 \begin{equation*}
-    \mathbb{P} \{\exists \; h \in \mathcal{H} \; \text{que é} \; (S, \epsilon)\text{-ruim}\} \leq \delta
+    \mathbb{P} \{\exists \; h \in \mathcal{H} \; \text{que é} \; (S, \epsilon)\text{-ruim}\} \leq \delta.
 \end{equation*}{}
 \end{teorema}
 
 \begin{proof}
-Fixe $h \in \mathcal{H}$ tal que $err_D(h) > \epsilon$, então:
+Fixe $h \in \mathcal{H}$ tal que $\mathrm{err}_D(h) > \epsilon$, então:
 \begin{align*}
     \mathbb{P}\{h \; \text{ser} \; (S, \epsilon)\text{-ruim}\} &= \left(1 - \mathbb{P}\{h \triangle c^*\}\right)^n \\
-    &=(1 - err_D(h))^n \leq (1 - \epsilon)^n \leq \exp(-n\epsilon)
+    &=(1 - \mathrm{err}_D(h))^n \leq (1 - \epsilon)^n \leq \exp(-n\epsilon).
 \end{align*}
 Deste modo,
 \begin{align*}
 \mathbb{P}\{\exists \; h \in \mathcal{H}; \; (S, \epsilon)\text{-ruim}\} &\leq \sum{\mathbb{P}\{h \; \text{ser} \; (S, \epsilon)\text{-ruim}\}} \\
-&\leq |\mathcal{H}|\exp(-n\epsilon) \leq \delta
+&\leq |\mathcal{H}|\exp(-n\epsilon) \leq \delta.
 \end{align*}
 \end{proof}{}
 
-De acordo com esse resultado, se $|S|$ for suficientemente grande, então pode-se aprender aproximadamente com alta probabilidade.
-Agora queremos verificar uma condição de convergência uniforme do erro, ou seja, queremos que $\forall \; h \in \mathcal{H}, \; |err_S(h) - err_D(h)| \leq \epsilon$.
+De acordo com esse resultado, se $|S|$ for suficientemente grande, então pode-se aprender aproximadamente com alta probabilidade. Isso é eventualmente chamado de \emph{PAC-learning guarantee} (Garantia de Aprendizagem Aproximadamente Correta).
+
+O teorema \ref{teorema_ap_mq_0} garante que se tivermos uma hipótese $h \in \mathcal{H}$ com erro de treinamento zero, pode-se aprender corretamente com alta probabilidade, todavia, em geral não possuímos tal hipótese. Agora providenciaremos um resultado que garante que para $S$ suficientemente grande, qualquer hipótese da classe $\mathcal{H}$ possuirá erro de treinamento próximo ao erro real.
+
+
+Agora queremos verificar uma condição de convergência uniforme do erro, ou seja, queremos que $\forall \; h \in \mathcal{H}, \; |\mathrm{err}_S(h) - \mathrm{err}_D(h)| \leq \epsilon$.
 
 \begin{definicao}
-Seja E um evento, então a variável aleatória
+Seja $E$ um evento, então a variável aleatória
 \[
    \mathbb{I} = 
   \begin{cases} 
-   1 & \text{se } A \\
-   0       & \text{cc }
+   1 & \text{se } \;\; E \\
+   0       & \text{caso contrario }
   \end{cases}
 \]
-é chamada varável indicadora do evento $A$
+é chamada varável indicadora do evento $E$.
 \end{definicao}
 
 \begin{teorema}
 \label{teorema_ap_mq_1}
-Suponha $|\mathcal{H}| < \infty$. Sejam dados  $\epsilon, \delta > 0$, se $n = |S|$ é tal que
+Suponha $\mathcal{H}$ uma classe de hipóteses finita. Dados  $\epsilon, \delta > 0$, se $n = |S|$ é tal que
 \begin{equation*}
 n \geq \frac{1}{2\epsilon^2}\left(\log{|\mathcal{H}|} + \log{\frac{1}{\delta}}\right)
 \end{equation*}{}
 então
 \begin{equation*}
-    \mathbb{P} \{\exists \; h \in \mathcal{H} :|err_S(h) - err_D(h)| \leq \epsilon\} \leq \delta
+    \mathbb{P} \{\exists \; h \in \mathcal{H} :|\mathrm{err}_S(h) - \mathrm{err}_D(h)| \leq \epsilon\} \leq \delta.
 \end{equation*}{}
 \end{teorema}
-Antes de realizarmos a demonstração, considerando um dado $h \in \mathcal{H}$ e $S = \{s_1, \dots, s_n\}$, façamos as seguintes observações, 
+Antes de realizarmos a demonstração, considerando dados $h \in \mathcal{H}$ e $S = \{s_1, \dots, s_n\}$, façamos as seguintes observações, 
+
 \begin{enumerate}
     \item se $X_j = \mathbb{I}\{h(s_j) \neq c^*(s_j)\}$, então $\mathbb{E}[X_j] = \mathbb{P}\{X_j = 1\} = err_D(d)$;
-    \item se $Y = \sum_{1 \leq j \leq n}{X_j}$, então $Y = |S|err_S(h) = n*err_S(h)$
-    \item $\mathbb{E}[Y] = \mathbb{E}[\sum_{1 \leq 1 \leq n}{X_i}] = n * err_D(h) \Rightarrow Y - \mathbb{E}[Y] = n(err_S(h) - err_D(h))$
+    \item se $Y = \sum_{1 \leq j \leq n}{X_j}$, então $Y = |S|err_S(h) = n*err_S(h)$;
+    \item $\mathbb{E}[Y] = \mathbb{E}[\sum_{1 \leq 1 \leq n}{X_i}] = n * err_D(h) \Rightarrow Y - \mathbb{E}[Y] = n(err_S(h) - err_D(h))$.
 \end{enumerate}{}
 \begin{proof}
 Sejam $h \in \mathcal{H}$, $S = \{s_1, \dots, s_n\}$, $X_j = \mathbb{I}\{h(s_j) \neq c^*(s_j)\}$ e $Y = \sum_{1 \leq j \leq n}{X_j}$, então, por Chernoff tem-se que:
 \begin{align*}
-    \mathbb{P}\{|Y - \mathbb{E}[Y]| \geq t\} = \mathbb{P}\{n|err_S(h) - err_D(h)| \geq n\epsilon\} &\leq 2\exp\{-2\frac{(n\epsilon)^2}{n}\} \\
-    &= 2\exp\{2n\epsilon^2\}
+    \mathbb{P}\{|Y - \mathbb{E}[Y]| \geq t\} = \mathbb{P}\{n|\mathrm{err}_S(h) - \mathrm{err}_D(h)| \geq n\epsilon\} &\leq 2\exp\{-2\frac{(n\epsilon)^2}{n}\} \\
+    &= 2\exp\{2n\epsilon^2\}.
 \end{align*}
 Desse modo,
 \begin{align*}
-    \mathbb{P}\{\exists h \in \mathcal{H} : |err_S(h) - err_D(h)| \geq \epsilon\} & \leq \\
-    &\leq \sum_{h \in \mathcal{H}}\mathbb{P}\{|err_S(h) - err_D(h)| \geq \epsilon\} \leq \\
-    &\leq 2|\mathcal{H}|\exp\left\{-2\frac{(n\epsilon)^2}{n}\right\} \leq \delta
+    \mathbb{P}\{\exists h \in \mathcal{H} : |\mathrm{err}_S(h) - \mathrm{err}_D(h)| \geq \epsilon\} & \leq \\
+    &\leq \sum_{h \in \mathcal{H}}\mathbb{P}\{|\mathrm{err}_S(h) - \mathrm{err}_D(h)| \geq \epsilon\} \leq \\
+    &\leq 2|\mathcal{H}|\exp\left\{-2\frac{(n\epsilon)^2}{n}\right\} \leq \delta.
 \end{align*}{}
-
 \end{proof}
+
 \subsubsection{Exemplo - Aprendizado de Disjunções}
+
+Agora veremos um exemplo ilustrativo. Observe que o conjunto de instâncias $\chi$ pode, em muitos casos, ser representado por $\{0,1\}^d$. Considerando o exemplo das movimentações bancárias, cada movimentação pode ser caracterizada por um conjunto de $d$ características (\emph{features}), sendo $x$ uma transação, então $x_i$ indica se a transação possui ou não a i-ésima característica. Pode ocorrer que o conceito objetivo $c^*$ seja algo do tipo $\{x \; \text{tal que} \; x_1 = 1 \vee x6 = 1 \vee x9 = 1\}$. Estamos tentando predizer quais transações são fraudulentas ou não, e neste caso, acreditamos que existe algum subconjunto das características que indica fraude, ou seja, as transações que possuem pelo menos uma das características é fraudulenta.
+
+Neste caso consideraremos:
+
 \begin{enumerate}
-    \item $\chi = \{0,1\}^d$, por exemplo, $d$ \emph{features};
+    \item $\chi = \{0,1\}^d$, por exemplo, $d$ características;
     \item $D$: distribuição de probabilidade de $\chi$;
-    \item $C^*$: disjunção desses \emph{features}
-    \item $\mathcal{H} = \{\text{disjunções dos features}\}$.
+    \item $C^*$: disjunção de algumas características;
+    \item $\mathcal{H} = \{\text{disjunções dos características}\}$.
 \end{enumerate}{}
 
-Temos que $|\mathcal{H}| = 2^d$. Pelo Teorema \ref{teorema_ap_mq_1}, basta ter:
+Temos que $|\mathcal{H}| = 2^d$, então pelo Teorema \ref{teorema_ap_mq_0}, basta termos:
 \begin{equation}
 \label{eq_ap_mq_estrela}
     |S| \geq \frac{1}{\epsilon}\left(\log{|\mathcal{H}|} + \log{\frac{1}{\delta}}\right) = \left(d\log{2} + \log{\frac{1}{\delta}}\right)
@@ -130,20 +153,20 @@ Temos que $|\mathcal{H}| = 2^d$. Pelo Teorema \ref{teorema_ap_mq_1}, basta ter:
 
 Algorítimo:
 \begin{enumerate}
-    \item sejam $S = \{s^{(1)}\, \dots, s^{(x)}\}$ e $\mathbb{F} = \{1, \dots, d\}$;
-    \item para cada $s^{(j)}$ com $c^*(s^{(j)}) = 1$ (Instância negativa) e para cada $i \in [d]$ tal que $X_i = 1$, faça $F \leftarrow F \\ \{i\}$;
-    \item resolva a conjunção $h = \bigvee_{i \in F}X_i$.
+    \item sejam $S = \{s^{(1)}\, \dots, s^{(x)}\}$, uma amostra rotulada,  e $F = \{1, \dots, d\}$;
+    \item para cada elemento da amostra $s^{(j)}$ que não esteja em $C^*$ (ou seja, uma instância negativa) e para cada $i \in \{1,d\}$ tal que $s^{(j)}_i = 1$, faça $F \leftarrow F - \{i\}$. Em outras palavras, verifique as  características de todas as instâncias negativas do conjunto de treinamento, Se para uma dada instância negativa $s^{(j)}$ tivermos a i-ésima característica $s^{(j)}_i = 1$, então exclua a característica do conjunto $F$;
+    \item resolva a conjunção $h = \bigvee_{i \in F}s_i$.
 \end{enumerate}
 
 \begin{lema}
-Se $c^*$ é uma disjunção então $h = A(S)$ é consistente com $c^*$ em $S$, ou seja, $h(s) = c^*(S)$
+Se $c^*$ é uma disjunção então $h = A(S)$ é consistente com $c^*$ em $S$, ou seja, $h(S) = c^*(S)$
 \end{lema}
 
 \begin{proof}
-Suponha que $X_i \subset c^*$, então $i \in F$ ao final do algoritmo.
-Toda variável $X_i$ que ocorre em $c^*$, ocorre em $h = A(S)$, e além disso, tem-se que $c^*(S) = 1 \Rightarrow h(X) = 1$.
+Suponha que $x_i \subset c^*$, então $i \in F$ ao final do algoritmo.
+Toda variável $x_i$ que ocorre em $c^*$, ocorre em $h = A(S)$, e além disso, tem-se que $c^*(S) = 1 \Rightarrow h(X) = 1$.
 
 Suponha que $c^*(X) = -1$ para algum $s \in S$, então para todo $i \in [i]$, tem-se que $X_{i}^{\circ} = 1$, $x_i$ não ocorre em $h$. Desse modo $h(s^\circ) = -1$
 \end{proof}
 
-Pelo Teorema \ref{teorema_ap_mq_1}, deduzimos que, se vale a Equação \ref{eq_ap_mq_estrela}, então $err_D(h) \leq \epsilon$ com probabilidade maior que $1-\delta$ para $h=A(S)$.
+Pelo Teorema \ref{teorema_ap_mq_0}, deduzimos que, se vale a Equação \ref{eq_ap_mq_estrela}, então $\err_D(h) \leq \epsilon$ com probabilidade maior que $1-\delta$ para $h=A(S)$.

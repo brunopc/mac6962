@@ -1,0 +1,201 @@
+\section{Aula 15 de Outubro de 2019}
+\label{2019_10_15}
+
+\subsection{Grafos aleatórios}
+
+A partir dessa aula estudaremos teoria básica de grafos aleatórios e uma aplicação desses ao problema de \emph{heshing}, veremos uma estratégia denominada \emph{cucleoo heshing}. A teoria de grafos aleatórios é utilizada no estudo de grafos muito grandes, que surgem em vários contextos, tal como o das redes sociais. Nesse contexto, muitas vezes não é viável a obtenção de respostas exatas, então procuramos propriedades estatísticas dos grafos.
+
+Nosso foco de estudo, ao longo desse processo, será em propriedades $\mathcal{P}$ \footnote{ Todas as propriedades que estamos interessados são invariantes por isomorfismo} de grafos $G$ de $n$ vértices, que será denotado por $G^n$. Queremos estudar $\lim_{n \rightarrow \infty}\mathbb{(G^n \in \mathcal{P})}$. Obteremos resultados para os quais, em geral, $\lim_{n \rightarrow \infty}\mathbb{(G^n \in \mathcal{P})} = 0$ ou $\lim_{n \rightarrow \infty}\mathbb{(G^n \in \mathcal{P})} = 1$.
+
+\begin{definicao}
+Dizemos que $\mathcal{P}$ é uma propriedade crescente se $G \in \mathcal{P}$ então $(G + c )\in \mathcal{P}$, para todo $c \in \binom{V(G)}{2}$, onde $V(G)$ é o número de vértices de $G$.
+\end{definicao}{}
+
+Ou seja, uma dada propriedade é crescente se, quando um grafo $G$ a possui, então qualquer outro grafo obtido a partir de $G$ se adicionando uma aresta também possuir a propriedade.
+
+\begin{exemplo}
+A propriedade de conexidade é crescente, ou seja, se $G$ é conexo, então $G + c$ é conexo, para todo $c \in \binom{V(G)}{2}$. Este caso é bastante intuitivo, se um grafo $G$ é conexo, permanece conexo com a adição de uma nova aresta.
+\end{exemplo}{}
+
+\subsubsection{Modelos - Erdos \& Rényi}
+\begin{enumerate}
+    \item Modelo de $n$ vértices com probabilidade $p$, denotado por $G(n, p)$ ou mais compactamente $G_{n,p}$. p se refere a probabilidade da aresta $(v, w)$ estar presente em $G$ para cada par de vértices distintos $v$ e $w$ de $G$. Cabe observar que a presença de uma dada aresta é estatisticamente independente da presença de outras arestas, e além disso $G_{n,p}$ é uma variável aleatória, sendo que tipicamente $p = p(n)$.
+
+    \item Modelo de $n$ vértices e $M$ arestas, denotado por $G(n, M)$, ou mais compactamente, $G_M$.  
+    Neste modelo, os $\binom{\binom{V}{2}}{M}$ grafos $H$ com $V(H) = 1$, onde  $(V = V(G(n, M)))$ é o conjunto fixo de $n$ vértices, e $|E(H)| = M$ são equiprováveis, ou seja
+
+    \begin{equation*}
+        \mathbb{P}(G(n, M) = H) = \binom{\binom{n}{2}}{M}^{-1}.
+    \end{equation*}{}
+
+    Cabe observar que $G(n,M)$ pode ser estudado considerando-se $G(n,p)$ com $p = M / \binom{n}{2}$.
+
+    \item Modelo $(G_t)_{t = 0}^N$, onde $N = \binom{n}{2}$ e $\phi = G_0 \subset G_1 \subset \dots \subset G_N = k^N$. Nesse caso, $G_t$ é obtido de modo recursivo a partir de $G_{t-1}$, adicionando-se uma aresta nova aleatória. O espaço $\Omega = \Omega_n$ desses grafos tem $N! = \binom{n}{2}!$ elementos equiprováveis. Ademais, $G_t$ tem $t$ arestas e a distribuição de $G_t$ é $G(n, t)$ (2° modelos).
+\end{enumerate}
+
+
+
+\begin{exemplo}
+Sejam $\mathcal{P}$ uma propriedade crescente tal que $k^N \in \mathcal{P}$, e $T_p(G) = \min(t:\mathcal{P} \subset G_t )$ o primeiro momento em que a propriedade surge na cadeia.
+
+Então, considere as seguintes propriedades:
+\begin{enumerate}
+    \item $\mathcal{P} = \{G \text{ é conexo}\}$;
+    \item $\mathcal{P}' = \{\delta \geq 1\} = \{G: \delta(G) \geq 1\} = G$ não tem vértice isolado.
+\end{enumerate}{}
+
+Observe que as propriedades de ser conexo e não possuir vértice isolado são conexas. E além disso, se $G$ é um grafo conexo, logo $G$ não pode ter vértice isolado, logo $\mathcal{P} \subset \mathcal{P}'$. Ademais $T_{con}(G) \geq T_{\delta \geq 1}(G)$, ou seja, a propriedade de conexidade não pode ser mais antiga na cadeia que a propriedade de não possuir vértice isolado.
+\end{exemplo}
+
+Ao estudarmos grafos aleatórios, em geral, estamos interessados em grafos grandes, então podemos nos perguntar como se dá esse comportamento quando o tamanho do grafo aumenta. O próximo resultado, que será apenas enunciado, diz respeito ao comportamento assintótico dos tempos de nascimento dessas duas propriedades. A ideia é que quando o tamanho do grafo aumenta não apresentar vértices isolados se equivale a ser conexo, ou seja, as duas propriedades surgem ao mesmo tempo.
+
+\begin{teorema}
+Assintoticamente quase todo grafo $G = (G_t)_0^N$ é tal que $T_{con}(G) = T_{\delta \geq 1}(G)$
+\end{teorema}{}
+
+%\begin{enumerate}
+%\setcounter{enumi}{3}
+%    \item Outros modelos - "\emph{Network science}"
+%\end{enumerate}{}
+
+\subsubsection{Teoremas de Monotonicidade}
+
+Cabe lembrar que uma propriedade crescente é definida em termos da adição de arestas. Agora, como a probabilidade da presença de arestas em $G(n, p)$ depende de $p$, então é razoável supor que quanto maior o valor de $p$, maior a probabilidade de um dada realização de $G(n, p)$ possuir uma dada propriedade crescente. O lema a seguir formaliza esse resultado.
+
+
+\begin{lema}
+Suponha $0 \leq p \leq p' \leq 1$ e seja $\mathcal{P}$ uma propriedade crescente, então $\mathbb{P}(G(n,p) \in \mathcal{P}) \leq \mathbb{P}(G(n,p') \in \mathcal{P})$
+\end{lema}{}
+
+A demonstração do lema será feita com a utilização de uma técnica denominada \emph{exposição em duas rodadas}.
+
+\begin{proof}
+
+Sem perda de generalidade, suponha $p \leq p'$, e seja $kp{''} < 1$, tal que $1-p' = (1-p)(1 - p{''})$. Consideramos $G(n, p') = G(n, p) \cup G(n, p{''})$.
+
+Como $p'$ é crescente tem-se $\mathbb{P}(G(n,p) \in \mathcal{P} \leq \mathbb{P}(G(n,p') \in \mathcal{P})$.
+\end{proof}{}
+
+Observe que resultado análogo vale para $G(n,M)$.
+\begin{exercicio}
+Enuncie e prove esse resultado.
+\end{exercicio}{}
+
+\subsubsection{Teoremas de Equivalência}
+
+Em certo sentido, ou melhor, sob certas condições, os modelos $G(n, p)$ e $G(n, M)$ são equivalentes em relação a propriedades crescentes. O seguinte lema forma lisa esse sentido de equivalência entre ambos os modelos. Esse lema trata de um resultado assintótico, mas como já dito anteriormente, como estamos interessados em grafos muito grandes, pode ser bastante útil, pois podemos por facilidade estudar uma propriedade em um dos modelos e inferir resultados para o outro modelo.
+
+\begin{lema}
+Sejam $\mathcal{P}$ uma propriedade crescente, $p = M/ N$, $M = M(n) \rightarrow \infty$ e $\delta > 0$ uma constante tal que 
+\begin{equation*}
+    (1 + \delta)\frac{M}{N} = (1 + \delta)M\binom{n}{2}^{-1} \leq 1,
+\end{equation*}{}
+então valem as seguintes afirmações:
+\begin{enumerate}
+    \item $\mathbb{P}(G(n,p) \in \mathcal{P}) \rightarrow 1 \Rightarrow \mathbb{P}(G(n, M) \in \mathcal{P}) \rightarrow 1$;
+    \item $\mathbb{P}(G(n,p) \in \mathcal{P}) \rightarrow 0 \Rightarrow \mathbb{P}(G(n, M) \in \mathcal{P}) \rightarrow 0$;
+    \item $\mathbb{P}(G(n,M) \in \mathcal{P}) \rightarrow 1 \Rightarrow \mathbb{P}(G(n, (1 + \delta)p) \in \mathcal{P}) \rightarrow 1$;
+    \item $\mathbb{P}(G(n,p) \in \mathcal{P}) \rightarrow 0 \Rightarrow \mathbb{P}(G(n, (1 + \delta)p) \in \mathcal{P}) \rightarrow 0$.
+\end{enumerate}
+\end{lema}{}
+\subsubsection{Funções Limiares}
+
+Nos modelos $G(n, p)$ a presença de uma dada propriedade $\mathcal{P}$ pode estar intimamente relacionada a grandeza da probabilidade $p$. Por exemplo, quanto maior for $p$, maior a probabilidade de uma dada realização de $G(n, p)$ ser conexa. Para algumas propriedades pode ser encontrado um valor limiar $p_0$ tal que se $p$ for muito maior ou menor que $p_0$, a propriedade $\mathcal{P}$ quase certamente, respectivamente, ocorre ou não ocorre.
+
+\begin{definicao}
+Se $p_0 = p_0(n)$ é uma função limiar para $\mathcal{P}$ se
+\begin{equation*}
+    \lim_{n \rightarrow \infty} \mathbb{P}(G(n, p) \in \mathcal{P}) = \begin{cases}
+    0, \text{se } p \ll p_0 ;\\
+    1, \text{se } p \gg p_0.
+    \end{cases}    
+\end{equation*}
+onde
+
+\begin{equation*}
+    p \ll p_0 : \lim_{n \rightarrow \infty} \frac{p(n)}{p_0(n)} = 0.
+\end{equation*}
+\end{definicao}
+
+A afirmação $p \ll p_0$, então $\lim_{n \rightarrow \infty} \mathbb{P}(G(n, p) \in \mathcal{P}) = 0$ é conhecida como 0-afirmação. A afirmação $p \gg p_0$, então $\lim_{n \rightarrow \infty} \mathbb{P}(G(n, p) \in \mathcal{P}) = 1$ é conhecida como 1-afirmação.
+
+Essa passagem de quase certamente não ter para quase certamente ter uma dada propriedade é chamada de transição de fase. A forma como se dá a transição de propriedades, sendo que em alguns casos essa transição pode ser bastante abrupta, em outros, bastante suave.
+
+\begin{definicao}
+Se $p_0 = p_0(n)$ é tal que, para todo $\epsilon > 0$ temos
+\begin{equation*}
+    \lim_{n \rightarrow \infty} \mathbb{P}(G(n, p) \in \mathcal{P}) = \begin{cases}
+    0, \text{se } p \ll p_0 ;\\
+    1, \text{se } p \gg p_0.
+    \end{cases}    
+\end{equation*}
+então dizemos que $p_0$ é uma função limiar severa (\emph{sharp}).
+\end{definicao}
+
+
+\begin{definicao}
+Uma função limiar é frouxa (\emph{coarse}) se ela não é severa.
+\end{definicao}
+
+\begin{exemplo}
+Se $\mathcal{P} = \{k ^4 \subset G(n,p)\}$, então $p_0 = n^{\frac{2}{3}}$ é função limiar (frouxa) para $\mathcal{P}$.
+\end{exemplo}
+
+\begin{exemplo}
+Se $\mathcal{P} = \{\text{conexidade}\}$, então $p_0 = \frac{\log(n)}{n}$ é função limiar (severa) para $\mathcal{P}$.
+\end{exemplo}
+
+O exemplo de propriedade de conexidade é bastante importante, e de de fato vale um resultado (Teorema \ref{teo: 5_2019_10_15}) mais geral sobre a transição de fase dessa propriedade.
+\begin{teorema}
+\label{teo: 5_2019_10_15}
+Suponha que $p = p(n) = \frac{1}{n}(\log(n) + c_n)$, então:
+\begin{equation*}
+    \lim_{n \rightarrow \infty} \mathbb{P}(G(n, p) \text{ é conexo}) = \begin{cases}
+    0, \text{se } c_n \rightarrow - \infty ;\\
+    \exp(-\exp(-c)), \text{se } c_n \rightarrow c \in \mathbb{R} ;\\
+    1, \text{se } c_n \rightarrow 1.
+    \end{cases}    
+\end{equation*}
+\end{teorema}
+
+\emph{Preliminares para demonstração do Teorema \ref{teo: 5_2019_10_15}}
+
+Vamos considerar apenas os casos $c_n \rightarrow -\infty$ e $c_n \rightarrow \infty$, e apenas discutiremos a intuição para o caso $c_n \rightarrow c \in \mathbb{R}$, além disso, considere que:
+\begin{enumerate}
+    \item $10 \leq |c_n| \leq \log(\log(n))$;
+    \item n é suficiente grande para que as desigualdades abaixo sejam verdadeiras;
+    \item $X_k = X_k(G(n,p)) =$ \# componentes conexas, em particular $X_1 = $ \# vértices isolados em $G(n,p)$.
+\end{enumerate}{}
+
+\begin{proof}
+
+(\emph{Caso $c_n \rightarrow -\infty$})
+
+Seja $\mu = \mathbb{E}(X_1)$. Temos 
+\begin{align*}
+    \mu & = n(1 -p)^{n - 1} = n(\exp(-p + O(p^2)))^n / (1 - p) = \\
+        & = (1 - v(1))n \exp(-np + O(np^2)) = (1 - v(1))n \exp(\log(n) + c_n) = \\
+        & = (1 + O(1))\exp(-c_n) \rightarrow \infty.
+\end{align*}{}
+
+O número esperado de pares ordenados de vértices isolados é
+\begin{align*}
+    \mathbb{E}(X_1(X_1 - 1)) & = n(n-1)(1-p) \leq n^2 (1-p)^{2n -n}/ (1-p) = \\
+                             & = u^2/(1 - p) \leq u^2 (1 + 2p).
+\end{align*}
+Assim
+
+\begin{equation*}
+    \mathbb{E}(X_1) = \mathbb{E}(X_1(X_1 - 1)) + \mathbb{E}(X_1) \leq u^2 (1 + 2p) + \mu,
+\end{equation*}
+implicando
+\begin{equation*}
+    \mathbb{E}((X_1 - \mu)^2) = \mathbb{E}(X_1^2) - u^2 \leq 2pu^2 + \mu
+\end{equation*}
+e, além disso
+
+\begin{align*}
+    \mathbb{P}(G(n,p) \text{ é conexo}) & \leq \mathbb{P}(X_1 = 0) \leq \mathbb{E}((X_1 - \mu)^2)/(n^2) \leq \\
+    & \leq 2p + 1/\mu \rightarrow 0.
+\end{align*}
+\end{proof}
